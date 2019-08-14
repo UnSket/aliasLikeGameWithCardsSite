@@ -3,7 +3,7 @@ package deck.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 public class User {
 
 	private long id;

@@ -1,6 +1,8 @@
 package deck.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,6 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        //TODO: user userDetailsService as source
+        //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());\
         auth.inMemoryAuthentication()
                 .withUser("admin").password("{noop}admin123").roles("USER");
     }
@@ -31,7 +37,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().anyRequest().hasAnyRole("USER", "ADMIN")
+        //TODO:open swagger-ui and h2;
+        http.authorizeRequests()
+                .antMatchers("/","/**").permitAll()
+                .and()
+             .authorizeRequests()
+                .antMatchers("/h2/**", "/h2**", "/h2/**/**").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/login**").permitAll()
                 .and()
@@ -46,7 +57,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     }
                     System.out.println(auth.getName());
 
-                    res.getWriter().append("{here will be json user}");
+                    ObjectMapper objectMapper = new ObjectMapper();
+
+                    OutputStream out = new ByteArrayOutputStream();
+                    objectMapper.writeValue(out, auth);
+                    res.getWriter().append(out.toString());
                     //res.sendRedirect("/");
                 })
                 //.defaultSuccessUrl("/")
@@ -57,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     } else {
                         errMsg = "Unknown error - " + exp.getMessage();
                     }
-                    req.getSession().setAttribute("message", errMsg);
+                    res.getWriter().append("{\"message\":" + "\"" + errMsg + "\"}");
                     // res.sendRedirect("/login");
                 })
                 //.failureUrl("/login?error")
@@ -70,14 +85,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     res.sendRedirect("/login");
                 })
                 //.logoutSuccessUrl("/login")
-                .permitAll()
-                .and()
-                .csrf().disable(); // Disable CSRF support
-
-        http.authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/h2/**").permitAll();
-        http.headers().frameOptions().disable();
-
+                .permitAll();
+        // .and()
+        // .csrf().disable(); // Disable CSRF support
     }
+
+
+//    @Bean
+//    public BCryptPasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
 }

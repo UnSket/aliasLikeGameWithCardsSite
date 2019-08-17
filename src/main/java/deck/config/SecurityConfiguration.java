@@ -29,9 +29,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());\
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}admin123").roles("USER");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        //auth.inMemoryAuthentication().withUser("admin").password("{noop}admin123").roles("USER");
     }
 
     @Override
@@ -39,12 +38,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         //TODO:open swagger-ui and h2;
         http.authorizeRequests()
-                .antMatchers("/","/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/h2_console/**").permitAll()
+                .antMatchers("/","/**").hasAnyRole("USER", "ADMIN")
                 .and()
-             .authorizeRequests()
-                .antMatchers("/h2/**", "/h2**", "/h2/**/**").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/login**").permitAll()
+                .authorizeRequests()
+                .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin()
                 // .loginPage("/login")
@@ -62,9 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     OutputStream out = new ByteArrayOutputStream();
                     objectMapper.writeValue(out, auth);
                     res.getWriter().append(out.toString());
-                    //res.sendRedirect("/");
+                    res.sendRedirect("/h2");
                 })
-                //.defaultSuccessUrl("/")
                 .failureHandler((req, res, exp) -> {
                     String errMsg = "";
                     if (exp.getClass().isAssignableFrom(BadCredentialsException.class)) {
@@ -73,9 +71,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         errMsg = "Unknown error - " + exp.getMessage();
                     }
                     res.getWriter().append("{\"message\":" + "\"" + errMsg + "\"}");
-                    // res.sendRedirect("/login");
+                    res.sendRedirect("/login");
                 })
-                //.failureUrl("/login?error")
                 .permitAll()
                 .and()
                 .logout()
@@ -84,16 +81,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     req.getSession().setAttribute("message", "You are logged out successfully.");
                     res.sendRedirect("/login");
                 })
-                //.logoutSuccessUrl("/login")
-                .permitAll();
-        // .and()
-        // .csrf().disable(); // Disable CSRF support
+                .permitAll()
+                .and()
+                .csrf().disable(); // Disable CSRF support
+
+
+        http.headers().frameOptions().disable();
     }
 
 
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

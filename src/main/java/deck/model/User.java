@@ -55,7 +55,7 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	@Column(name = "email_address", nullable = false)
+	@Column(name = "email_id", nullable = false)
 	public String getEmailId() {
 		return emailId;
 	}

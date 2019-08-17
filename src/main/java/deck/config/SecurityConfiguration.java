@@ -61,7 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     OutputStream out = new ByteArrayOutputStream();
                     objectMapper.writeValue(out, auth);
                     res.getWriter().append(out.toString());
-                    res.sendRedirect("/h2");
+                   // res.sendRedirect("/h2");
                 })
                 .failureHandler((req, res, exp) -> {
                     String errMsg = "";
@@ -71,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         errMsg = "Unknown error - " + exp.getMessage();
                     }
                     res.getWriter().append("{\"message\":" + "\"" + errMsg + "\"}");
-                    res.sendRedirect("/login");
+                   // res.sendRedirect("/login");
                 })
                 .permitAll()
                 .and()

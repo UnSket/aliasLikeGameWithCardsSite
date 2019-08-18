@@ -74,7 +74,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 = new RequestBodyReaderAuthenticationFilter();
         authenticationFilter.setAuthenticationSuccessHandler(this::loginSuccessHandler);
         authenticationFilter.setAuthenticationFailureHandler(this::loginFailureHandler);
-        authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
+        authenticationFilter.setRequiresAuthenticationRequestMatcher(
+                new AntPathRequestMatcher("/api/login", "POST"));
         authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
     }

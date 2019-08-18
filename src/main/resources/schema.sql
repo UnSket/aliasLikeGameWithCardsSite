@@ -8,6 +8,8 @@ CREATE TABLE USERS (
   PRIMARY KEY (id)
 );
 
+CREATE sequence group_seq;
+
 CREATE TABLE CARD (
     id bigint NOT NULL AUTO_INCREMENT,
     deckId bigint,
@@ -16,7 +18,7 @@ CREATE TABLE CARD (
 
 CREATE TABLE DECK (
     id bigint NOT NULL AUTO_INCREMENT,
-    back_image_id bigint,
+    back_image_url bigint,
     owner_id bigint,
     visible_as_public BOOLEAN,
     name varchar(255),

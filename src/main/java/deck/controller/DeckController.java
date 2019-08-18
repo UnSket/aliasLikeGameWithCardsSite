@@ -31,10 +31,15 @@ public class DeckController {
         return deckService.findAll();
     }
 
+    @GetMapping("api/deck/{id}")
+    public Deck getDeck(@PathVariable(value="id") Long id) {
+        return deckService.getById(id);
+    }
+
     @PostMapping("api/deck")
-    public ResponseEntity<Long> submitDeck(@RequestBody CreateDeckDTO deck) {
-        long id = deckService.submitNewAndGetId(deck);
-        return ResponseEntity.ok(id);
+    public ResponseEntity<Deck> submitDeck(@RequestBody CreateDeckDTO deck) {
+        Deck deckRes = deckService.submitNewAndGetId(deck);
+        return ResponseEntity.ok(deckRes);
     }
 
     //TODO: swagger shitting

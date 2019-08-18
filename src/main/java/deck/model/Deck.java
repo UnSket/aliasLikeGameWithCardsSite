@@ -9,8 +9,7 @@ public class Deck implements Serializable {
 
     private long id;
 
-    //TODO: URL
-    private int backImageId;
+    private String backImageUrl;
     private int ownerId;
     private boolean visibleAsPublic;
 
@@ -22,15 +21,15 @@ public class Deck implements Serializable {
 
     }
 
-    public Deck(long id, int backImageId, int ownerId, boolean visibleAsPublic) {
+    public Deck(long id, String backImageId, int ownerId, boolean visibleAsPublic) {
         this.id = id;
-        this.backImageId = backImageId;
+        this.backImageUrl = backImageId;
         this.ownerId = ownerId;
         this.visibleAsPublic = visibleAsPublic;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
@@ -39,12 +38,12 @@ public class Deck implements Serializable {
         this.id = id;
     }
 
-    public int getBackImageId() {
-        return backImageId;
+    public String getBackImageUrl() {
+        return backImageUrl;
     }
 
-    public void setBackImageId(int backImageId) {
-        this.backImageId = backImageId;
+    public void setBackImageUrl(String backImageURL) {
+        this.backImageUrl = backImageURL;
     }
 
     public int getOwnerId() {

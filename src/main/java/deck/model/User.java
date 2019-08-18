@@ -17,6 +17,8 @@ public class User implements UserDetails {
 
 	private String lastName;
 
+	//TODO:refactor - remove
+	@JsonIgnore
 	private String emailId;
 
 	@JsonIgnore

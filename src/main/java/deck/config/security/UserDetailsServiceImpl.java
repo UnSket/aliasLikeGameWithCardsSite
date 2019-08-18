@@ -1,4 +1,4 @@
-package deck.config;
+package deck.config.security;
 
 import deck.crud.UserService;
 import deck.model.User;
@@ -18,8 +18,7 @@ import java.util.Collection;
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-
-    final UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserDetailsServiceImpl(UserService userService) {
@@ -30,20 +29,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         User user = userService.findUserByUsername(username);
         if (user != null) {
-
-            String password = user.getPassword();
-            boolean enabled = user.isActive();
-            boolean accountNonExpired = user.isActive();
-            boolean credentialsNonExpired = user.isActive();
-            boolean accountNonLocked = user.isActive();
-
             Collection<GrantedAuthority> authorities = new ArrayList<>();
-            //for (Role r : user.getRoles()) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            //}
-            return new org.springframework.security.core.userdetails.User(
-                    username, password, enabled, accountNonExpired,
-                    credentialsNonExpired, accountNonLocked, authorities);
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            user.setAuthorities(authorities);
+            return user;
         }
         throw new UsernameNotFoundException(
                 "Unable to find user with username provided!!");

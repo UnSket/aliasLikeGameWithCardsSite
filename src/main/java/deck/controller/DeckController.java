@@ -26,26 +26,26 @@ public class DeckController {
         this.storageService = storageService;
     }
 
-    @GetMapping("/api/deck/")
+    @GetMapping("api/deck")
     public List<Deck> listDecks() {
         return deckService.findAll();
     }
 
-    @PostMapping("/api/deck/")
+    @PostMapping("api/deck")
     public ResponseEntity<Long> submitDeck(@RequestBody CreateDeckDTO deck) {
         long id = deckService.submitNewAndGetId(deck);
         return ResponseEntity.ok(id);
     }
 
     //TODO: swagger shitting
-    @PostMapping("/api/deck/{id:.+}")
+    @PostMapping("api/deck/{id:.+}")
     public ResponseEntity<Resource> submitDeckContent(@RequestParam("id") long id,
                                                       @RequestBody List<List<List<CardImageDto>>> deckContent) {
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/api/deck/{id:.+}")
+    @DeleteMapping("api/deck/{id:.+}")
     public ResponseEntity<Resource> uploadBackImage(@RequestParam("id") long id, @RequestParam("file") MultipartFile file) {
         storageService.store(file);
         return ResponseEntity.ok().build();

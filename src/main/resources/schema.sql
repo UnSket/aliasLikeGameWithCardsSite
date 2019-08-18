@@ -16,11 +16,11 @@ CREATE TABLE CARD (
 
 CREATE TABLE DECK (
     id bigint NOT NULL AUTO_INCREMENT,
-    bigint bigint,
-    ownerId bigint,
-    visibleAsPublic BOOLEAN,
+    back_image_id bigint,
+    owner_id bigint,
+    visible_as_public BOOLEAN,
     name varchar(255),
     description varchar(255),
-    imagesOnCard bigint,
+    images_on_card bigint,
   PRIMARY KEY (id)
 )

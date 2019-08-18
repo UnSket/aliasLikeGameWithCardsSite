@@ -25,12 +25,14 @@ public class FileUploadController {
     //ADD method that binds image id, text (name of subject), font size, color;
     // по тексту генерится картинка 200*200 центрированная 12 - 150 (переносы по словам)
 
+    //TODO: подумать над списком файлы грузить
+
     @Autowired
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
 
-    @GetMapping("/files/")
+    @GetMapping("/api/files/list")
     public List<String> listUploadedFiles() throws IOException {
         return storageService.loadAll().map(
                 path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
@@ -49,7 +51,8 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/api/files/")
+    //TODO: add request for deckId to bind all this stuff
+    @PostMapping("/api/files")
     @ResponseBody
     public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
         String key = storageService.store(file);

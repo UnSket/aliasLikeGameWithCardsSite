@@ -7,6 +7,9 @@ import java.io.Serializable;
 @Entity
 public class Deck implements Serializable {
 
+
+    //TODO: ADD LIST OF KEYS FOR BINDED FILES
+
     private long id;
 
     private String backImageUrl;

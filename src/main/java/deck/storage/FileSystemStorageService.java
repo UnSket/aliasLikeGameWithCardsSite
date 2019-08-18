@@ -59,7 +59,7 @@ public class FileSystemStorageService implements StorageService {
         }
 
         try {
-            String s = imageProcessing.cleanUpBackGround(this.rootLocation.resolve(filename).toFile());
+            String s = imageProcessing.cleanUpBackGround(this.rootLocation.resolve(filename).toFile(), uuid.toString());
             System.out.println(s);
         }catch (Exception e){
             e.printStackTrace();

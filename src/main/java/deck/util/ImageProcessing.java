@@ -32,7 +32,7 @@ public class ImageProcessing {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
-    public String cleanUpBackGround(File f) {
+    public String cleanUpBackGround(File f, String uuid) {
         BufferedImage img = null;
         try {
             img = ImageIO.read(f);
@@ -55,8 +55,6 @@ public class ImageProcessing {
                     img.setRGB(i, j, rgbaBytes);
                 }
             }
-
-            UUID uuid = UUID.randomUUID();
             String format = ".png";
             String filename = StringUtils.cleanPath(uuid.toString() + format);
 

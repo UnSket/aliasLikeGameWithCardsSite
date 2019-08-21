@@ -1,15 +1,14 @@
 package deck.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Table(name = "DECK")
 @Entity
 public class Deck implements Serializable {
-
-
-    //TODO: ADD LIST OF KEYS FOR BINDED FILES
-
     private long id;
 
     private String backImageUrl;
@@ -19,6 +18,9 @@ public class Deck implements Serializable {
     private String name;
     private String description;
     private int imagesOnCard;
+
+    private Set<Image> images;
+
 
     public Deck(){
 
@@ -87,5 +89,14 @@ public class Deck implements Serializable {
 
     public void setImagesOnCard(int imagesOnCard) {
         this.imagesOnCard = imagesOnCard;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deck", cascade = { CascadeType.ALL })
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
     }
 }

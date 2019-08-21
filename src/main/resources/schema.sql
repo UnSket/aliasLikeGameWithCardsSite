@@ -25,4 +25,11 @@ CREATE TABLE DECK (
     description varchar(255),
     images_on_card bigint,
   PRIMARY KEY (id)
+);
+
+CREATE TABLE IMAGE (
+    id bigint NOT NULL AUTO_INCREMENT,
+    url varchar(255),
+    deck_id bigint,
+    FOREIGN KEY (deck_id) REFERENCES DECK(id),
 )

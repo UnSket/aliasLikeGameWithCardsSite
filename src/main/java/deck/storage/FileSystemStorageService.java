@@ -67,7 +67,7 @@ public class FileSystemStorageService implements StorageService {
 
         ImageMeta meta = new ImageMeta();
         meta.setLink(filename);
-        return "{\"key\":\"" + uuid.toString() + "\"}";
+        return uuid.toString();
 
     }
 

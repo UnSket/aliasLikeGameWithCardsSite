@@ -54,9 +54,9 @@ public class FileUploadController {
     //TODO: add request for deckId to bind all this stuff
     @PostMapping("/api/files")
     @ResponseBody
-    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
-        String key = storageService.store(file);
-        return ResponseEntity.ok(key);
+    public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files) {
+        List<String> keys = files.stream().map(storageService::store).collect(Collectors.toList());
+        return ResponseEntity.ok(keys);
     }
 
     @ExceptionHandler(ImageStorageFileNotFoundException.class)

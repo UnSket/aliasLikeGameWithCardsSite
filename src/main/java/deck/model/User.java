@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -28,6 +29,8 @@ public class User implements UserDetails {
 	private Collection<GrantedAuthority> authorities;
 
 	private boolean active;
+
+	private Set<Deck> decks;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -128,4 +131,13 @@ public class User implements UserDetails {
 				+ "]";
 	}
 
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = { CascadeType.ALL })
+	@JsonIgnore
+	public Set<Deck> getDecks() {
+		return decks;
+	}
+
+	public void setDecks(Set<Deck> decks) {
+		this.decks = decks;
+	}
 }

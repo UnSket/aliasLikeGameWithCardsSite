@@ -1,6 +1,7 @@
 package deck.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,6 +21,8 @@ public class Deck implements Serializable {
     private int imagesOnCard;
 
     private Set<Image> images;
+
+    private User user;
 
 
     public Deck(){
@@ -98,5 +101,16 @@ public class Deck implements Serializable {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @JsonIgnore
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

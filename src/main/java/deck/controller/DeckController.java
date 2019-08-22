@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class DeckController {
@@ -26,9 +27,9 @@ public class DeckController {
         this.storageService = storageService;
     }
 
-    @GetMapping("api/deck")
-    public List<Deck> listDecks() {
-        return deckService.findAll();
+    @GetMapping("api/decks")
+    public Set<Deck> listDecks() {
+        return deckService.findAllOfCurrentUser();
     }
 
     @GetMapping("api/deck/{id}")

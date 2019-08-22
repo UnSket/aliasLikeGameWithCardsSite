@@ -1,9 +1,15 @@
 package deck.controller;
 
+import deck.crud.UserService;
+import deck.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -13,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class AuthController {
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping(value = "/api/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request,
                              HttpServletResponse response) {
@@ -21,6 +30,16 @@ public class AuthController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/login?logout=true";
+    }
+
+    @GetMapping(value = "/api/currentUser")
+    public ResponseEntity currentUser() {
+        try {
+            User user = userService.getCurrentUser();
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).build();
+        }
     }
 
 }

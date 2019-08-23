@@ -131,7 +131,7 @@ public class User implements UserDetails {
 				+ "]";
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = { CascadeType.ALL })
 	@JsonIgnore
 	public Set<Deck> getDecks() {
 		return decks;

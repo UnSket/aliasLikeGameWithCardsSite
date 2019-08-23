@@ -19,12 +19,11 @@ CREATE TABLE CARD (
 CREATE TABLE DECK (
     id bigint NOT NULL AUTO_INCREMENT,
     back_image_url bigint,
-    owner_id bigint,
     visible_as_public BOOLEAN,
     name varchar(255),
     description varchar(255),
     images_on_card bigint,
-    user_id bigint,
+    owner_id bigint,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id) REFERENCES USERS(id)
 );

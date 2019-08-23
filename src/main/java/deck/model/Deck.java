@@ -13,7 +13,7 @@ public class Deck implements Serializable {
     private long id;
 
     private String backImageUrl;
-    private int ownerId;
+    private User owner;
     private boolean visibleAsPublic;
 
     private String name;
@@ -22,17 +22,14 @@ public class Deck implements Serializable {
 
     private Set<Image> images;
 
-    private User user;
-
-
     public Deck(){
 
     }
 
-    public Deck(long id, String backImageId, int ownerId, boolean visibleAsPublic) {
+    public Deck(long id, String backImageId, User owner, boolean visibleAsPublic) {
         this.id = id;
         this.backImageUrl = backImageId;
-        this.ownerId = ownerId;
+        this.owner = owner;
         this.visibleAsPublic = visibleAsPublic;
     }
 
@@ -52,14 +49,6 @@ public class Deck implements Serializable {
 
     public void setBackImageUrl(String backImageURL) {
         this.backImageUrl = backImageURL;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
     }
 
     public boolean isVisibleAsPublic() {
@@ -104,13 +93,13 @@ public class Deck implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "OWNER_ID")
     @JsonIgnore
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

@@ -57,13 +57,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html/**",
                         "/webjars/**")
                 .permitAll()
-                //.anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(
                         authenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .logout()
-                .logoutUrl("/logout");
+                .logoutUrl("/logout")
+                .and().formLogin();
 
         http.headers().frameOptions().disable();
     }

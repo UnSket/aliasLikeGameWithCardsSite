@@ -70,6 +70,13 @@ public class FileUploadController {
         return ResponseEntity.ok(keys);
     }
 
+    @PostMapping("/api/files/single/")
+    @ResponseBody
+    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
+        String key = storageService.store(file);
+        return ResponseEntity.ok(key);
+    }
+
     @ExceptionHandler(ImageStorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(ImageStorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();

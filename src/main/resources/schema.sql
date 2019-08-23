@@ -23,9 +23,9 @@ CREATE TABLE DECK (
     name varchar(255),
     description varchar(255),
     images_on_card bigint,
-    owner_id bigint,
+    owner bigint,
   PRIMARY KEY (id),
-  FOREIGN KEY (owner_id) REFERENCES USERS(id)
+  FOREIGN KEY (owner) REFERENCES USERS(id)
 );
 
 CREATE TABLE IMAGE (

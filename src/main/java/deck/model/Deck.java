@@ -93,7 +93,7 @@ public class Deck implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "OWNER_ID")
+    @JoinColumn(name = "OWNER")
     @JsonIgnore
     public User getOwner() {
         return owner;

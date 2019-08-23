@@ -31,15 +31,14 @@ public class DeckService {
         deck.setName(deckDto.getName());
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
-        deck.setUser(currentUser);
+        deck.setOwner(currentUser);
         return deckRepository.save(deck);
     }
 
     public Set<Deck> findAllOfCurrentUser(){
         User currentUser = userService.getCurrentUser();
-        userService.findUserByUsername(currentUser.getUsername());
-        Set<Deck> decks = currentUser.getDecks();
-        return decks;
+        currentUser = userService.findUserByUsername(currentUser.getUsername());
+        return currentUser.getDecks();
     }
 
     public List<Deck> findAll(){

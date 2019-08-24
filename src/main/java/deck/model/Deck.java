@@ -12,7 +12,7 @@ import java.util.Set;
 public class Deck implements Serializable {
     private long id;
 
-    private String backImageUrl;
+    private Image backside;
     private User owner;
     private boolean visibleAsPublic;
 
@@ -26,9 +26,8 @@ public class Deck implements Serializable {
 
     }
 
-    public Deck(long id, String backImageId, User owner, boolean visibleAsPublic) {
+    public Deck(long id, User owner, boolean visibleAsPublic) {
         this.id = id;
-        this.backImageUrl = backImageId;
         this.owner = owner;
         this.visibleAsPublic = visibleAsPublic;
     }
@@ -43,12 +42,14 @@ public class Deck implements Serializable {
         this.id = id;
     }
 
-    public String getBackImageUrl() {
-        return backImageUrl;
+    @OneToOne
+    @JoinColumn(name ="backside")
+    public Image getBackside() {
+        return backside;
     }
 
-    public void setBackImageUrl(String backImageURL) {
-        this.backImageUrl = backImageURL;
+    public void setBackside(Image backside) {
+        this.backside = backside;
     }
 
     public boolean isVisibleAsPublic() {

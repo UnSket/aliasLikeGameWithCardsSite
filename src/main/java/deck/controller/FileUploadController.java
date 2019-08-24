@@ -62,12 +62,19 @@ public class FileUploadController {
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId) {
         Deck deck = deckService.getById(deckId);
-        List<String> keys = files.stream().map(file -> {
+        List<Image> images = files.stream().map(file -> {
             String key = storageService.store(file);
-            imageService.submitNewAndGetId(key, deck);
-            return key;
+            Image image = imageService.submitNewAndGet(key, deck);
+            return image;
         }).collect(Collectors.toList());
-        return ResponseEntity.ok(keys);
+        return ResponseEntity.ok(images);
+    }
+
+    @PostMapping("api/files/change")
+    public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
+                                             @RequestParam("imageId") Long imageId) {
+        String newUrl = storageService.store(newImage);
+        return ResponseEntity.ok(imageService.updateImageAndGet(imageId, newUrl));
     }
 
     @ExceptionHandler(ImageStorageFileNotFoundException.class)

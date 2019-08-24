@@ -23,8 +23,14 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public Image submitNewAndGetId(String imageUrl, Deck deck){
+    public Image submitNewAndGet(String imageUrl, Deck deck){
         Image image = new Image(imageUrl, deck);
+        return imageRepository.save(image);
+    }
+
+    public Image submitNewAndGet(String imageUrl){
+        Image image = new Image();
+        image.setUrl(imageUrl);
         return imageRepository.save(image);
     }
 
@@ -38,5 +44,11 @@ public class ImageService {
             throw new ResourceNotFoundException();
         }
         return byId.orElseGet(Image::new);
+    }
+
+    public Image updateImageAndGet(Long imageId, String newUrl) {
+        Image image = imageRepository.findById(imageId).orElseThrow(() -> new RuntimeException("Image with id " + imageId + " not found"));
+        image.setUrl(newUrl);
+        return imageRepository.save(image);
     }
 }

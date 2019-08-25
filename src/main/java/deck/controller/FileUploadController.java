@@ -64,8 +64,7 @@ public class FileUploadController {
         Deck deck = deckService.getById(deckId);
         List<Image> images = files.stream().map(file -> {
             String key = storageService.store(file);
-            Image image = imageService.submitNewAndGet(key, deck);
-            return image;
+            return imageService.submitNewAndGet(key, deck);
         }).collect(Collectors.toList());
         return ResponseEntity.ok(images);
     }

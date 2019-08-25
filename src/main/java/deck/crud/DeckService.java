@@ -50,13 +50,13 @@ public class DeckService {
         return currentUser.getDecks();
     }
 
-    public List<Deck> findAll(){
+    public List<Deck> findAll() {
         return deckRepository.findAll();
     }
 
-    public Deck getById(long id){
+    public Deck getById(long id) {
         Optional<Deck> byId = deckRepository.findById(id);
-        if(!byId.isPresent()){
+        if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
         return byId.orElseGet(Deck::new);

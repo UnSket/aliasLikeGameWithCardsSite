@@ -1,6 +1,5 @@
 package deck.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.util.Set;
 public class Deck implements Serializable {
     private long id;
 
-    private Image backside;
+    private String backsideKey;
     private User owner;
     private boolean visibleAsPublic;
 
@@ -22,9 +21,7 @@ public class Deck implements Serializable {
 
     private Set<Image> images;
 
-    public Deck(){
-
-    }
+    public Deck(){}
 
     public Deck(long id, User owner, boolean visibleAsPublic) {
         this.id = id;
@@ -42,14 +39,12 @@ public class Deck implements Serializable {
         this.id = id;
     }
 
-    @OneToOne
-    @JoinColumn(name ="backside")
-    public Image getBackside() {
-        return backside;
+    public String getBacksideKey() {
+        return backsideKey;
     }
 
-    public void setBackside(Image backside) {
-        this.backside = backside;
+    public void setBacksideKey(String backsideKey) {
+        this.backsideKey = backsideKey;
     }
 
     public boolean isVisibleAsPublic() {

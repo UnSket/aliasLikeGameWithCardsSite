@@ -16,15 +16,14 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class UserService {
 
-    final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public User getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
                 .map(authentication -> {
                     if (authentication.getPrincipal() instanceof User) {
-                        User springSecurityUser = (User) authentication.getPrincipal();
-                        return springSecurityUser;
+                        return (User) authentication.getPrincipal();
                     } else {
                         return null;
                     }

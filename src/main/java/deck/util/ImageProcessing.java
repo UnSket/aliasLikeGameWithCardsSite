@@ -1,7 +1,6 @@
 package deck.util;
 
 import deck.config.StorageProperties;
-import deck.model.ImageMeta;
 import deck.storage.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class ImageProcessing {
         }
     }
 
-    public String cleanUpBackGround(File f, String uuid) {
+    public String cleanUpBackGround(File f, String uuid, boolean needBgCleanUp) {
         BufferedImage img;
         BufferedImage result;
         HashMap<RGBAColor, Long> decompressedRgbaOccurences = new HashMap<>();
@@ -103,7 +102,7 @@ public class ImageProcessing {
                 for (int j = 0; j < height; j++) {
                     int rgbaBytes = img.getRGB(i, j);
                     RGBAColor color = new RGBAColor(rgbaBytes);
-                    if(color.calculateCartesianDistance(bgColor)<BACKGROUND_RADII){
+                    if(needBgCleanUp && color.calculateCartesianDistance(bgColor)<BACKGROUND_RADII){
                        color.setColor(pngBgColor);
                     }
                     rgbaBytes = color.convertTo4ByteFormat();
@@ -114,8 +113,6 @@ public class ImageProcessing {
             String format = ".png";
             String filename = StringUtils.cleanPath(uuid + format);
 
-            ImageMeta meta = new ImageMeta();
-            meta.setLink(filename);
             File results = new File(this.rootLocation.resolve(filename).toUri());
             ImageIO.write(result, "png", results);
 

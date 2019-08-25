@@ -25,12 +25,8 @@ public class FileUploadController {
     private final StorageService storageService;
     private final DeckService deckService;
     private final ImageService imageService;
-    //TODO: add image binding to deck on creation/upload
 
-    //ADD method that binds image id, text (name of subject), font size, color;
     // по тексту генерится картинка 200*200 центрированная 12 - 150 (переносы по словам)
-
-    //TODO: подумать над списком файлы грузить
     @Autowired
     public FileUploadController(StorageService storageService, DeckService deckService, ImageService imageService) {
         this.storageService = storageService;
@@ -63,7 +59,7 @@ public class FileUploadController {
                                            @RequestParam("deckId") Long deckId) {
         Deck deck = deckService.getById(deckId);
         List<Image> images = files.stream().map(file -> {
-            String key = storageService.store(file);
+            String key = storageService.store(file, true);
             return imageService.submitNewAndGet(key, deck);
         }).collect(Collectors.toList());
         return ResponseEntity.ok(images);
@@ -72,15 +68,15 @@ public class FileUploadController {
     @PostMapping("api/files/change")
     public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
                                              @RequestParam("imageId") Long imageId) {
-        String newUrl = storageService.store(newImage);
+        String newUrl = storageService.store(newImage, true);
         return ResponseEntity.ok(imageService.updateImageAndGet(imageId, newUrl));
     }
 
     @PostMapping("/api/files/backimage/")
     @ResponseBody
     public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
-        String key = storageService.store(file);
-        return ResponseEntity.ok(key);
+        String key = storageService.store(file, false);
+        return ResponseEntity.ok(imageService.submitNewAndGet(key));
     }
 
     @ExceptionHandler(ImageStorageFileNotFoundException.class)

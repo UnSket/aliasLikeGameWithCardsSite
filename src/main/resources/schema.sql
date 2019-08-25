@@ -18,7 +18,7 @@ CREATE TABLE CARD (
 
 CREATE TABLE DECK (
     id bigint NOT NULL AUTO_INCREMENT,
-    backside bigint,
+    backside_key varchar(255),
     visible_as_public BOOLEAN,
     name varchar(255),
     description varchar(255),
@@ -30,9 +30,9 @@ CREATE TABLE DECK (
 
 CREATE TABLE IMAGE (
     id bigint NOT NULL AUTO_INCREMENT,
-    url varchar(255),
+    url varchar(255) UNIQUE NOT NULL,
     deck_id bigint,
     FOREIGN KEY (deck_id) REFERENCES DECK(id),
 );
 
-ALTER TABLE DECK ADD FOREIGN KEY (backside) REFERENCES IMAGE(id);
+ALTER TABLE DECK ADD FOREIGN KEY (backside_key) REFERENCES IMAGE(url);

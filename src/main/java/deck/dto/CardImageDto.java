@@ -3,12 +3,15 @@ package deck.dto;
 public class CardImageDto {
 
     private String image;
-    private float scale;
-    private float angle;
-    private float positionX;
-    private float positionY;
+    private int scale;
+    private int angle;
+    private int positionX;
+    private int positionY;
 
-    public CardImageDto(String image, float scale, float angle, float positionX, float positionY) {
+    public CardImageDto() {
+    }
+
+    public CardImageDto(String image, int scale, int angle, int positionX, int positionY) {
         this.image = image;
         this.scale = scale;
         this.angle = angle;
@@ -24,35 +27,35 @@ public class CardImageDto {
         this.image = image;
     }
 
-    public float getScale() {
+    public int getScale() {
         return scale;
     }
 
-    public void setScale(float scale) {
+    public void setScale(int scale) {
         this.scale = scale;
     }
 
-    public float getAngle() {
+    public int getAngle() {
         return angle;
     }
 
-    public void setAngle(float angle) {
+    public void setAngle(int angle) {
         this.angle = angle;
     }
 
-    public float getPositionX() {
+    public int getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(float positionX) {
+    public void setPositionX(int positionX) {
         this.positionX = positionX;
     }
 
-    public float getPositionY() {
+    public int getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(float positionY) {
+    public void setPositionY(int positionY) {
         this.positionY = positionY;
     }
 }

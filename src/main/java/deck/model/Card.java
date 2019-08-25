@@ -7,11 +7,11 @@ import java.io.Serializable;
 @Entity
 public class Card implements Serializable {
 
-    private int id;
+    private long id;
 
-    private int deckId;
+    private long deckId;
 
-    public Card(){
+    public Card() {
 
     }
 
@@ -22,19 +22,19 @@ public class Card implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getDeckId() {
+    public long getDeckId() {
         return deckId;
     }
 
-    public void setDeckId(int deckId) {
+    public void setDeckId(long deckId) {
         this.deckId = deckId;
     }
 }

@@ -8,29 +8,25 @@ import java.io.Serializable;
 @Entity
 public class CardImage implements Serializable {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int cardId;
+    private long cardId;
 
-    private int imageId;
+    private long imageId;
 
-    private int offsetHeight;
+    private int scaleFactor;
 
-    private int offsetWidth;
+    private int positionX;
+
+    private int positionY;
 
     private int rotationAngleMillirad;
 
     public CardImage(){
 
-    }
-
-    public CardImage(int id, int cardId, int imageId, int offsetHeight, int offsetWidth, int rotationAngleMillirad) {
-        this.id = id;
-        this.cardId = cardId;
-        this.imageId = imageId;
-        this.offsetHeight = offsetHeight;
-        this.offsetWidth = offsetWidth;
-        this.rotationAngleMillirad = rotationAngleMillirad;
     }
 
     @Id
@@ -43,36 +39,44 @@ public class CardImage implements Serializable {
         this.id = id;
     }
 
-    public int getCardId() {
+    public long getCardId() {
         return cardId;
     }
 
-    public void setCardId(int cardId) {
+    public void setCardId(long cardId) {
         this.cardId = cardId;
     }
 
-    public int getImageId() {
+    public long getImageId() {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
+    public void setImageId(long imageId) {
         this.imageId = imageId;
     }
 
-    public int getOffsetHeight() {
-        return offsetHeight;
+    public int getPositionX() {
+        return positionX;
     }
 
-    public void setOffsetHeight(int offsetHeight) {
-        this.offsetHeight = offsetHeight;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
     }
 
-    public int getOffsetWidth() {
-        return offsetWidth;
+    public int getPositionY() {
+        return positionY;
     }
 
-    public void setOffsetWidth(int offsetWidth) {
-        this.offsetWidth = offsetWidth;
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
+
+    public int getScaleFactor() {
+        return scaleFactor;
+    }
+
+    public void setScaleFactor(int scaleFactor) {
+        this.scaleFactor = scaleFactor;
     }
 
     public int getRotationAngleMillirad() {

@@ -1,0 +1,5 @@
+50 164 rotate(318deg) 162 http://localhost/spotit/projects/test5/8.png
+207 56 rotate(232deg) 73 http://localhost/spotit/projects/test5/14.png
+124 10 rotate(182deg) 73 http://localhost/spotit/projects/test5/20.png
+214 168 rotate(343deg) 102 http://localhost/spotit/projects/test5/5.png
+35 67 rotate(54deg) 102 http://localhost/spotit/projects/test5/12.png

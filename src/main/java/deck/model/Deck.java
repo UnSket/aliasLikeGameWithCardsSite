@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 @Table(name = "DECK")
 @Entity
@@ -19,12 +19,13 @@ public class Deck implements Serializable {
     private String description;
     private int imagesOnCard;
 
-    private Set<Image> images;
+    private List<Image> images;
 
-    public Deck(){}
+    public Deck() {
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
@@ -73,12 +74,12 @@ public class Deck implements Serializable {
         this.imagesOnCard = imagesOnCard;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deck", cascade = { CascadeType.ALL })
-    public Set<Image> getImages() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deck", cascade = {CascadeType.ALL})
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 

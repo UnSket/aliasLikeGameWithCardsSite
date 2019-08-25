@@ -1,0 +1,8 @@
+19 109 rotate(194deg) 75 http://localhost/spotIt/projects/example/29.png
+160 11 rotate(350deg) 75 http://localhost/spotIt/projects/example/28.png
+229 124 rotate(142deg) 75 http://localhost/spotIt/projects/example/10.png
+225 213 rotate(109deg) 75 http://localhost/spotIt/projects/example/6.png
+71 32 rotate(130deg) 75 http://localhost/spotIt/projects/example/4.png
+248 67 rotate(271deg) 50 http://localhost/spotIt/projects/example/39.png
+152 103 rotate(184deg) 50 http://localhost/spotIt/projects/example/55.png
+63 177 rotate(149deg) 135 http://localhost/spotIt/projects/example/41.png

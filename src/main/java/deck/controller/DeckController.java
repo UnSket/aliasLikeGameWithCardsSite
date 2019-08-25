@@ -2,7 +2,7 @@ package deck.controller;
 
 import deck.crud.DeckService;
 import deck.dto.CardImageDto;
-import deck.dto.CreateDeckDTO;
+import deck.dto.DeckDTO;
 import deck.model.Deck;
 import deck.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,22 @@ public class DeckController {
     }
 
     @PostMapping("api/deck")
-    public ResponseEntity<Deck> submitDeck(@RequestBody CreateDeckDTO deck) {
-        Deck deckRes = deckService.submitNewAndGetId(deck);
+    public ResponseEntity<Deck> submitDeck(@RequestBody DeckDTO deck) {
+        Deck deckRes = deckService.submitNewDeck(deck);
+        return ResponseEntity.ok(deckRes);
+    }
+
+    @PostMapping("api/deck/backimage/{id:.+}")
+    public ResponseEntity<Deck> submitDeckBackSideImage(@RequestParam("id") long id,
+                                                        @RequestBody String backsideImageKey) {
+        Deck deckRes = deckService.setBackSideImageKey(backsideImageKey, id);
+        return ResponseEntity.ok(deckRes);
+    }
+
+    @PutMapping("api/deck/{id:.+}")
+    public ResponseEntity<Deck> updateDeck(@RequestParam("id") long id,
+                                           @RequestBody DeckDTO deck) {
+        Deck deckRes = deckService.updateDeck(deck, id);
         return ResponseEntity.ok(deckRes);
     }
 
@@ -58,6 +72,5 @@ public class DeckController {
         storageService.store(file);
         return ResponseEntity.ok().build();
     }
-
 
 }

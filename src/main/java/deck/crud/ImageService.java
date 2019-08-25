@@ -1,10 +1,8 @@
 package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
-import deck.dto.CreateDeckDTO;
 import deck.model.Deck;
 import deck.model.Image;
-import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

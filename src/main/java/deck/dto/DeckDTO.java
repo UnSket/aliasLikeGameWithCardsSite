@@ -1,15 +1,15 @@
 package deck.dto;
 
-public class CreateDeckDTO {
+public class DeckDTO {
 
     private String name;
     private String description;
     private int imagesOnCard;
 
-    public CreateDeckDTO() {
+    public DeckDTO() {
     }
 
-    public CreateDeckDTO(String name, String description, int imagesOnCard) {
+    public DeckDTO(String name, String description, int imagesOnCard) {
         this.name = name;
         this.description = description;
         this.imagesOnCard = imagesOnCard;

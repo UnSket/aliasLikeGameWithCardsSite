@@ -26,13 +26,6 @@ public class Deck implements Serializable {
 
     }
 
-    public Deck(long id, String backImageId, User owner, boolean visibleAsPublic) {
-        this.id = id;
-        this.backImageUrl = backImageId;
-        this.owner = owner;
-        this.visibleAsPublic = visibleAsPublic;
-    }
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public long getId() {

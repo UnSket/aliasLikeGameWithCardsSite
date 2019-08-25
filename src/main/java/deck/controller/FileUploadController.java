@@ -76,7 +76,7 @@ public class FileUploadController {
         return ResponseEntity.ok(imageService.updateImageAndGet(imageId, newUrl));
     }
 
-    @PostMapping("/api/files/single/")
+    @PostMapping("/api/files/backimage/")
     @ResponseBody
     public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
         String key = storageService.store(file);

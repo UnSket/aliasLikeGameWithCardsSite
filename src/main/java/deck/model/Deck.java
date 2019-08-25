@@ -23,12 +23,6 @@ public class Deck implements Serializable {
 
     public Deck(){}
 
-    public Deck(long id, User owner, boolean visibleAsPublic) {
-        this.id = id;
-        this.owner = owner;
-        this.visibleAsPublic = visibleAsPublic;
-    }
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public long getId() {

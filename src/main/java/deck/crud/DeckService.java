@@ -1,10 +1,8 @@
 package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
-import deck.dto.CreateDeckDTO;
-import deck.dto.EditDeckDTO;
+import deck.dto.DeckDTO;
 import deck.model.Deck;
-import deck.model.Image;
 import deck.model.User;
 import deck.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class DeckService {
         this.userService = userService;
     }
 
-    public Deck submitNewAndGetId(CreateDeckDTO deckDto){
+    public Deck submitNewDeck(DeckDTO deckDto) {
         User currentUser = userService.getCurrentUser();
         Deck deck = new Deck();
         deck.setName(deckDto.getName());
@@ -37,14 +35,39 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public Deck editDeck(EditDeckDTO deckDto){
-        Deck deck = deckRepository.findById(deckDto.getId()).orElseThrow(() -> new RuntimeException("deck with id " + deckDto.getId() + " not found"));
-        deck.setName(deckDto.getName());
-        deck.setDescription(deckDto.getDescription());
-        return deckRepository.save(deck)    ;
+    public Deck updateDeck(DeckDTO deckDto, long id) {
+        User currentUser = userService.getCurrentUser();
+        Optional<Deck> deckOpt = deckRepository.findById(id);
+        if (deckOpt.isPresent()) {
+            Deck deck = deckOpt.get();
+            if (deck.getOwner().getId() != currentUser.getId()) {
+                throw new ResourceNotFoundException();
+            }
+            deck.setName(deckDto.getName());
+            deck.setDescription(deckDto.getDescription());
+            deck.setImagesOnCard(deckDto.getImagesOnCard());
+            deck.setOwner(currentUser);
+            return deckRepository.save(deck);
+        }
+
+        throw new ResourceNotFoundException();
     }
 
-    public Set<Deck> findAllOfCurrentUser(){
+    public Deck setBackSideImageKey(String backSideImageKey, long id) {
+        User currentUser = userService.getCurrentUser();
+        Optional<Deck> deckOpt = deckRepository.findById(id);
+        if (deckOpt.isPresent()) {
+            Deck deck = deckOpt.get();
+            if (deck.getOwner().getId() != currentUser.getId()) {
+                throw new ResourceNotFoundException();
+            }
+            deck.setBacksideKey(backSideImageKey);
+            return deckRepository.save(deck);
+        }
+        throw new ResourceNotFoundException();
+    }
+
+    public Set<Deck> findAllOfCurrentUser() {
         User currentUser = userService.getCurrentUser();
         currentUser = userService.findUserByUsername(currentUser.getUsername());
         return currentUser.getDecks();
@@ -60,11 +83,5 @@ public class DeckService {
             throw new ResourceNotFoundException();
         }
         return byId.orElseGet(Deck::new);
-    }
-
-    public Deck changeBackside(Image image, Long deckId) {
-        Deck deck = deckRepository.findById(deckId).orElseThrow(() -> new RuntimeException("deck with id " + deckId + " not found"));
-        deck.setBackside(image);
-        return deckRepository.save(deck);
     }
 }

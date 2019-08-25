@@ -2,8 +2,7 @@ package deck.controller;
 
 import deck.crud.DeckService;
 import deck.dto.CardImageDto;
-import deck.dto.CreateDeckDTO;
-import deck.dto.EditDeckDTO;
+import deck.dto.DeckDTO;
 import deck.model.Deck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -36,14 +35,22 @@ public class DeckController {
     }
 
     @PostMapping("api/deck")
-    public ResponseEntity<Deck> submitDeck(@RequestBody CreateDeckDTO deck) {
-        Deck deckRes = deckService.submitNewAndGetId(deck);
+    public ResponseEntity<Deck> submitDeck(@RequestBody DeckDTO deck) {
+        Deck deckRes = deckService.submitNewDeck(deck);
         return ResponseEntity.ok(deckRes);
     }
 
-    @PostMapping("api/deck/edit")
-    public ResponseEntity<Deck> editDeck(@RequestBody EditDeckDTO deck) {
-        Deck deckRes = deckService.editDeck(deck);
+    @PostMapping("api/deck/backside/{id:.+}/key/{backsideImageKey:.+}")
+    public ResponseEntity<Deck> submitDeckBackSideImage(@RequestParam("id") long id,
+                                                        @RequestParam("backsideImageKey") String backsideImageKey) {
+        Deck deckRes = deckService.setBackSideImageKey(backsideImageKey, id);
+        return ResponseEntity.ok(deckRes);
+    }
+
+    @PutMapping("api/deck/{id:.+}")
+    public ResponseEntity<Deck> updateDeck(@RequestParam("id") long id,
+                                           @RequestBody DeckDTO deck) {
+        Deck deckRes = deckService.updateDeck(deck, id);
         return ResponseEntity.ok(deckRes);
     }
 

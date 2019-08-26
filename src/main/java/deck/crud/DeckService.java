@@ -15,12 +15,13 @@ import java.util.Set;
 @Service
 public class DeckService {
 
-
+    private final CardsService cardsService;
     private final DeckRepository deckRepository;
     private final UserService userService;
 
     @Autowired
-    public DeckService(DeckRepository deckRepository, UserService userService) {
+    public DeckService(CardsService cardsService, DeckRepository deckRepository, UserService userService) {
+        this.cardsService = cardsService;
         this.deckRepository = deckRepository;
         this.userService = userService;
     }
@@ -82,6 +83,8 @@ public class DeckService {
         if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
-        return byId.orElseGet(Deck::new);
+        Deck deck = byId.get();
+        deck.setCards(cardsService.getDeckData(deck));
+        return deck;
     }
 }

@@ -34,16 +34,16 @@ ALTER TABLE DECK ADD FOREIGN KEY (backside_key) REFERENCES IMAGE(url);
 
 CREATE TABLE CARD (
     id bigint NOT NULL AUTO_INCREMENT,
-    deckId bigint,
+    deck_id bigint,
   PRIMARY KEY (id),
-  FOREIGN KEY (deckId) REFERENCES DECK(id)
+  FOREIGN KEY (deck_id) REFERENCES DECK(id)
 );
 
 CREATE TABLE CARD_IMAGE (
     id bigint NOT NULL AUTO_INCREMENT,
     scale_factor bigint,
-    position_x bigint,
-    position_y bigint,
+    positionx bigint,
+    positiony bigint,
     rotation_angle bigint,
     card_id bigint,
     image_id bigint,

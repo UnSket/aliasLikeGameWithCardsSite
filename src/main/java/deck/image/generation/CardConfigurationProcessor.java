@@ -72,7 +72,12 @@ public class CardConfigurationProcessor {
                     .filter(Files::isRegularFile)
                     .forEach(z -> {
                         CardPrototype card = enrichCard(z);
-                        perXConfig.add(card);
+
+
+                        //TODO:remove this if want all images
+                        if(perXConfig.size()==0) {
+                            perXConfig.add(card);
+                        }
                     });
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +104,9 @@ public class CardConfigurationProcessor {
                 prototype.setScaleFactor(Integer.parseInt(params[3]));
                 prototype.setImageId(Integer.parseInt(params[4]));
                 card.getImages().add(prototype);
+
+                //TODO:remove this if want all images
+                break;
             }
 
             fstream.close();

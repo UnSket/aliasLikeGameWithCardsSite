@@ -1,22 +1,23 @@
 package deck.crud;
 
-import deck.dto.CardImageDto;
+import deck.image.generation.CardConfigurationProcessor;
 import deck.image.generation.CardGenerationUnavailable;
+import deck.image.generation.CardImagePrototype;
+import deck.image.generation.CardPrototype;
 import deck.model.Card;
 import deck.model.CardImage;
 import deck.model.Deck;
 import deck.model.Image;
 import deck.repository.CardImageRepository;
 import deck.repository.CardRepository;
-import deck.image.generation.CardConfigurationProcessor;
-import deck.image.generation.CardImagePrototype;
-import deck.image.generation.CardPrototype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CardsService {
@@ -70,7 +71,7 @@ public class CardsService {
 
                 CardImage cardImage = new CardImage();
                 cardImage.setCardId(card.getId());
-                cardImage.setImageId(images.get(cardImagePrototype.getImageId()).getId());
+                cardImage.setImageId(images.get(cardImagePrototype.getImageId() - 1).getId());
                 cardImage.setPositionX(cardImagePrototype.getX());
                 cardImage.setPositionY(cardImagePrototype.getY());
                 cardImage.setRotationAngle(cardImagePrototype.getRotationAngleMillirad());
@@ -80,10 +81,15 @@ public class CardsService {
             cardImageRepository.saveAll(cardImages);
 
         }
-
     }
 
-    public List<List<CardImageDto>> getDeckData() {
-        return null;
+    public List<List<CardImage>> getDeckData(Deck deck) {
+        long id = deck.getId();
+        List<Card> allByDeckId = cardRepository.findAllByDeckId(id);
+        List<Long> ids = allByDeckId.stream().map(Card::getId).collect(Collectors.toList());
+        List<CardImage> images = cardImageRepository.findAllByCardIdIn(ids);
+        Map<Long, List<CardImage>> imagesByCards = images.stream().collect(Collectors.groupingBy(CardImage::getCardId));
+        return imagesByCards.entrySet().stream().map(Map.Entry::getValue)
+                .collect(Collectors.toList());
     }
 }

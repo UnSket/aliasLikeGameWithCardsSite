@@ -21,6 +21,9 @@ public class Deck implements Serializable {
 
     private List<Image> images;
 
+    @Transient
+    private List<List<CardImage>> cards;
+
     public Deck() {
     }
 
@@ -81,6 +84,15 @@ public class Deck implements Serializable {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    @Transient
+    public List<List<CardImage>> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<List<CardImage>> cards) {
+        this.cards = cards;
     }
 
     @ManyToOne

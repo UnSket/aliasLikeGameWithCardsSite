@@ -28,6 +28,7 @@ public class ImageService {
 
     public Image submitNewAndGet(String imageUrl, Deck deck){
         Image image = new Image(imageUrl, deck);
+        Image savedImage = imageRepository.save(image);
         int deckSize = deck.getImages().size();
         int imagesOnCard = deck.getImagesOnCard();
         int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(imagesOnCard);
@@ -35,7 +36,7 @@ public class ImageService {
             cardsService.generateCardsForDeck(deck);
             System.out.println("cards generated for deck №" + deck.getId());
         }
-        return imageRepository.save(image);
+        return savedImage;
     }
 
     public Image submitNewAndGet(String imageUrl){

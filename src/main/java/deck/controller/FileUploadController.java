@@ -1,13 +1,11 @@
 package deck.controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import deck.crud.DeckService;
 import deck.crud.ImageService;
 import deck.model.Deck;
 import deck.model.Image;
+import deck.storage.ImageStorageFileNotFoundException;
+import deck.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -16,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import deck.storage.ImageStorageFileNotFoundException;
-import deck.storage.StorageService;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class FileUploadController {
@@ -63,6 +62,17 @@ public class FileUploadController {
         return ResponseEntity.ok(images);
     }
 
+    @PostMapping("/api/files/single")
+    @ResponseBody
+    public ResponseEntity handleSingleFileUpload(@RequestParam("files") MultipartFile file,
+                                                 @RequestParam("deckId") Long deckId) {
+        Deck deck = deckService.getById(deckId);
+        String key = storageService.store(file, true);
+        Image image = imageService.submitNewAndGet(key, deck);
+        return ResponseEntity.ok(image);
+    }
+
+    //TODO: check this method;
     @PostMapping("api/files/change")
     public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
                                              @RequestParam("imageId") Long imageId) {

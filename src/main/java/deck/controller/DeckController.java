@@ -29,9 +29,7 @@ public class DeckController {
 
     @GetMapping("api/deck/{id}")
     public Deck getDeck(@PathVariable(value = "id") Long id) {
-        Deck deck = deckService.getById(id);
-        System.out.println(deck.getImages());
-        return deck;
+        return deckService.getById(id);
     }
 
     @PostMapping("api/deck")

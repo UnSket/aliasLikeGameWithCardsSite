@@ -3,13 +3,10 @@ package deck.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 @Table(name = "CARD_IMAGE")
 @Entity
 public class CardImage implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private long cardId;
@@ -27,7 +24,7 @@ public class CardImage implements Serializable {
     public CardImage(){}
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }

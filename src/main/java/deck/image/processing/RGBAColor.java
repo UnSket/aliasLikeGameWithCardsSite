@@ -1,4 +1,4 @@
-package deck.util;
+package deck.image.processing;
 
 import java.util.Objects;
 

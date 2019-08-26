@@ -1,4 +1,4 @@
-package deck.util;
+package deck.image.generation;
 
 public class CardImagePrototype {
 

@@ -1,16 +1,16 @@
 package deck.crud;
 
 import deck.dto.CardImageDto;
+import deck.image.generation.CardGenerationUnavailable;
 import deck.model.Card;
 import deck.model.CardImage;
 import deck.model.Deck;
 import deck.model.Image;
 import deck.repository.CardImageRepository;
 import deck.repository.CardRepository;
-import deck.util.CardConfigurationProcessor;
-import deck.util.CardGenerationUnavailable;
-import deck.util.CardImagePrototype;
-import deck.util.CardPrototype;
+import deck.image.generation.CardConfigurationProcessor;
+import deck.image.generation.CardImagePrototype;
+import deck.image.generation.CardPrototype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

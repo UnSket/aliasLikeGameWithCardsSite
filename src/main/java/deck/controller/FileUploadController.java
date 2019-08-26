@@ -26,7 +26,7 @@ public class FileUploadController {
     private final DeckService deckService;
     private final ImageService imageService;
 
-    // по тексту генерится картинка 200*200 центрированная 12 - 150 (переносы по словам)
+    //TODO по тексту генерится картинка 200*200 центрированная 12 - 150 (переносы по словам)
     @Autowired
     public FileUploadController(StorageService storageService, DeckService deckService, ImageService imageService) {
         this.storageService = storageService;
@@ -42,8 +42,6 @@ public class FileUploadController {
                 .collect(Collectors.toList());
     }
 
-    //TODO: add image cut off (336 px)
-    //bg cut (test)
     @GetMapping("/api/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
@@ -76,6 +74,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
         String key = storageService.store(file, false);
+        //String key = storageService.store(file, false);
         return ResponseEntity.ok(imageService.submitNewAndGet(key));
     }
 

@@ -1,4 +1,4 @@
-package deck.util;
+package deck.image.generation;
 
 import deck.storage.ImageStorageException;
 

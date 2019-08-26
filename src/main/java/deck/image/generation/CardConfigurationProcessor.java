@@ -1,4 +1,4 @@
-package deck.util;
+package deck.image.generation;
 
 import java.util.ArrayList;
 import java.util.List;

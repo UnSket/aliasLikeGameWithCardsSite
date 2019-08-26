@@ -1,4 +1,4 @@
-package deck.util;
+package deck.image.processing;
 
 import deck.config.StorageProperties;
 import deck.storage.ImageStorageException;
@@ -15,16 +15,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static deck.util.RGBAColor.BACKGROUND_RADII;
+import static deck.image.processing.RGBAColor.BACKGROUND_RADII;
 
 @Service
 public class ImageProcessing {
 
     private final long FILE_MAX_SIZE = 20_000_000;
+    private final int IMAGE_MAX_SIZE = 168;
     private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
     private static final RGBAColor pngBgColor = new RGBAColor(0);
 
-    static{
+    static {
         pngBgColor.setA(255);//blue
         pngBgColor.setB(0);
         pngBgColor.setR(255);
@@ -63,6 +64,29 @@ public class ImageProcessing {
         }
     }
 
+    private BufferedImage scaleDownImage(BufferedImage source) {
+
+        int width = source.getWidth();
+        int height = source.getHeight();
+
+        int minax = Math.min(width, height);
+        if (minax < IMAGE_MAX_SIZE * 2) {
+            return source;
+        }
+        int scaleCoef = minax / IMAGE_MAX_SIZE - 1;
+
+        int newWidth = width / scaleCoef;
+        int newHeight = height / scaleCoef;
+
+        BufferedImage result = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < newWidth; i++) {
+            for (int j = 0; j < newHeight; j++) {
+                result.setRGB(i, j, source.getRGB(i * scaleCoef, j * scaleCoef));
+            }
+        }
+        return result;
+    }
+
     public String cleanUpBackGround(File f, String uuid, boolean needBgCleanUp) {
         BufferedImage img;
         BufferedImage result;
@@ -70,18 +94,18 @@ public class ImageProcessing {
 
         try {
             img = ImageIO.read(f);
+            img = scaleDownImage(img);
             int width = img.getWidth();
             int height = img.getHeight();
-
             result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     int rgbaBytes = img.getRGB(i, j);
                     RGBAColor color = new RGBAColor(rgbaBytes);
-                    if(decompressedRgbaOccurences.containsKey(color)){
+                    if (decompressedRgbaOccurences.containsKey(color)) {
                         decompressedRgbaOccurences.put(color,
-                                decompressedRgbaOccurences.get(color)+1);
-                    }else{
+                                decompressedRgbaOccurences.get(color) + 1);
+                    } else {
                         decompressedRgbaOccurences.put(color, 1L);
                     }
                 }
@@ -92,7 +116,7 @@ public class ImageProcessing {
                             .stream()
                             .max(Comparator.comparingLong(Map.Entry::getValue));
 
-            if(!max.isPresent()){
+            if (!max.isPresent()) {
                 return "";
             }
             Map.Entry<RGBAColor, Long> rgbaColorLongEntry = max.get();
@@ -102,8 +126,8 @@ public class ImageProcessing {
                 for (int j = 0; j < height; j++) {
                     int rgbaBytes = img.getRGB(i, j);
                     RGBAColor color = new RGBAColor(rgbaBytes);
-                    if(needBgCleanUp && color.calculateCartesianDistance(bgColor)<BACKGROUND_RADII){
-                       color.setColor(pngBgColor);
+                    if (needBgCleanUp && color.calculateCartesianDistance(bgColor) < BACKGROUND_RADII) {
+                        color.setColor(pngBgColor);
                     }
                     rgbaBytes = color.convertTo4ByteFormat();
                     result.setRGB(i, j, rgbaBytes);

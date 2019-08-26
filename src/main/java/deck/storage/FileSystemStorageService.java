@@ -1,7 +1,7 @@
 package deck.storage;
 
 import deck.config.StorageProperties;
-import deck.util.ImageProcessing;
+import deck.image.processing.ImageProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

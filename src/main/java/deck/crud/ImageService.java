@@ -1,6 +1,7 @@
 package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
+import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
 import deck.model.Image;
 import deck.repository.ImageRepository;
@@ -15,14 +16,25 @@ public class ImageService {
 
 
     private final ImageRepository imageRepository;
+    private final CardConfigurationProcessor cardConfigurationProcessor;
+    private final CardsService cardsService;
 
     @Autowired
-    public ImageService(ImageRepository imageRepository) {
+    public ImageService(ImageRepository imageRepository, CardConfigurationProcessor cardConfigurationProcessor, CardsService cardsService) {
         this.imageRepository = imageRepository;
+        this.cardConfigurationProcessor = cardConfigurationProcessor;
+        this.cardsService = cardsService;
     }
 
     public Image submitNewAndGet(String imageUrl, Deck deck){
         Image image = new Image(imageUrl, deck);
+        int deckSize = deck.getImages().size();
+        int imagesOnCard = deck.getImagesOnCard();
+        int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(imagesOnCard);
+        if(deckSize >= expectedCardCount){
+            cardsService.generateCardsForDeck(deck);
+            System.out.println("cards generated for deck №" + deck.getId());
+        }
         return imageRepository.save(image);
     }
 

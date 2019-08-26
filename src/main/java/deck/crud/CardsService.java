@@ -73,7 +73,7 @@ public class CardsService {
                 cardImage.setImageId(images.get(cardImagePrototype.getImageId()).getId());
                 cardImage.setPositionX(cardImagePrototype.getX());
                 cardImage.setPositionY(cardImagePrototype.getY());
-                cardImage.setRotationAngleMillirad(cardImagePrototype.getRotationAngleMillirad());
+                cardImage.setRotationAngle(cardImagePrototype.getRotationAngleMillirad());
                 cardImage.setScaleFactor(cardImagePrototype.getScaleFactor());
                 cardImages.add(cardImage);
             }

@@ -1,7 +1,5 @@
 package deck.image.generation;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -11,6 +9,8 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -50,6 +50,19 @@ public class CardConfigurationProcessor {
 
     public List<CardPrototype> getPerEightConfig() {
         return perEightConfig;
+    }
+
+    public int getExpectedImagesCountByImagesOnCard(int imagesOnCard) {
+        switch (imagesOnCard) {
+            case 5:
+                return perFiveConfig.size();
+            case 6:
+                return perSixConfig.size();
+            case 8:
+                return perEightConfig.size();
+            default:
+                throw new CardGenerationUnavailable("available values: 5,6,8 for number of images on one card");
+        }
     }
 
     private void enrichType(Resource resource, List<CardPrototype> perXConfig) {
@@ -97,15 +110,15 @@ public class CardConfigurationProcessor {
         return card;
     }
 
-    private String cleanUpString(String sourceData){
+    private String cleanUpString(String sourceData) {
         return sourceData.replaceAll("rotate\\(", "")
-                .replaceAll("\\)","")
-                .replaceAll("http://localhost/spotIt/projects/example/"," ")
-                .replaceAll(" http://localhost/spotit/projects/test5/"," ")
-                .replaceAll(" http://localhost/spotit/projects/test/"," ")
+                .replaceAll("\\)", "")
+                .replaceAll("http://localhost/spotIt/projects/example/", " ")
+                .replaceAll(" http://localhost/spotit/projects/test5/", " ")
+                .replaceAll(" http://localhost/spotit/projects/test/", " ")
                 .replaceAll(".png", "")
-                .replaceAll("deg","")
-                .replaceAll(" {2}"," ");
+                .replaceAll("deg", "")
+                .replaceAll(" {2}", " ");
     }
 
 }

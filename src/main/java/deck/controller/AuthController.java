@@ -19,8 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class AuthController {
 
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/api/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request,

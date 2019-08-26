@@ -8,7 +8,6 @@ import java.io.Serializable;
 @Entity
 public class CardImage implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -23,11 +22,9 @@ public class CardImage implements Serializable {
 
     private int positionY;
 
-    private int rotationAngleMillirad;
+    private int rotationAngle;
 
-    public CardImage(){
-
-    }
+    public CardImage(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -79,11 +76,11 @@ public class CardImage implements Serializable {
         this.scaleFactor = scaleFactor;
     }
 
-    public int getRotationAngleMillirad() {
-        return rotationAngleMillirad;
+    public int getRotationAngle() {
+        return rotationAngle;
     }
 
-    public void setRotationAngleMillirad(int rotationAngleMillirad) {
-        this.rotationAngleMillirad = rotationAngleMillirad;
+    public void setRotationAngle(int rotationAngle) {
+        this.rotationAngle = rotationAngle;
     }
 }

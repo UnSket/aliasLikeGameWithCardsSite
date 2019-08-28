@@ -4,10 +4,13 @@ import deck.controller.ResourceNotFoundException;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
 import deck.model.Image;
+import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
+import deck.storage.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,40 +21,52 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final CardConfigurationProcessor cardConfigurationProcessor;
     private final CardsService cardsService;
+    private final DeckRepository deckRepository;
 
     @Autowired
-    public ImageService(ImageRepository imageRepository, CardConfigurationProcessor cardConfigurationProcessor, CardsService cardsService) {
+    public ImageService(ImageRepository imageRepository,
+                        CardConfigurationProcessor cardConfigurationProcessor,
+                        CardsService cardsService,
+                        DeckRepository deckRepository) {
+
         this.imageRepository = imageRepository;
         this.cardConfigurationProcessor = cardConfigurationProcessor;
         this.cardsService = cardsService;
+        this.deckRepository = deckRepository;
     }
 
-    public Image submitNewAndGet(String imageUrl, Deck deck){
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public Image submitNewAndGet(String imageUrl, Deck deck) {
         Image image = new Image(imageUrl, deck);
         Image savedImage = imageRepository.save(image);
         int deckSize = deck.getImages().size();
         int imagesOnCard = deck.getImagesOnCard();
         int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(imagesOnCard);
-        if(deckSize >= expectedCardCount){
+        if (deckSize == expectedCardCount) {
             cardsService.generateCardsForDeck(deck);
             System.out.println("cards generated for deck №" + deck.getId());
         }
+        if (expectedCardCount < deckSize) {
+            throw new ImageStorageException("deck already configured");
+        }
+        deck.setImagesRequired(expectedCardCount - deckSize);
+        deckRepository.save(deck);
         return savedImage;
     }
 
-    public Image submitNewAndGet(String imageUrl){
+    public Image submitNewAndGet(String imageUrl) {
         Image image = new Image();
         image.setUrl(imageUrl);
         return imageRepository.save(image);
     }
 
-    public List<Image> findAll(){
+    public List<Image> findAll() {
         return imageRepository.findAll();
     }
 
-    public Image getById(long id){
+    public Image getById(long id) {
         Optional<Image> byId = imageRepository.findById(id);
-        if(!byId.isPresent()){
+        if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
         return byId.orElseGet(Image::new);

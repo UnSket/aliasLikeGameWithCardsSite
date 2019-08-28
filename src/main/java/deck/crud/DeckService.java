@@ -2,6 +2,7 @@ package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
 import deck.dto.DeckDTO;
+import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
 import deck.model.User;
 import deck.repository.DeckRepository;
@@ -18,12 +19,17 @@ public class DeckService {
     private final CardsService cardsService;
     private final DeckRepository deckRepository;
     private final UserService userService;
+    private final CardConfigurationProcessor cardConfigurationProcessor;
 
     @Autowired
-    public DeckService(CardsService cardsService, DeckRepository deckRepository, UserService userService) {
+    public DeckService(CardsService cardsService,
+                       DeckRepository deckRepository,
+                       UserService userService,
+                       CardConfigurationProcessor cardConfigurationProcessor) {
         this.cardsService = cardsService;
         this.deckRepository = deckRepository;
         this.userService = userService;
+        this.cardConfigurationProcessor = cardConfigurationProcessor;
     }
 
     public Deck submitNewDeck(DeckDTO deckDto) {
@@ -33,6 +39,10 @@ public class DeckService {
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
         deck.setOwner(currentUser);
+
+        int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(deck.getImagesOnCard());
+        deck.setImagesRequired(expectedCardCount);
+
         return deckRepository.save(deck);
     }
 
@@ -46,7 +56,6 @@ public class DeckService {
             }
             deck.setName(deckDto.getName());
             deck.setDescription(deckDto.getDescription());
-            deck.setImagesOnCard(deckDto.getImagesOnCard());
             deck.setOwner(currentUser);
             return deckRepository.save(deck);
         }

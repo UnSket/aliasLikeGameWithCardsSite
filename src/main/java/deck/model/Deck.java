@@ -21,6 +21,8 @@ public class Deck implements Serializable {
 
     private List<Image> images;
 
+    private int imagesRequired;
+
     @Transient
     private List<List<CardImage>> cards;
 
@@ -104,5 +106,13 @@ public class Deck implements Serializable {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public int getImagesRequired() {
+        return imagesRequired;
+    }
+
+    public void setImagesRequired(int imagesRequired) {
+        this.imagesRequired = imagesRequired;
     }
 }

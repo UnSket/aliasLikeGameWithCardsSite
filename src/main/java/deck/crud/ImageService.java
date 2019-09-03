@@ -38,9 +38,12 @@ public class ImageService {
     @Transactional
     public Image submitNewAndGet(String imageUrl, Project deck) {
         Image image = new Image(imageUrl, deck);
+        deck.getImages().add(image);
+        deckRepository.save(deck);
         return imageRepository.save(image);
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void updateDeckRequiredCardsCountData(long deckId){
         Project deck = deckRepository.findById(deckId).get();
         int deckSize = deck.getImages().size();

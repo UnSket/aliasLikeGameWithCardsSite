@@ -72,6 +72,20 @@ public class FileUploadController {
         return ResponseEntity.ok(image);
     }
 
+    @PostMapping("/api/deck/backside/{id:.+}")
+    @ResponseBody
+    public ResponseEntity handleBackSideUpload(@RequestParam("files") MultipartFile file,
+                                                 @RequestParam("deckId") Long deckId) {
+        Deck deck = deckService.getById(deckId);
+        if(deck == null){
+            throw new ResourceNotFoundException();
+        }
+        String key = storageService.store(file, true);
+        imageService.submitNewAndGet(key);
+        deckService.setBackSideImageKey(key, deckId);
+        return ResponseEntity.ok(key);
+    }
+
     //TODO: check this method;
     @PostMapping("api/files/change")
     public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,

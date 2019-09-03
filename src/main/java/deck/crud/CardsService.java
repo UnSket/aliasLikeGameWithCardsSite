@@ -88,8 +88,16 @@ public class CardsService {
         List<Card> allByDeckId = cardRepository.findAllByDeckId(id);
         List<Long> ids = allByDeckId.stream().map(Card::getId).collect(Collectors.toList());
         List<CardImage> images = cardImageRepository.findAllByCardIdIn(ids);
+        for (CardImage image : images) {
+            int imageId = image.getId();
+            image.setImageUrl(deck.getImages().get(imageId-1).getUrl());
+        }
         Map<Long, List<CardImage>> imagesByCards = images.stream().collect(Collectors.groupingBy(CardImage::getCardId));
         return imagesByCards.entrySet().stream().map(Map.Entry::getValue)
                 .collect(Collectors.toList());
+    }
+
+    public List<CardImage> persistCardImages(List<CardImage> cardImages){
+        return cardImageRepository.saveAll(cardImages);
     }
 }

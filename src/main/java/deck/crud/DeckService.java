@@ -3,15 +3,19 @@ package deck.crud;
 import deck.controller.ResourceNotFoundException;
 import deck.dto.DeckDTO;
 import deck.image.generation.CardConfigurationProcessor;
+import deck.model.CardImage;
 import deck.model.Deck;
 import deck.model.User;
 import deck.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DeckService {
@@ -46,7 +50,7 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public Deck updateDeck(DeckDTO deckDto, long id) {
+    public Deck updateDeckMeta(DeckDTO deckDto, long id) {
         User currentUser = userService.getCurrentUser();
         Optional<Deck> deckOpt = deckRepository.findById(id);
         if (deckOpt.isPresent()) {
@@ -87,7 +91,7 @@ public class DeckService {
         return deckRepository.findAll();
     }
 
-    public Deck getById(long id) {
+    public Deck getByIdEnrichedWithCards(long id) {
         Optional<Deck> byId = deckRepository.findById(id);
         if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
@@ -95,5 +99,27 @@ public class DeckService {
         Deck deck = byId.get();
         deck.setCards(cardsService.getDeckData(deck));
         return deck;
+    }
+
+    @Transactional
+    public Deck submitData(long id, List<List<CardImage>> cards) {
+        Optional<Deck> byId = deckRepository.findById(id);
+        Deck deck;
+        if (byId.isPresent()) {
+            deck = byId.get();
+        } else {
+            throw new ResourceNotFoundException();
+        }
+        List<CardImage> cardImages = cards.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        cardsService.persistCardImages(cardImages);
+        return getByIdEnrichedWithCards(id);
+    }
+
+    public Deck getById(long id) {
+        Optional<Deck> byId = deckRepository.findById(id);
+        if (!byId.isPresent()) {
+            throw new ResourceNotFoundException();
+        }
+        return byId.get();
     }
 }

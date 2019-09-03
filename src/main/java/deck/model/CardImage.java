@@ -13,6 +13,9 @@ public class CardImage implements Serializable {
 
     private long imageId;
 
+    @Transient
+    private String imageUrl;
+
     private int scaleFactor;
 
     private int positionX;
@@ -47,6 +50,15 @@ public class CardImage implements Serializable {
 
     public void setImageId(long imageId) {
         this.imageId = imageId;
+    }
+
+    @Transient
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public int getPositionX() {

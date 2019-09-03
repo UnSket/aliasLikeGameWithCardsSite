@@ -63,8 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         authenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .logout()
-                .logoutUrl("/logout")
-                .and().formLogin();
+                .logoutUrl("/logout");
 
         http.headers().frameOptions().disable();
     }

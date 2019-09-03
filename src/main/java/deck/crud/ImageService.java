@@ -35,7 +35,7 @@ public class ImageService {
         this.deckRepository = deckRepository;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    @Transactional
     public Image submitNewAndGet(String imageUrl, Deck deck) {
         Image image = new Image(imageUrl, deck);
         Image savedImage = imageRepository.save(image);

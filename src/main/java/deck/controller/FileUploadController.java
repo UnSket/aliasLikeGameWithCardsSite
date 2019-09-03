@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,13 +53,16 @@ public class FileUploadController {
 
     @PostMapping("/api/files")
     @ResponseBody
+    @Transactional
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId) {
         Deck deck = deckService.getById(deckId);
-        List<Image> images = files.stream().map(file -> {
-            String key = storageService.store(file, true);
-            return imageService.submitNewAndGet(key, deck);
-        }).collect(Collectors.toList());
+        List<String> collect = files.stream()
+                .map(file -> storageService.store(file, true))
+                .collect(Collectors.toList());
+        List<Image> images = collect.stream()
+                .map(z -> imageService.submitNewAndGet(z, deck))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(images);
     }
 
@@ -75,9 +79,9 @@ public class FileUploadController {
     @PostMapping("/api/deck/backside/{id:.+}")
     @ResponseBody
     public ResponseEntity handleBackSideUpload(@RequestParam("files") MultipartFile file,
-                                                 @RequestParam("deckId") Long deckId) {
+                                               @RequestParam("deckId") Long deckId) {
         Deck deck = deckService.getById(deckId);
-        if(deck == null){
+        if (deck == null) {
             throw new ResourceNotFoundException();
         }
         String key = storageService.store(file, true);

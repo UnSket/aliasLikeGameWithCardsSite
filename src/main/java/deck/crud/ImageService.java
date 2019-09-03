@@ -2,7 +2,7 @@ package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
 import deck.image.generation.CardConfigurationProcessor;
-import deck.model.Deck;
+import deck.model.Project;
 import deck.model.Image;
 import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
@@ -36,7 +36,7 @@ public class ImageService {
     }
 
     @Transactional
-    public Image submitNewAndGet(String imageUrl, Deck deck) {
+    public Image submitNewAndGet(String imageUrl, Project deck) {
         Image image = new Image(imageUrl, deck);
         Image savedImage = imageRepository.save(image);
         int deckSize = deck.getImages().size();

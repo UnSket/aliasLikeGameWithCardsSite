@@ -4,7 +4,7 @@ import deck.controller.ResourceNotFoundException;
 import deck.dto.DeckDTO;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.CardImage;
-import deck.model.Deck;
+import deck.model.Project;
 import deck.model.User;
 import deck.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +36,9 @@ public class DeckService {
         this.cardConfigurationProcessor = cardConfigurationProcessor;
     }
 
-    public Deck submitNewDeck(DeckDTO deckDto) {
+    public Project submitNewDeck(DeckDTO deckDto) {
         User currentUser = userService.getCurrentUser();
-        Deck deck = new Deck();
+        Project deck = new Project();
         deck.setName(deckDto.getName());
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
@@ -50,11 +50,11 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public Deck updateDeckMeta(DeckDTO deckDto, long id) {
+    public Project updateDeckMeta(DeckDTO deckDto, long id) {
         User currentUser = userService.getCurrentUser();
-        Optional<Deck> deckOpt = deckRepository.findById(id);
+        Optional<Project> deckOpt = deckRepository.findById(id);
         if (deckOpt.isPresent()) {
-            Deck deck = deckOpt.get();
+            Project deck = deckOpt.get();
             if (deck.getOwner().getId() != currentUser.getId()) {
                 throw new ResourceNotFoundException();
             }
@@ -67,11 +67,11 @@ public class DeckService {
         throw new ResourceNotFoundException();
     }
 
-    public Deck setBackSideImageKey(String backSideImageKey, long id) {
+    public Project setBackSideImageKey(String backSideImageKey, long id) {
         User currentUser = userService.getCurrentUser();
-        Optional<Deck> deckOpt = deckRepository.findById(id);
+        Optional<Project> deckOpt = deckRepository.findById(id);
         if (deckOpt.isPresent()) {
-            Deck deck = deckOpt.get();
+            Project deck = deckOpt.get();
             if (deck.getOwner().getId() != currentUser.getId()) {
                 throw new ResourceNotFoundException();
             }
@@ -81,30 +81,30 @@ public class DeckService {
         throw new ResourceNotFoundException();
     }
 
-    public Set<Deck> findAllOfCurrentUser() {
+    public Set<Project> findAllOfCurrentUser() {
         User currentUser = userService.getCurrentUser();
         currentUser = userService.findUserByUsername(currentUser.getUsername());
         return currentUser.getDecks();
     }
 
-    public List<Deck> findAll() {
+    public List<Project> findAll() {
         return deckRepository.findAll();
     }
 
-    public Deck getByIdEnrichedWithCards(long id) {
-        Optional<Deck> byId = deckRepository.findById(id);
+    public Project getByIdEnrichedWithCards(long id) {
+        Optional<Project> byId = deckRepository.findById(id);
         if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
-        Deck deck = byId.get();
+        Project deck = byId.get();
         deck.setCards(cardsService.getDeckData(deck));
         return deck;
     }
 
     @Transactional
-    public Deck submitData(long id, List<List<CardImage>> cards) {
-        Optional<Deck> byId = deckRepository.findById(id);
-        Deck deck;
+    public Project submitData(long id, List<List<CardImage>> cards) {
+        Optional<Project> byId = deckRepository.findById(id);
+        Project deck;
         if (byId.isPresent()) {
             deck = byId.get();
         } else {
@@ -115,8 +115,8 @@ public class DeckService {
         return getByIdEnrichedWithCards(id);
     }
 
-    public Deck getById(long id) {
-        Optional<Deck> byId = deckRepository.findById(id);
+    public Project getById(long id) {
+        Optional<Project> byId = deckRepository.findById(id);
         if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }

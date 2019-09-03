@@ -2,7 +2,7 @@ package deck.controller;
 
 import deck.crud.DeckService;
 import deck.crud.ImageService;
-import deck.model.Deck;
+import deck.model.Project;
 import deck.model.Image;
 import deck.storage.ImageStorageFileNotFoundException;
 import deck.storage.StorageService;
@@ -56,7 +56,7 @@ public class FileUploadController {
     @Transactional
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId) {
-        Deck deck = deckService.getById(deckId);
+        Project deck = deckService.getById(deckId);
         List<String> collect = files.stream()
                 .map(file -> storageService.store(file, true))
                 .collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleSingleFileUpload(@RequestParam("files") MultipartFile file,
                                                  @RequestParam("deckId") Long deckId) {
-        Deck deck = deckService.getById(deckId);
+        Project deck = deckService.getById(deckId);
         String key = storageService.store(file, true);
         Image image = imageService.submitNewAndGet(key, deck);
         return ResponseEntity.ok(image);
@@ -80,7 +80,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleBackSideUpload(@RequestParam("files") MultipartFile file,
                                                @RequestParam("deckId") Long deckId) {
-        Deck deck = deckService.getById(deckId);
+        Project deck = deckService.getById(deckId);
         if (deck == null) {
             throw new ResourceNotFoundException();
         }

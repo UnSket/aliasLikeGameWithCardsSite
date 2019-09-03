@@ -1,7 +1,6 @@
 package deck.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,13 +14,13 @@ public class Image implements Serializable {
 
     private String url;
 
-    private Deck deck;
+    private Project deck;
 
     public Image(){
 
     }
 
-    public Image(String url, Deck deck) {
+    public Image(String url, Project deck) {
         this.url = url;
         this.deck = deck;
     }
@@ -39,11 +38,11 @@ public class Image implements Serializable {
     @ManyToOne
     @JoinColumn(name = "DECK_ID")
     @JsonIgnore
-    public Deck getDeck() {
+    public Project getDeck() {
         return deck;
     }
 
-    public void setDeck(Deck deck) {
+    public void setDeck(Project deck) {
         this.deck = deck;
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Table(name = "DECK")
 @Entity
-public class Deck implements Serializable {
+public class Project implements Serializable {
     private long id;
 
     private String backsideKey;
@@ -26,7 +26,7 @@ public class Deck implements Serializable {
     @Transient
     private List<List<CardImage>> cards;
 
-    public Deck() {
+    public Project() {
     }
 
     @Id
@@ -79,7 +79,7 @@ public class Deck implements Serializable {
         this.imagesOnCard = imagesOnCard;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deck", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "deck", cascade = {CascadeType.ALL})
     public List<Image> getImages() {
         return images;
     }

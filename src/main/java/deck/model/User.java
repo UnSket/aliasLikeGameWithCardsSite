@@ -8,6 +8,16 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
+//TODO: rename Project to Project
+//TODO: создание пользователей.
+//TODO: изменение прав пользователей, ролевая модель, блокирование.
+//TODO: research svg
+
+// история:
+//легенда - позиционирование без угла поворота.
+//могут быть картинки - может быть текст, бинд 1 к 1;
+// размер легенды - свойство проекта
+
 @Entity
 @Table(name = "USERS")
 public class User implements UserDetails {
@@ -30,7 +40,7 @@ public class User implements UserDetails {
 
 	private boolean active;
 
-	private Set<Deck> decks;
+	private Set<Project> decks;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -134,11 +144,11 @@ public class User implements UserDetails {
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = { CascadeType.ALL })
-	public Set<Deck> getDecks() {
+	public Set<Project> getDecks() {
 		return decks;
 	}
 
-	public void setDecks(Set<Deck> decks) {
+	public void setDecks(Set<Project> decks) {
 		this.decks = decks;
 	}
 }

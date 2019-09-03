@@ -2,8 +2,8 @@ package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
 import deck.image.generation.CardConfigurationProcessor;
-import deck.model.Project;
 import deck.model.Image;
+import deck.model.Project;
 import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
 import deck.storage.ImageStorageException;
@@ -39,26 +39,21 @@ public class ImageService {
     public Image submitNewAndGet(String imageUrl, Project deck) {
         Image image = new Image(imageUrl, deck);
         deck.getImages().add(image);
+        deck.setImagesRequired(deck.getImagesRequired() - 1);
+
         deckRepository.save(deck);
+        if (deck.getImagesRequired() == 0) {
+            updateDeckRequiredCardsCountData(deck);
+        }
         return image;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public void updateDeckRequiredCardsCountData(long deckId){
-        Project deck = deckRepository.findById(deckId).get();
-        int deckSize = deck.getImages().size();
-        int imagesOnCard = deck.getImagesOnCard();
-        int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(imagesOnCard);
-        if (deckSize == expectedCardCount) {
-            cardsService.generateCardsForDeck(deck);
-            System.out.println("cards generated for deck №" + deck.getId());
-        }
-        if (expectedCardCount < deckSize) {
-            throw new ImageStorageException("deck already configured");
-        }
-        deck.setImagesRequired(expectedCardCount - deckSize);
+    private void updateDeckRequiredCardsCountData(Project deck) {
+        cardsService.generateCardsForDeck(deck);
+        System.out.println("cards generated for deck №" + deck.getId());
         deckRepository.save(deck);
     }
+
     public Image submitNewAndGet(String imageUrl) {
         Image image = new Image();
         image.setUrl(imageUrl);

@@ -96,10 +96,10 @@ public class FileUploadController {
 
     @PostMapping("/api/files/backimage/")
     @ResponseBody
-    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
+    public Image handleFileUpload(@RequestParam("file") MultipartFile file) {
         String key = storageService.store(file, false);
         //String key = storageService.store(file, false);
-        return ResponseEntity.ok(imageService.submitNewAndGet(key));
+        return imageService.submitNewAndGet(key);
     }
 
     @ExceptionHandler(ImageStorageFileNotFoundException.class)

@@ -40,7 +40,7 @@ public class ImageService {
         Image image = new Image(imageUrl, deck);
         deck.getImages().add(image);
         deckRepository.save(deck);
-        return imageRepository.save(image);
+        return image;
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)

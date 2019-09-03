@@ -63,6 +63,7 @@ public class FileUploadController {
         List<Image> images = collect.stream()
                 .map(z -> imageService.submitNewAndGet(z, deck))
                 .collect(Collectors.toList());
+        imageService.updateDeckRequiredCardsCountData(deckId);
         return ResponseEntity.ok(images);
     }
 

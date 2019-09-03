@@ -38,7 +38,11 @@ public class ImageService {
     @Transactional
     public Image submitNewAndGet(String imageUrl, Project deck) {
         Image image = new Image(imageUrl, deck);
-        Image savedImage = imageRepository.save(image);
+        return imageRepository.save(image);
+    }
+
+    public void updateDeckRequiredCardsCountData(long deckId){
+        Project deck = deckRepository.findById(deckId).get();
         int deckSize = deck.getImages().size();
         int imagesOnCard = deck.getImagesOnCard();
         int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(imagesOnCard);
@@ -51,9 +55,7 @@ public class ImageService {
         }
         deck.setImagesRequired(expectedCardCount - deckSize);
         deckRepository.save(deck);
-        return savedImage;
     }
-
     public Image submitNewAndGet(String imageUrl) {
         Image image = new Image();
         image.setUrl(imageUrl);

@@ -110,6 +110,7 @@ public class DeckService {
         } else {
             throw new ResourceNotFoundException();
         }
+        //TODO: deck to cards bind validation
         List<CardImage> cardImages = cards.stream().flatMap(Collection::stream).collect(Collectors.toList());
         cardsService.persistCardImages(cardImages);
         return getByIdEnrichedWithCards(id);

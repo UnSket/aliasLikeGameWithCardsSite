@@ -8,7 +8,7 @@ import java.util.List;
 
 @Table(name = "DECK")
 @Entity
-public class Project implements Serializable {
+public class Deck implements Serializable {
     private long id;
 
     private String backsideKey;
@@ -18,6 +18,7 @@ public class Project implements Serializable {
     private String name;
     private String description;
     private int imagesOnCard;
+    private int textSize;
 
     private List<Image> images;
 
@@ -26,7 +27,7 @@ public class Project implements Serializable {
     @Transient
     private List<List<CardImage>> cards;
 
-    public Project() {
+    public Deck() {
     }
 
     @Id
@@ -114,5 +115,13 @@ public class Project implements Serializable {
 
     public void setImagesRequired(int imagesRequired) {
         this.imagesRequired = imagesRequired;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
     }
 }

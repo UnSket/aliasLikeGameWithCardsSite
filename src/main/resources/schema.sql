@@ -19,6 +19,7 @@ CREATE TABLE DECK (
     images_on_card bigint,
     owner bigint,
     images_required bigint,
+    text_size bigint,
   PRIMARY KEY (id),
   FOREIGN KEY (owner) REFERENCES USERS(id)
 );
@@ -26,6 +27,7 @@ CREATE TABLE DECK (
 CREATE TABLE IMAGE (
     id bigint NOT NULL AUTO_INCREMENT,
     url varchar(255) UNIQUE NOT NULL,
+    text varchar(255),
     deck_id bigint,
     FOREIGN KEY (deck_id) REFERENCES DECK(id)
 );

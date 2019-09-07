@@ -1,15 +1,22 @@
 package deck.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.lang.Nullable;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeckDTO {
 
     private String name;
     private String description;
-    private int imagesOnCard;
+    @Nullable
+    private Integer imagesOnCard;
+    @Nullable
+    private Integer textSize;
 
     public DeckDTO() {
     }
 
-    public DeckDTO(String name, String description, int imagesOnCard) {
+    public DeckDTO(String name, String description, Integer imagesOnCard, Integer textSize) {
         this.name = name;
         this.description = description;
         this.imagesOnCard = imagesOnCard;
@@ -31,11 +38,19 @@ public class DeckDTO {
         this.description = description;
     }
 
-    public int getImagesOnCard() {
+    public Integer getImagesOnCard() {
         return imagesOnCard;
     }
 
     public void setImagesOnCard(int imagesOnCard) {
         this.imagesOnCard = imagesOnCard;
+    }
+
+    public Integer getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
     }
 }

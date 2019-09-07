@@ -2,7 +2,7 @@ package deck.controller;
 
 import deck.crud.DeckService;
 import deck.crud.ImageService;
-import deck.model.Project;
+import deck.model.Deck;
 import deck.model.Image;
 import deck.storage.ImageStorageFileNotFoundException;
 import deck.storage.StorageService;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,13 +57,17 @@ public class FileUploadController {
     @Transactional
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId) {
-        Project deck = deckService.getById(deckId);
-        List<String> collect = files.stream()
-                .map(file -> storageService.store(file, true))
-                .collect(Collectors.toList());
-        List<Image> images = collect.stream()
-                .map(z -> imageService.submitNewAndGet(z, deck))
-                .collect(Collectors.toList());
+
+        List<String> collect = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String store = storageService.store(file, true);
+            collect.add(store);
+        }
+        List<Image> images = new ArrayList<>();
+        for (String z : collect) {
+            Image image = imageService.submitNewAndGet(z, deckId);
+            images.add(image);
+        }
         //imageService.updateDeckRequiredCardsCountData(deckId);
         return ResponseEntity.ok(images);
     }
@@ -71,9 +76,8 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleSingleFileUpload(@RequestParam("files") MultipartFile file,
                                                  @RequestParam("deckId") Long deckId) {
-        Project deck = deckService.getById(deckId);
         String key = storageService.store(file, true);
-        Image image = imageService.submitNewAndGet(key, deck);
+        Image image = imageService.submitNewAndGet(key, deckId);
         return ResponseEntity.ok(image);
     }
 
@@ -81,14 +85,14 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleBackSideUpload(@RequestParam("files") MultipartFile file,
                                                @RequestParam("deckId") Long deckId) {
-        Project deck = deckService.getById(deckId);
+        Deck deck = deckService.getById(deckId);
         if (deck == null) {
             throw new ResourceNotFoundException();
         }
         String key = storageService.store(file, true);
         imageService.submitNewAndGet(key);
-        deckService.setBackSideImageKey(key, deckId);
-        return ResponseEntity.ok(key);
+        deck = deckService.setBackSideImageKey(key, deckId);
+        return ResponseEntity.ok(deck);
     }
 
     //TODO: check this method;

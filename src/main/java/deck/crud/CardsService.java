@@ -6,7 +6,7 @@ import deck.image.generation.CardImagePrototype;
 import deck.image.generation.CardPrototype;
 import deck.model.Card;
 import deck.model.CardImage;
-import deck.model.Project;
+import deck.model.Deck;
 import deck.model.Image;
 import deck.repository.CardImageRepository;
 import deck.repository.CardRepository;
@@ -33,7 +33,7 @@ public class CardsService {
         this.cardImageRepository = cardImageRepository;
     }
 
-    public void generateCardsForDeck(Project deck) {
+    public void generateCardsForDeck(Deck deck) {
         int imagesOnCard = deck.getImagesOnCard();
         List<CardPrototype> prototypes = null;
         switch (imagesOnCard) {
@@ -83,14 +83,14 @@ public class CardsService {
         }
     }
 
-    public List<List<CardImage>> getDeckData(Project deck) {
+    public List<List<CardImage>> getDeckData(Deck deck) {
         long id = deck.getId();
         List<Card> allByDeckId = cardRepository.findAllByDeckId(id);
         List<Long> ids = allByDeckId.stream().map(Card::getId).collect(Collectors.toList());
         List<CardImage> images = cardImageRepository.findAllByCardIdIn(ids);
+        int imageId=1;
         for (CardImage image : images) {
-            int imageId = image.getId();
-            image.setImageUrl(deck.getImages().get(imageId-1).getUrl());
+            image.setImageUrl(deck.getImages().get(imageId++-1).getUrl());
         }
         Map<Long, List<CardImage>> imagesByCards = images.stream().collect(Collectors.groupingBy(CardImage::getCardId));
         return imagesByCards.entrySet().stream().map(Map.Entry::getValue)

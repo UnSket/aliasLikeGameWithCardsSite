@@ -2,8 +2,8 @@ package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
 import deck.image.generation.CardConfigurationProcessor;
+import deck.model.Deck;
 import deck.model.Image;
-import deck.model.Project;
 import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
 import deck.storage.ImageStorageException;
@@ -22,21 +22,28 @@ public class ImageService {
     private final CardConfigurationProcessor cardConfigurationProcessor;
     private final CardsService cardsService;
     private final DeckRepository deckRepository;
+    private final DeckService deckService;
 
     @Autowired
     public ImageService(ImageRepository imageRepository,
                         CardConfigurationProcessor cardConfigurationProcessor,
                         CardsService cardsService,
-                        DeckRepository deckRepository) {
+                        DeckRepository deckRepository,
+                        DeckService deckService) {
 
         this.imageRepository = imageRepository;
         this.cardConfigurationProcessor = cardConfigurationProcessor;
         this.cardsService = cardsService;
         this.deckRepository = deckRepository;
+        this.deckService = deckService;
     }
 
     @Transactional
-    public Image submitNewAndGet(String imageUrl, Project deck) {
+    public Image submitNewAndGet(String imageUrl, Long deckId) {
+        Deck deck = deckService.getById(deckId);
+        if (deck.getImagesRequired() == 0) {
+            throw new ImageStorageException("too many cards");
+        }
         Image image = new Image(imageUrl, deck);
         deck.getImages().add(image);
         deck.setImagesRequired(deck.getImagesRequired() - 1);
@@ -48,7 +55,7 @@ public class ImageService {
         return image;
     }
 
-    private void updateDeckRequiredCardsCountData(Project deck) {
+    private void updateDeckRequiredCardsCountData(Deck deck) {
         cardsService.generateCardsForDeck(deck);
         System.out.println("cards generated for deck №" + deck.getId());
         deckRepository.save(deck);
@@ -57,6 +64,16 @@ public class ImageService {
     public Image submitNewAndGet(String imageUrl) {
         Image image = new Image();
         image.setUrl(imageUrl);
+        return imageRepository.save(image);
+    }
+
+    public Image submitImageText(long imageId, String imageText) {
+        Optional<Image> byId = imageRepository.findById(imageId);
+        if(!byId.isPresent()){
+            throw new ResourceNotFoundException();
+        }
+        Image image = byId.get();
+        image.setText(imageText);
         return imageRepository.save(image);
     }
 

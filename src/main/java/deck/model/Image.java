@@ -12,15 +12,17 @@ public class Image implements Serializable {
 
     private long id;
 
+    private String text;
+
     private String url;
 
-    private Project deck;
+    private Deck deck;
 
     public Image(){
 
     }
 
-    public Image(String url, Project deck) {
+    public Image(String url, Deck deck) {
         this.url = url;
         this.deck = deck;
     }
@@ -38,11 +40,11 @@ public class Image implements Serializable {
     @ManyToOne
     @JoinColumn(name = "DECK_ID")
     @JsonIgnore
-    public Project getDeck() {
+    public Deck getDeck() {
         return deck;
     }
 
-    public void setDeck(Project deck) {
+    public void setDeck(Deck deck) {
         this.deck = deck;
     }
 
@@ -52,5 +54,13 @@ public class Image implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

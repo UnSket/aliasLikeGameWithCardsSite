@@ -52,7 +52,10 @@ public class CardConfigurationProcessor {
         return perEightConfig;
     }
 
-    public int getExpectedImagesCountByImagesOnCard(int imagesOnCard) {
+    public int getExpectedImagesCountByImagesOnCard(Integer imagesOnCard) {
+        if(imagesOnCard == null){
+            throw new CardGenerationUnavailable("NPE: 5,6,8 for number of images on one card");
+        }
         switch (imagesOnCard) {
             case 5:
                 return perFiveConfig.size();

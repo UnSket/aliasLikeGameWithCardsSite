@@ -6,6 +6,8 @@ import org.springframework.lang.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeckDTO {
 
+    @Nullable
+    private Long id;
     private String name;
     private String description;
     @Nullable
@@ -20,6 +22,14 @@ public class DeckDTO {
         this.name = name;
         this.description = description;
         this.imagesOnCard = imagesOnCard;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

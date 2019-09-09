@@ -71,16 +71,11 @@ public class CardConfigurationProcessor {
     private void enrichType(Resource resource, List<CardPrototype> perXConfig) {
 
         try (Stream<Path> paths = Files.walk(resource.getFile().toPath())) {
-            paths
+            paths.sorted()
                     .filter(Files::isRegularFile)
                     .forEach(z -> {
                         CardPrototype card = enrichCard(z);
-
-
-                        //TODO:remove this if want all images
-                        if(perXConfig.size()==0) {
                             perXConfig.add(card);
-                        }
                     });
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,8 +103,6 @@ public class CardConfigurationProcessor {
                 prototype.setImageId(Integer.parseInt(params[4]));
                 card.getImages().add(prototype);
 
-                //TODO:remove this if want all images
-                break;
             }
 
             fstream.close();

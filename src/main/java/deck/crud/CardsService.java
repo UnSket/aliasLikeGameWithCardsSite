@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,9 +89,9 @@ public class CardsService {
         List<Card> allByDeckId = cardRepository.findAllByDeckId(id);
         List<Long> ids = allByDeckId.stream().map(Card::getId).collect(Collectors.toList());
         List<CardImage> images = cardImageRepository.findAllByCardIdIn(ids);
-        int imageId=1;
+        Map<Long, Image> collect = deck.getImages().stream().collect(Collectors.toMap(z -> z.getId(), Function.identity()));
         for (CardImage image : images) {
-            image.setImageUrl(deck.getImages().get(imageId++-1).getUrl());
+            image.setImageUrl(collect.get(image.getImageId()).getUrl());
         }
         Map<Long, List<CardImage>> imagesByCards = images.stream().collect(Collectors.groupingBy(CardImage::getCardId));
         return imagesByCards.entrySet().stream().map(Map.Entry::getValue)

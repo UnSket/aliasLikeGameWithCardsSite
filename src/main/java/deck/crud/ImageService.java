@@ -1,6 +1,7 @@
 package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
+import deck.controller.ImageNotFoundException;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
 import deck.model.Image;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+
+import static sun.plugin.javascript.navig.JSType.Image;
 
 @Service
 public class ImageService {
@@ -70,7 +73,7 @@ public class ImageService {
     public Image submitImageText(long imageId, String imageText) {
         Optional<Image> byId = imageRepository.findById(imageId);
         if(!byId.isPresent()){
-            throw new ResourceNotFoundException();
+            throw new ImageNotFoundException("image with id = "+imageId+" not found");
         }
         Image image = byId.get();
         image.setText(imageText);

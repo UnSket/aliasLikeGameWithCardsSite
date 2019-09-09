@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,9 +52,12 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public Deck updateDeckMeta(DeckDTO deckDto, long id) {
+    public Deck updateDeckMeta(DeckDTO deckDto) {
         User currentUser = userService.getCurrentUser();
-        Optional<Deck> deckOpt = deckRepository.findById(id);
+        if(deckDto.getId() == null){
+            throw new ResourceNotFoundException();
+        }
+        Optional<Deck> deckOpt = deckRepository.findById(deckDto.getId());
         if (deckOpt.isPresent()) {
             Deck deck = deckOpt.get();
             if (deck.getOwner().getId() != currentUser.getId()) {

@@ -2,9 +2,8 @@ package deck.dto;
 
 public class LegendElementDto {
 
-    private String content;
+    private long id;
     private LegendSourceType legendSourceType;
-
     private int positionX;
     private int positionY;
     private int cardNumber;
@@ -12,12 +11,12 @@ public class LegendElementDto {
     public LegendElementDto() {
     }
 
-    public String getContent() {
-        return content;
+    public long getId() {
+        return id;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public LegendSourceType getLegendSourceType() {

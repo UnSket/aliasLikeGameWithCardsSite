@@ -36,14 +36,4 @@ public class AuthController {
         return "redirect:/login?logout=true";
     }
 
-    @GetMapping(value = "/api/currentUser")
-    public ResponseEntity currentUser() {
-        try {
-            User user = userService.getCurrentUser();
-            return ResponseEntity.ok(user);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(401).build();
-        }
-    }
-
 }

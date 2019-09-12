@@ -15,8 +15,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static sun.plugin.javascript.navig.JSType.Image;
-
 @Service
 public class ImageService {
 

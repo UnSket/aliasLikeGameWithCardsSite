@@ -55,3 +55,16 @@ CREATE TABLE CARD_IMAGE (
   FOREIGN KEY (image_id) REFERENCES IMAGE(id)
 
 );
+
+CREATE TABLE LEGEND_ELEMENT (
+    id bigint NOT NULL AUTO_INCREMENT,
+    deck_id bigint NOT NULL,
+    content varchar(255),
+    type varchar(255),
+    positionx bigint,
+    positiony bigint,
+    card_number bigint,
+  PRIMARY KEY (id),
+  FOREIGN KEY (deck_id) REFERENCES DECK(id)
+
+);

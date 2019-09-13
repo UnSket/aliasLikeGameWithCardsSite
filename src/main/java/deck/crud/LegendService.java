@@ -35,9 +35,9 @@ public class LegendService {
         List<LegendElement> allByDeckId = legendElementRepository.findAllByDeckId(deckId);
         List<LegendElement> collect = Stream.of(legendElementDtos.getCards()).map(dto -> {
             LegendElement element = allByDeckId.stream().filter(z -> z.getId() == dto.getId()).findFirst().get();
-            element.setPositionX(element.getPositionX());
-            element.setPositionY(element.getPositionY());
-            element.setCardNumber(element.getCardNumber());
+            element.setPositionX(dto.getPositionX());
+            element.setPositionY(dto.getPositionY());
+            element.setCardNumber(dto.getCardNumber());
             return element;
         }).collect(Collectors.toList());
 

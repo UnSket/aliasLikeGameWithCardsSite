@@ -40,8 +40,8 @@ public class LegendService {
             element.setCardNumber(dto.getCardNumber());
             return element;
         }).collect(Collectors.toList());
-
-        return legendElementRepository.saveAll(collect);
+        legendElementRepository.saveAll(collect);
+        return collect;
     }
 
     public List<LegendElement> getLegend(long deckId) {

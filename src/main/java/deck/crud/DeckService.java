@@ -6,6 +6,7 @@ import deck.dto.UpdateCardsDto;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.CardImage;
 import deck.model.Deck;
+import deck.model.LegendElement;
 import deck.model.User;
 import deck.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class DeckService {
 
     private final CardsService cardsService;
     private final DeckRepository deckRepository;
+    private final LegendService legendService;
     private final UserService userService;
     private final CardConfigurationProcessor cardConfigurationProcessor;
 
@@ -30,11 +32,13 @@ public class DeckService {
     public DeckService(CardsService cardsService,
                        DeckRepository deckRepository,
                        UserService userService,
-                       CardConfigurationProcessor cardConfigurationProcessor) {
+                       CardConfigurationProcessor cardConfigurationProcessor,
+                       LegendService legendService) {
         this.cardsService = cardsService;
         this.deckRepository = deckRepository;
         this.userService = userService;
         this.cardConfigurationProcessor = cardConfigurationProcessor;
+        this.legendService = legendService;
     }
 
     public Deck submitNewDeck(DeckDTO deckDto) {
@@ -76,6 +80,7 @@ public class DeckService {
         User currentUser = userService.getCurrentUser();
         Optional<Deck> deckOpt = deckRepository.findById(id);
         if (deckOpt.isPresent()) {
+            legendService.cleanUpLegend(id);
             Deck deck = deckOpt.get();
             if (deck.getOwner().getId() != currentUser.getId()) {
                 throw new ResourceNotFoundException();

@@ -10,4 +10,6 @@ import java.util.*;
 public interface LegendElementRepository extends JpaRepository<LegendElement, Long> {
 
     List<LegendElement> findAllByDeckId(Long deckId);
+
+    void deleteAllByDeckId(Long deckId);
 }

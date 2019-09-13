@@ -49,11 +49,11 @@ public class ImageService {
         deck.getImages().add(image);
         deck.setImagesRequired(deck.getImagesRequired() - 1);
 
-        deckRepository.save(deck);
+        Deck savedDeck = deckRepository.save(deck);
         if (deck.getImagesRequired() == 0) {
             updateDeckRequiredCardsCountData(deck);
         }
-        return image;
+        return savedDeck.getImages().stream().filter(z -> z.getUrl().equals(imageUrl)).findAny().get();
     }
 
     private void updateDeckRequiredCardsCountData(Deck deck) {

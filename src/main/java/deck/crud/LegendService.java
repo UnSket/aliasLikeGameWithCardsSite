@@ -75,7 +75,7 @@ public class LegendService {
         int currentImageNumber = 0;
         int currentCardNumber = 0;
 
-        int currentLineY = -DIAMETER/2+OFFSET;
+        int currentLineY = DIAMETER/2+OFFSET;
         int currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
         int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY));
 
@@ -110,7 +110,7 @@ public class LegendService {
         textElement.setCardNumber(cardNumber);
         textElement.setContent(image.getText());
         textElement.setPositionX(x+DIAMETER/2);
-        textElement.setPositionY(y+DIAMETER/2);
+        textElement.setPositionY(-y+DIAMETER/2);
         textElement.setDeck(image.getDeck());
         textElement.setLegendSourceType(LegendElementDto.LegendSourceType.TEXT);
         allByDeckId.add(textElement);
@@ -119,7 +119,7 @@ public class LegendService {
         imageElement.setCardNumber(cardNumber);
         imageElement.setContent(image.getUrl());
         imageElement.setPositionX(x+DIAMETER/2);
-        imageElement.setPositionY((int)(y+textSize*TEXT_SIZE_FACTOR+OFFSET)+DIAMETER/2);
+        imageElement.setPositionY((int)(-y+textSize*TEXT_SIZE_FACTOR+OFFSET)+DIAMETER/2);
         imageElement.setDeck(image.getDeck());
         imageElement.setLegendSourceType(LegendElementDto.LegendSourceType.IMAGE);
         allByDeckId.add(imageElement);

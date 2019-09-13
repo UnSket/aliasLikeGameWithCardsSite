@@ -87,8 +87,8 @@ public class LegendService {
                        DIAMETER*DIAMETER){
                     continue;
                }
-               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET)*
-                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET)+
+               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)*
+                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)+
                        currentLineX*currentLineX>
                        DIAMETER*DIAMETER){
                    continue;
@@ -96,6 +96,13 @@ public class LegendService {
                if(currentLineY*currentLineY+
                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
                                (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
+                       DIAMETER*DIAMETER){
+                   continue;
+               }
+               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)*
+                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)+
+               (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
+                       (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
                        DIAMETER*DIAMETER){
                    continue;
                }

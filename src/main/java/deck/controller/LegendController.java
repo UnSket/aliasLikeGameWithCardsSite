@@ -36,6 +36,7 @@ public class LegendController {
             dto.setCardNumber(z.getCardNumber());
             dto.setLegendSourceType(z.getLegendSourceType());
             dto.setId(z.getId());
+            dto.setSource(z.getContent());
             dto.setPositionX(z.getPositionX());
             dto.setPositionY(z.getPositionY());
             return dto;

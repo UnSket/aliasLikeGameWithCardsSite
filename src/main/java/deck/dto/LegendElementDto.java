@@ -4,6 +4,7 @@ public class LegendElementDto {
 
     private long id;
     private LegendSourceType legendSourceType;
+    private String source;
     private int positionX;
     private int positionY;
     private int cardNumber;
@@ -49,6 +50,14 @@ public class LegendElementDto {
 
     public void setCardNumber(int cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public enum LegendSourceType{

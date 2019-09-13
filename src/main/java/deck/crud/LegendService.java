@@ -76,7 +76,7 @@ public class LegendService {
 
         int currentLineY = DIAMETER/2-OFFSET;
         int currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
-        int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY));
+        int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY))+OFFSET/2;
 
         while (currentImageNumber<imagesNumber){
            if(currentLineXLimit>0){
@@ -97,7 +97,7 @@ public class LegendService {
                    currentLineY = DIAMETER/2-OFFSET;
                    currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
                }
-               currentLineX = -(int)(Math.sqrt(((DIAMETER * DIAMETER) / 4) - (currentLineY * currentLineY)));
+               currentLineX = -(int)(Math.sqrt(((DIAMETER * DIAMETER) / 4) - (currentLineY * currentLineY)))+OFFSET/2;
            }
         }
 

@@ -57,8 +57,7 @@ public class LegendService {
     private int getCardLimitOnLine(int currentLineY, int textSize){
         return (int) (
                 DIAMETER * Math.sin(
-                (Math.PI/2-Math.abs(Math.asin(2*currentLineY/DIAMETER)))
-                /2
+                (Math.PI/2.0f-Math.abs(Math.asin(2.0f*currentLineY/DIAMETER)))
                 )
                 /
                         (OFFSET + TEXT_SIZE_FACTOR * textSize)

@@ -40,6 +40,10 @@ public class LegendController {
     public Deck getLegend(@PathVariable(value = "id") Long id) {
         Deck deck = deckService.getById(id);
         List<LegendElement> legendSource = legendService.getLegend(id);
+        return fromLegend(deck, legendSource);
+    }
+
+    private Deck fromLegend(Deck deck, List<LegendElement> legendSource){
         List<LegendElementDto> legend = legendSource.stream().map(z-> {
             LegendElementDto dto = new LegendElementDto();
             dto.setCardNumber(z.getCardNumber());
@@ -52,7 +56,7 @@ public class LegendController {
         }).collect(Collectors.toList());
 
         LegendDTO dto = new LegendDTO();
-        dto.setDeckId(id);
+        dto.setDeckId(deck.getId());
         dto.setTextSize(deck.getTextSize());
 
         List<List<LegendElementDto>> data = new ArrayList<>();
@@ -68,12 +72,15 @@ public class LegendController {
 
         dto.setCards(data);
         deck.setLegend(dto);
+
         return deck;
     }
 
     @PostMapping(value = "/api/legend/update")
-    public List<LegendElement> updateLegend(@RequestBody UpdateLegendDto updateLegendDto) {
-        return legendService.setLegend(updateLegendDto);
+    public Deck updateLegend(@RequestBody UpdateLegendDto updateLegendDto) {
+        List<LegendElement> legendElements = legendService.setLegend(updateLegendDto);
+        Deck deck = deckService.getById(updateLegendDto.getDeckId());
+        return fromLegend(deck, legendElements);
     }
 
 }

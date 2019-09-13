@@ -75,7 +75,7 @@ public class LegendService {
         int currentImageNumber = 0;
         int currentCardNumber = 0;
 
-        int currentLineY = DIAMETER/2+OFFSET;
+        int currentLineY = DIAMETER/2-OFFSET;
         int currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
         int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY));
 
@@ -91,7 +91,7 @@ public class LegendService {
                currentLineXLimit--;
                currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
            }else{
-               currentLineY += (int)(currentLineY + OFFSET*2 + TEXT_SIZE_FACTOR*textSize*2);
+               currentLineY -= (int)(OFFSET*2 + TEXT_SIZE_FACTOR*textSize + textSize);
                currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
                if(currentLineY<-DIAMETER/2){
                    currentCardNumber++;
@@ -106,23 +106,24 @@ public class LegendService {
     }
     private void allocateElement(Image image, List<LegendElement> allByDeckId,
                                  int cardNumber, int x, int y, int textSize){
-        LegendElement textElement = new LegendElement();
-        textElement.setCardNumber(cardNumber);
-        textElement.setContent(image.getText());
-        textElement.setPositionX(x+DIAMETER/2);
-        textElement.setPositionY(-y+DIAMETER/2);
-        textElement.setDeck(image.getDeck());
-        textElement.setLegendSourceType(LegendElementDto.LegendSourceType.TEXT);
-        allByDeckId.add(textElement);
 
         LegendElement imageElement = new LegendElement();
         imageElement.setCardNumber(cardNumber);
         imageElement.setContent(image.getUrl());
-        imageElement.setPositionX(x+DIAMETER/2);
-        imageElement.setPositionY((int)(-y+textSize*TEXT_SIZE_FACTOR+OFFSET)+DIAMETER/2);
         imageElement.setDeck(image.getDeck());
+        imageElement.setPositionX(x+DIAMETER/2);
+        imageElement.setPositionY(-y+DIAMETER/2);
         imageElement.setLegendSourceType(LegendElementDto.LegendSourceType.IMAGE);
         allByDeckId.add(imageElement);
+
+        LegendElement textElement = new LegendElement();
+        textElement.setCardNumber(cardNumber);
+        textElement.setContent(image.getText());
+        textElement.setPositionX(x+DIAMETER/2);
+        textElement.setPositionY((int)(-y+textSize*TEXT_SIZE_FACTOR+OFFSET)+DIAMETER/2);
+        textElement.setDeck(image.getDeck());
+        textElement.setLegendSourceType(LegendElementDto.LegendSourceType.TEXT);
+        allByDeckId.add(textElement);
     }
 
 }

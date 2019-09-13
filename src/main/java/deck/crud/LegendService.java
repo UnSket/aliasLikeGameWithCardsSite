@@ -76,38 +76,41 @@ public class LegendService {
         int currentCardNumber = 0;
 
         int currentLineY = DIAMETER/2-2*OFFSET;
-        int currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
+        float currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
         int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY))+OFFSET/2;
 
         while (currentImageNumber<imagesNumber){
            if(currentLineXLimit>0){
-               currentLineXLimit--;
                if(currentLineY*currentLineY+
                        currentLineX*currentLineX>
                        DIAMETER*DIAMETER/4){
-                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize)/4;
+                   currentLineXLimit-=0.25;
                     continue;
                }
                if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.25f)*
                        (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.25f)+
                        currentLineX*currentLineX>
                        DIAMETER*DIAMETER/4){
-                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize)/4;
+                   currentLineXLimit-=0.25;
                    continue;
                }
                if(currentLineY*currentLineY+
                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
                                (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
                        DIAMETER*DIAMETER/4){
-                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize)/4;
+                   currentLineXLimit-=0.25;
                    continue;
                }
                if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.25f)*
                        (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.25f)+
-               (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
+                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
                        DIAMETER*DIAMETER/4){
-                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize)/4;
+                   currentLineXLimit-=0.25;
                    continue;
                }
                allocateElement(images.get(currentCardNumber),

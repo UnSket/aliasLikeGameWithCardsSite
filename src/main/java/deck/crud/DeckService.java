@@ -77,6 +77,7 @@ public class DeckService {
         throw new ResourceNotFoundException();
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Deck updateDeckTextSize(long id, int size) {
         User currentUser = userService.getCurrentUser();
         Optional<Deck> deckOpt = deckRepository.findById(id);

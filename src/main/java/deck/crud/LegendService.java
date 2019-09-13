@@ -60,7 +60,7 @@ public class LegendService {
                 (Math.PI/2.0f-Math.abs(Math.asin(2.0f*currentLineY/DIAMETER)))
                 )
                 /
-                        (OFFSET + TEXT_SIZE_FACTOR * textSize) + 1.2f);
+                        (OFFSET + TEXT_SIZE_FACTOR * textSize) + 2.1f);
     }
 
     @Transactional

@@ -55,12 +55,6 @@ public class DeckController {
         return ResponseEntity.ok(deckRes);
     }
 
-    @PostMapping("api/deck/text/config")
-    public ResponseEntity<Deck> updateDeckTextSize(ImageTextConfigDTO imageTextConfigDTO) {
-        Deck deckRes = deckService.updateDeckTextSize(imageTextConfigDTO.getId(), imageTextConfigDTO.getSize());
-        return ResponseEntity.ok(deckRes);
-    }
-
     @PostMapping("api/deck/cards")
     public Deck submitDeckContent(@RequestBody UpdateCardsDto cards) {
         return deckService.submitData(cards);

@@ -9,6 +9,7 @@ import deck.model.Deck;
 import deck.model.LegendElement;
 import deck.model.User;
 import deck.repository.DeckRepository;
+import deck.repository.LegendElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class DeckService {
 
     private final CardsService cardsService;
     private final DeckRepository deckRepository;
-    private final LegendService legendService;
+    private final LegendElementRepository legendElementRepository;
     private final UserService userService;
     private final CardConfigurationProcessor cardConfigurationProcessor;
 
@@ -33,12 +34,12 @@ public class DeckService {
                        DeckRepository deckRepository,
                        UserService userService,
                        CardConfigurationProcessor cardConfigurationProcessor,
-                       LegendService legendService) {
+                       LegendElementRepository legendElementRepository) {
         this.cardsService = cardsService;
         this.deckRepository = deckRepository;
         this.userService = userService;
         this.cardConfigurationProcessor = cardConfigurationProcessor;
-        this.legendService = legendService;
+        this.legendElementRepository = legendElementRepository;
     }
 
     public Deck submitNewDeck(DeckDTO deckDto) {
@@ -80,7 +81,7 @@ public class DeckService {
         User currentUser = userService.getCurrentUser();
         Optional<Deck> deckOpt = deckRepository.findById(id);
         if (deckOpt.isPresent()) {
-            legendService.cleanUpLegend(id);
+            legendElementRepository.deleteAllByDeckId(id);
             Deck deck = deckOpt.get();
             if (deck.getOwner().getId() != currentUser.getId()) {
                 throw new ResourceNotFoundException();

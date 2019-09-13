@@ -54,10 +54,6 @@ public class LegendService {
         return allByDeckId;
     }
 
-    public void cleanUpLegend(long deckId) {
-        legendElementRepository.deleteAllByDeckId(deckId);
-    }
-
     private int getCardLimitOnLine(int currentLineY, int textSize){
         return (int) (
                 DIAMETER * Math.sin(

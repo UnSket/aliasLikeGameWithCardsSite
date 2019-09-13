@@ -32,7 +32,7 @@ public class LegendService {
     public List<LegendElement> setLegend(UpdateLegendDto legendElementDtos) {
         long deckId = legendElementDtos.getDeckId();
         List<LegendElement> allByDeckId = legendElementRepository.findAllByDeckId(deckId);
-        Stream.of(legendElementDtos.getItems()).forEach(dto ->{
+        Stream.of(legendElementDtos.getCards()).forEach(dto ->{
             LegendElement element = allByDeckId.stream().filter(z -> z.getId() == dto.getId()).findFirst().get();
             element.setPositionX(element.getPositionX());
             element.setPositionY(element.getPositionY());
@@ -109,8 +109,8 @@ public class LegendService {
         LegendElement textElement = new LegendElement();
         textElement.setCardNumber(cardNumber);
         textElement.setContent(image.getText());
-        textElement.setPositionX(x);
-        textElement.setPositionY(y);
+        textElement.setPositionX(x+DIAMETER/2);
+        textElement.setPositionY(y+DIAMETER/2);
         textElement.setDeck(image.getDeck());
         textElement.setLegendSourceType(LegendElementDto.LegendSourceType.TEXT);
         allByDeckId.add(textElement);
@@ -118,8 +118,8 @@ public class LegendService {
         LegendElement imageElement = new LegendElement();
         imageElement.setCardNumber(cardNumber);
         imageElement.setContent(image.getUrl());
-        imageElement.setPositionX(x);
-        imageElement.setPositionY((int)(y+textSize*TEXT_SIZE_FACTOR+OFFSET));
+        imageElement.setPositionX(x+DIAMETER/2);
+        imageElement.setPositionY((int)(y+textSize*TEXT_SIZE_FACTOR+OFFSET)+DIAMETER/2);
         imageElement.setDeck(image.getDeck());
         imageElement.setLegendSourceType(LegendElementDto.LegendSourceType.IMAGE);
         allByDeckId.add(imageElement);

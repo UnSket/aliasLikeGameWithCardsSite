@@ -56,7 +56,7 @@ public class LegendController {
             data.get(cardNumber).add(z);
         });
 
-        dto.setItems(data);
+        dto.setCards(data);
         deck.setLegend(dto);
         return deck;
     }

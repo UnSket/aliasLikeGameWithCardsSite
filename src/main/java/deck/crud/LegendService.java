@@ -60,9 +60,10 @@ public class LegendService {
                 (Math.PI/2.0f-Math.abs(Math.asin(2.0f*currentLineY/DIAMETER)))
                 )
                 /
-                        (OFFSET + TEXT_SIZE_FACTOR * textSize)
+                        (OFFSET + TEXT_SIZE_FACTOR * textSize) + 1
         );
     }
+
     @Transactional
     protected void generateLegend(long deckId) {
         Deck byId = deckService.getById(deckId);
@@ -80,6 +81,24 @@ public class LegendService {
 
         while (currentImageNumber<imagesNumber){
            if(currentLineXLimit>0){
+               currentLineXLimit--;
+               if(currentLineY*currentLineY+
+                       currentLineX*currentLineX>
+                       DIAMETER*DIAMETER){
+                    continue;
+               }
+               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET)*
+                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET)+
+                       currentLineX*currentLineX>
+                       DIAMETER*DIAMETER){
+                   continue;
+               }
+               if(currentLineY*currentLineY+
+                       (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
+                               (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
+                       DIAMETER*DIAMETER){
+                   continue;
+               }
                allocateElement(images.get(currentCardNumber),
                        allByDeckId,
                        currentCardNumber,
@@ -87,7 +106,6 @@ public class LegendService {
                        currentLineY,
                        textSize);
                currentImageNumber++;
-               currentLineXLimit--;
                currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
            }else{
                currentLineY -= (int)(OFFSET*2 + TEXT_SIZE_FACTOR*textSize + textSize);

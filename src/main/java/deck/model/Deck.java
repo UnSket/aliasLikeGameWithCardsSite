@@ -1,6 +1,7 @@
 package deck.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import deck.dto.LegendDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,11 +19,14 @@ public class Deck implements Serializable {
     private String name;
     private String description;
     private int imagesOnCard;
-    private int textSize;
+    private int textSize = 25;
 
     private List<Image> images;
 
     private int imagesRequired;
+
+    @Transient
+    private LegendDTO legend;
 
     @Transient
     private List<List<CardImage>> cards;
@@ -123,5 +127,14 @@ public class Deck implements Serializable {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
+    }
+
+    @Transient
+    public LegendDTO getLegend() {
+        return legend;
+    }
+
+    public void setLegend(LegendDTO legend) {
+        this.legend = legend;
     }
 }

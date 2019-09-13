@@ -32,7 +32,7 @@ public class LegendService {
     public List<LegendElement> setLegend(UpdateLegendDto legendElementDtos) {
         long deckId = legendElementDtos.getDeckId();
         List<LegendElement> allByDeckId = legendElementRepository.findAllByDeckId(deckId);
-        Stream.of(legendElementDtos.getLegendElementDtos()).forEach(dto ->{
+        Stream.of(legendElementDtos.getItems()).forEach(dto ->{
             LegendElement element = allByDeckId.stream().filter(z -> z.getId() == dto.getId()).findFirst().get();
             element.setPositionX(element.getPositionX());
             element.setPositionY(element.getPositionY());
@@ -77,17 +77,18 @@ public class LegendService {
 
         int currentLineY = DIAMETER/2-OFFSET;
         int currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
-        int currentLineX = -(DIAMETER*DIAMETER/4-currentLineY*currentLineY);
+        int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY));
 
         while (currentImageNumber<imagesNumber){
            if(currentLineXLimit>0){
                allocateElement(images.get(currentCardNumber),
                        allByDeckId,
                        currentCardNumber,
-                       currentLineY,
                        currentLineX,
+                       currentLineY,
                        textSize);
                currentImageNumber++;
+               currentLineXLimit--;
                currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
            }else{
                currentLineY -= (int)(currentLineY + OFFSET*2 + TEXT_SIZE_FACTOR*textSize*2);
@@ -96,10 +97,9 @@ public class LegendService {
                    currentCardNumber++;
                    currentLineY = DIAMETER/2-OFFSET;
                    currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
-                   currentLineX = -(DIAMETER*DIAMETER/4-currentLineY*currentLineY);
                }
+               currentLineX = -(int)(Math.sqrt(((DIAMETER * DIAMETER) / 4) - (currentLineY * currentLineY)));
            }
-            currentImageNumber++;
         }
 
         legendElementRepository.saveAll(allByDeckId);

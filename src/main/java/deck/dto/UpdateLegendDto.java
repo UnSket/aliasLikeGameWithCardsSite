@@ -1,15 +1,15 @@
 package deck.dto;
 
 public class UpdateLegendDto {
-    private LegendElementDto[] legendElementDtos;
+    private LegendElementDto[] items;
     private long deckId;
 
-    public LegendElementDto[] getLegendElementDtos() {
-        return legendElementDtos;
+    public LegendElementDto[] getItems() {
+        return items;
     }
 
-    public void setLegendElementDtos(LegendElementDto[] legendElementDtos) {
-        this.legendElementDtos = legendElementDtos;
+    public void setItems(LegendElementDto[] items) {
+        this.items = items;
     }
 
     public long getDeckId() {

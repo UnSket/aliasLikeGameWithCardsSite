@@ -1,9 +1,11 @@
 package deck.controller;
 
+import deck.crud.DeckService;
 import deck.crud.LegendService;
 import deck.dto.LegendDTO;
 import deck.dto.LegendElementDto;
 import deck.dto.UpdateLegendDto;
+import deck.model.Deck;
 import deck.model.LegendElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +18,18 @@ import java.util.stream.Collectors;
 public class LegendController {
 
     private final LegendService legendService;
+    private final DeckService deckService;
 
     @Autowired
-    public LegendController(LegendService legendService) {
+    public LegendController(LegendService legendService,
+                            DeckService deckService) {
         this.legendService = legendService;
+        this.deckService = deckService;
     }
 
     @GetMapping(value = "/api/legend/{id}")
-    public LegendDTO getLegend(@PathVariable(value = "id") Long id) {
+    public Deck getLegend(@PathVariable(value = "id") Long id) {
+        Deck deck = deckService.getById(id);
         List<LegendElement> legendSource = legendService.getLegend(id);
         List<LegendElementDto> legend = legendSource.stream().map(z-> {
             LegendElementDto dto = new LegendElementDto();
@@ -37,21 +43,22 @@ public class LegendController {
 
         LegendDTO dto = new LegendDTO();
         dto.setDeckId(id);
-        dto.setTextSize(dto.getTextSize());
+        dto.setTextSize(deck.getTextSize());
 
         List<List<LegendElementDto>> data = new ArrayList<>();
         int size = legend.stream().mapToInt(LegendElementDto::getCardNumber).max().getAsInt();
-        for(int i=0;i<size;i++){
+        for(int i=0;i<size+1;i++){
             data.add(new ArrayList<>());
         }
 
-        legend.stream().forEach(z -> {
+        legend.forEach(z -> {
             int cardNumber = z.getCardNumber();
             data.get(cardNumber).add(z);
         });
 
-        dto.setLegendElementDtos(data);
-        return dto;
+        dto.setItems(data);
+        deck.setLegend(dto);
+        return deck;
     }
 
     @PostMapping(value = "/api/legend/update")

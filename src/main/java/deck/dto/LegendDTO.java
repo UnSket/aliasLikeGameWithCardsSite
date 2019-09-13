@@ -4,8 +4,8 @@ import java.util.List;
 
 public class LegendDTO {
     Long deckId;
-    Long textSize;
-    List<List<LegendElementDto>> legendElementDtos;
+    int textSize;
+    List<List<LegendElementDto>> items;
 
     public LegendDTO() {
     }
@@ -18,19 +18,19 @@ public class LegendDTO {
         this.deckId = deckId;
     }
 
-    public Long getTextSize() {
+    public int getTextSize() {
         return textSize;
     }
 
-    public void setTextSize(Long textSize) {
+    public void setTextSize(int textSize) {
         this.textSize = textSize;
     }
 
-    public List<List<LegendElementDto>> getLegendElementDtos() {
-        return legendElementDtos;
+    public List<List<LegendElementDto>> getItems() {
+        return items;
     }
 
-    public void setLegendElementDtos(List<List<LegendElementDto>> legendElementDtos) {
-        this.legendElementDtos = legendElementDtos;
+    public void setItems(List<List<LegendElementDto>> items) {
+        this.items = items;
     }
 }

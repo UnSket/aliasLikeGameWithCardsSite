@@ -19,7 +19,7 @@ public class LegendService {
 
     private static final int OFFSET = 20;
     private static final int DIAMETER = 336;
-    private static final float TEXT_SIZE_FACTOR = 1.5f;
+    private static final float TEXT_SIZE_FACTOR = 3f;
     private final DeckService deckService;
     private final LegendElementRepository legendElementRepository;
 
@@ -56,8 +56,8 @@ public class LegendService {
 
     private int getCardLimitOnLine(int currentLineY, int textSize){
         return (int) (
-                DIAMETER * (
-                (Math.PI/2-Math.asin(2*currentLineY/DIAMETER))
+                DIAMETER * Math.sin(
+                (Math.PI/2-Math.abs(Math.asin(2*currentLineY/DIAMETER)))
                 /2
                 )
                 /
@@ -75,7 +75,7 @@ public class LegendService {
         int currentImageNumber = 0;
         int currentCardNumber = 0;
 
-        int currentLineY = DIAMETER/2-OFFSET;
+        int currentLineY = -DIAMETER/2+OFFSET;
         int currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
         int currentLineX = -(int)(Math.sqrt(DIAMETER*DIAMETER/4-currentLineY*currentLineY));
 
@@ -91,7 +91,7 @@ public class LegendService {
                currentLineXLimit--;
                currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
            }else{
-               currentLineY -= (int)(currentLineY + OFFSET*2 + TEXT_SIZE_FACTOR*textSize*2);
+               currentLineY += (int)(currentLineY + OFFSET*2 + TEXT_SIZE_FACTOR*textSize*2);
                currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
                if(currentLineY<-DIAMETER/2){
                    currentCardNumber++;

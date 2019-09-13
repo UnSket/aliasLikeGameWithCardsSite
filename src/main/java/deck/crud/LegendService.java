@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 @Service
 public class LegendService {
 
-    private static final int OFFSET = 20;
+    private static final int OFFSET = 30;
     private static final int DIAMETER = 336;
     private static final float TEXT_SIZE_FACTOR = 3f;
     private final DeckService deckService;
@@ -88,8 +88,8 @@ public class LegendService {
                    currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
                     continue;
                }
-               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)*
-                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)+
+               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.5f)*
+                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.5f)+
                        currentLineX*currentLineX>
                        DIAMETER*DIAMETER/4){
                    currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
@@ -102,8 +102,8 @@ public class LegendService {
                    currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
                    continue;
                }
-               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)*
-                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)+
+               if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.5f)*
+                       (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*1.5f)+
                (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
                        DIAMETER*DIAMETER/4){
@@ -119,7 +119,7 @@ public class LegendService {
                currentImageNumber++;
                currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
            }else{
-               currentLineY -= (int)(OFFSET*2 + TEXT_SIZE_FACTOR*textSize + textSize);
+               currentLineY -= (int)(OFFSET*1.5f + TEXT_SIZE_FACTOR*textSize + textSize);
                currentLineXLimit = getCardLimitOnLine(currentLineY, textSize);
                if(currentLineY<-DIAMETER/2){
                    currentCardNumber++;
@@ -148,7 +148,7 @@ public class LegendService {
         textElement.setCardNumber(cardNumber);
         textElement.setContent(image.getText());
         textElement.setPositionX(x+DIAMETER/2);
-        textElement.setPositionY((int)(-y+textSize*TEXT_SIZE_FACTOR+OFFSET)+DIAMETER/2);
+        textElement.setPositionY((int)(-y+textSize*TEXT_SIZE_FACTOR+OFFSET/2)+DIAMETER/2);
         textElement.setDeck(image.getDeck());
         textElement.setLegendSourceType(LegendElementDto.LegendSourceType.TEXT);
         allByDeckId.add(textElement);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -32,14 +33,15 @@ public class LegendService {
     public List<LegendElement> setLegend(UpdateLegendDto legendElementDtos) {
         long deckId = legendElementDtos.getDeckId();
         List<LegendElement> allByDeckId = legendElementRepository.findAllByDeckId(deckId);
-        Stream.of(legendElementDtos.getCards()).forEach(dto ->{
+        List<LegendElement> collect = Stream.of(legendElementDtos.getCards()).map(dto -> {
             LegendElement element = allByDeckId.stream().filter(z -> z.getId() == dto.getId()).findFirst().get();
             element.setPositionX(element.getPositionX());
             element.setPositionY(element.getPositionY());
             element.setCardNumber(element.getCardNumber());
-        });
+            return element;
+        }).collect(Collectors.toList());
 
-        return legendElementRepository.saveAll(allByDeckId);
+        return legendElementRepository.saveAll(collect);
     }
 
     public List<LegendElement> getLegend(long deckId) {

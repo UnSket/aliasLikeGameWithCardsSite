@@ -84,26 +84,30 @@ public class LegendService {
                currentLineXLimit--;
                if(currentLineY*currentLineY+
                        currentLineX*currentLineX>
-                       DIAMETER*DIAMETER){
+                       DIAMETER*DIAMETER/4){
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
                     continue;
                }
                if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)*
                        (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)+
                        currentLineX*currentLineX>
-                       DIAMETER*DIAMETER){
+                       DIAMETER*DIAMETER/4){
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
                    continue;
                }
                if(currentLineY*currentLineY+
                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
                                (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
-                       DIAMETER*DIAMETER){
+                       DIAMETER*DIAMETER/4){
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
                    continue;
                }
                if((currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)*
                        (currentLineY-textSize*TEXT_SIZE_FACTOR - textSize - OFFSET*2)+
                (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)*
                        (currentLineX + OFFSET + TEXT_SIZE_FACTOR * textSize)>
-                       DIAMETER*DIAMETER){
+                       DIAMETER*DIAMETER/4){
+                   currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
                    continue;
                }
                allocateElement(images.get(currentCardNumber),

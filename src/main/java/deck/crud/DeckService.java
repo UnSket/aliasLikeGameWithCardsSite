@@ -49,7 +49,7 @@ public class DeckService {
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
         deck.setOwner(currentUser);
-        deck.setTextSize(12);
+        deck.setTextSize(15);
 
         int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(deck.getImagesOnCard());
         deck.setImagesRequired(expectedCardCount);

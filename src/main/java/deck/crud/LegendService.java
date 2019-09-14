@@ -114,13 +114,12 @@ public class LegendService {
                    currentLineXLimit-=0.12;
                    continue;
                }
-               allocateElement(images.get(currentCardNumber),
+               allocateElement(images.get(currentImageNumber++),
                        allByDeckId,
                        currentCardNumber,
                        currentLineX,
                        currentLineY,
                        textSize);
-               currentImageNumber++;
                currentLineX+=(int)(OFFSET + TEXT_SIZE_FACTOR * textSize);
            }else{
                currentLineY -= (int)(OFFSET*1.25f + TEXT_SIZE_FACTOR*textSize + textSize);

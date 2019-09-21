@@ -1,11 +1,13 @@
 package deck.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,6 +24,9 @@ public class User implements UserDetails {
 
 	@Transient
 	private Collection<GrantedAuthority> authorities;
+
+	@Convert(converter = AuthorityConverter.class)
+	private GrantedAuthority authority;
 
 	private boolean active;
 
@@ -46,14 +51,22 @@ public class User implements UserDetails {
 		this.emailId = emailId;
 	}
 
+	@Override
+	@Transient
+	public Collection<GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
 	public void setAuthorities(Collection<GrantedAuthority> authorities) {
 		this.authorities = authorities;
 	}
 
-	@Transient
-	@Override
-	public Collection<GrantedAuthority> getAuthorities() {
-		return authorities;
+	public GrantedAuthority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(GrantedAuthority authority) {
+		this.authority = authority;
 	}
 
 	public String getPassword() {
@@ -107,7 +120,7 @@ public class User implements UserDetails {
 		return "User{" +
 				"id=" + id +
 				", emailId='" + emailId + '\'' +
-				", authorities=" + authorities +
+				", authorities=" + authority +
 				", active=" + active +
 				", decks=" + decks +
 				'}';

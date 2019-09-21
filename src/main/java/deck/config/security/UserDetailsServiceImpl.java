@@ -1,10 +1,10 @@
 package deck.config.security;
 
+import com.google.common.collect.Lists;
 import deck.crud.UserService;
 import deck.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userService.findUserByUsername(username);
         if (user != null) {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            authorities.add(user.getAuthority());
             user.setAuthorities(authorities);
             return user;
         }

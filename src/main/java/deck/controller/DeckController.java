@@ -27,7 +27,7 @@ public class DeckController {
     }
 
     // LEGEND
-    @GetMapping("api/decks")
+    @GetMapping("api/decks/my")
     public Set<Deck> listDecks() {
         return deckService.findAllOfCurrentUser();
     }

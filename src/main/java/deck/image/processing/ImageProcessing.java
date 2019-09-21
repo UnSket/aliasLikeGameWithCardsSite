@@ -137,7 +137,7 @@ public class ImageProcessing {
                             .stream()
                             .max(Comparator.comparingDouble(Map.Entry::getValue));
 
-            if (max.isEmpty()) {
+            if (!max.isPresent()) {
                 return "";
             }
             Map.Entry<RGBAColor, Double> rgbaColorLongEntry = max.get();

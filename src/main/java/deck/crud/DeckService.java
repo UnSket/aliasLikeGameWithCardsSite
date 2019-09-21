@@ -1,5 +1,6 @@
 package deck.crud;
 
+import com.google.common.collect.Lists;
 import deck.controller.ResourceNotFoundException;
 import deck.dto.DeckDTO;
 import deck.dto.DeckFilter;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,6 +33,7 @@ public class DeckService {
     private final UserService userService;
     private final CardConfigurationProcessor cardConfigurationProcessor;
 
+    // TODO create mock data for dev
     @Autowired
     public DeckService(CardsService cardsService,
                        DeckRepository deckRepository,
@@ -50,6 +53,7 @@ public class DeckService {
         deck.setName(deckDto.getName());
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
+        deck.setImages(new ArrayList<deck.model.Image>());
         deck.setOwner(currentUser);
         deck.setTextSize(15);
 
@@ -151,7 +155,7 @@ public class DeckService {
 
     public Deck getById(long id) {
         Optional<Deck> byId = deckRepository.findById(id);
-        if (byId.isEmpty()) {
+        if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
         return byId.get();

@@ -10,7 +10,7 @@ import org.springframework.lang.Nullable;
 public class UserFilter {
 
     @Nullable
-    private String searchString;
+    private String search;
 
     @Nullable
     private Boolean active;
@@ -22,11 +22,10 @@ public class UserFilter {
 
         Specification<User> spec = (root, query, cb) -> cb.conjunction();
 
-        if (searchString != null) {
-            searchString = "%"+searchString+"%";
-            Specification<User> cache = (root, query, cb) -> cb.like(root.get(User_.userName), searchString);
-            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.emailId), searchString);
-            spec.and(specFN.or(cache));
+        if (search != null) {
+            search = "%"+ search +"%";
+            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.emailId), search);
+            spec.and(specFN);
         }
 
         if (active != null) {
@@ -38,12 +37,12 @@ public class UserFilter {
     }
 
     @Nullable
-    public String getSearchString() {
-        return searchString;
+    public String getSearch() {
+        return search;
     }
 
-    public void setSearchString(@Nullable String searchString) {
-        this.searchString = searchString;
+    public void setSearch(@Nullable String search) {
+        this.search = search;
     }
 
     public Boolean isActive() {

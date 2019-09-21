@@ -14,8 +14,6 @@ public class User implements UserDetails {
 
 	private long id;
 
-	private String userName;
-
 	@JsonIgnore
 	private String emailId;
 
@@ -37,15 +35,6 @@ public class User implements UserDetails {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	@Column(name = "user_name", nullable = false)
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	@Column(name = "email_id", nullable = false)
@@ -117,7 +106,6 @@ public class User implements UserDetails {
 	public String toString() {
 		return "User{" +
 				"id=" + id +
-				", userName='" + userName + '\'' +
 				", emailId='" + emailId + '\'' +
 				", authorities=" + authorities +
 				", active=" + active +

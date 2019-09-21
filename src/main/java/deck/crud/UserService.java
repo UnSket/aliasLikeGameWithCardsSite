@@ -43,7 +43,6 @@ public class UserService {
         } else {
             user.setPassword(user.getEmailId());
         }
-        user.setUserName(createUserDTO.getUserName());
         return userRepository.save(user);
     }
 

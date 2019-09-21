@@ -59,8 +59,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .and()
                 .addFilterBefore(
                         authenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class)

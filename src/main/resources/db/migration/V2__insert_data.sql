@@ -1,1 +1,1 @@
-insert into users values(2, 'vasyan', 'pupkins','admin2','admin1234',true);
+insert into users values(2, 'vasyan','admin2','admin1234',true);

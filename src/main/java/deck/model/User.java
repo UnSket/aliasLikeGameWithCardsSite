@@ -8,27 +8,14 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
-//TODO: rename Deck to Deck
-//TODO: создание пользователей.
-//TODO: изменение прав пользователей, ролевая модель, блокирование.
-//TODO: research svg
-
-// история:
-//легенда - позиционирование без угла поворота.
-//могут быть картинки - может быть текст, бинд 1 к 1;
-// размер легенды - свойство проекта
-
 @Entity
 @Table(name = "USERS")
 public class User implements UserDetails {
 
 	private long id;
 
-	private String firstName;
+	private String userName;
 
-	private String lastName;
-
-	//TODO:refactor - remove
 	@JsonIgnore
 	private String emailId;
 
@@ -52,22 +39,13 @@ public class User implements UserDetails {
 		this.id = id;
 	}
 
-	@Column(name = "first_name", nullable = false)
-	public String getFirstName() {
-		return firstName;
+	@Column(name = "user_name", nullable = false)
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	@Column(name = "last_name", nullable = false)
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	@Column(name = "email_id", nullable = false)
@@ -137,10 +115,15 @@ public class User implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
-				+ "]";
+		return "User{" +
+				"id=" + id +
+				", userName='" + userName + '\'' +
+				", emailId='" + emailId + '\'' +
+				", authorities=" + authorities +
+				", active=" + active +
+				", decks=" + decks +
+				'}';
 	}
-
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = { CascadeType.ALL })

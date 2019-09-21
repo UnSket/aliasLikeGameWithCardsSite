@@ -10,84 +10,46 @@ import org.springframework.lang.Nullable;
 public class UserFilter {
 
     @Nullable
-    private String firstName;
+    private String searchString;
 
     @Nullable
-    private String lastName;
-
-    @Nullable
-    private String email;
-
-    @Nullable
-    private String password;
-
-    @Nullable
-    private boolean active;
+    private Boolean active;
 
     public UserFilter() {
     }
 
     public Specification<User> toSpecification() {
 
-        Specification<User> spec = (root, query, cb) -> {
-            return cb.equal(root.get(User_.active), true);
-        };
+        Specification<User> spec = (root, query, cb) -> cb.conjunction();
 
-        if (firstName != null) {
-            Specification<User> cache = (root, query, cb) -> cb.like(root.get(User_.firstName), firstName);
+        if (searchString != null) {
+            Specification<User> cache = (root, query, cb) -> cb.like(root.get(User_.userName), searchString);
+            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.emailId), searchString);
+            spec.and(specFN.or(cache));
+        }
+
+        if (active != null) {
+            Specification<User> cache = (root, query, cb) -> cb.equal(root.get(User_.active), active);
             spec.and(cache);
-        }
-
-        if (lastName != null) {
-            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.lastName), lastName);
-            spec.and(specFN);
-        }
-
-        if (email != null) {
-            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.emailId), email);
-            spec.and(specFN);
         }
 
         return spec;
     }
 
-    public String getFirstName() {
-        return firstName;
+    @Nullable
+    public String getSearchString() {
+        return searchString;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setSearchString(@Nullable String searchString) {
+        this.searchString = searchString;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }

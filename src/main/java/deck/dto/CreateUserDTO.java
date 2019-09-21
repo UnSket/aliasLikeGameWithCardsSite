@@ -6,9 +6,7 @@ import org.springframework.lang.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateUserDTO {
 
-    private String firstName;
-
-    private String lastName;
+    private String userName;
 
     private String email;
 
@@ -20,20 +18,12 @@ public class CreateUserDTO {
     public CreateUserDTO() {
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {

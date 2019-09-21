@@ -43,8 +43,7 @@ public class UserService {
         } else {
             user.setPassword(user.getEmailId());
         }
-        user.setFirstName(createUserDTO.getFirstName());
-        user.setLastName(createUserDTO.getLastName());
+        user.setUserName(createUserDTO.getUserName());
         return userRepository.save(user);
     }
 

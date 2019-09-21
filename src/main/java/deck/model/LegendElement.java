@@ -16,6 +16,8 @@ public class LegendElement implements Serializable {
 
     private String content;
 
+    private Long imageId;
+
     @Enumerated(EnumType.STRING)
     private LegendElementDto.LegendSourceType legendSourceType;
 
@@ -84,5 +86,13 @@ public class LegendElement implements Serializable {
 
     public void setCardNumber(int cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 }

@@ -2,15 +2,17 @@ package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
 import deck.dto.DeckDTO;
+import deck.dto.DeckFilter;
 import deck.dto.UpdateCardsDto;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.CardImage;
 import deck.model.Deck;
-import deck.model.LegendElement;
 import deck.model.User;
 import deck.repository.DeckRepository;
 import deck.repository.LegendElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -108,6 +110,10 @@ public class DeckService {
         throw new ResourceNotFoundException();
     }
 
+    public Page<Deck> find(Pageable pageable, DeckFilter deckFilter) {
+        return deckRepository.findAll(deckFilter.toSpecification(userService.getCurrentUser()), pageable);
+    }
+
     public Set<Deck> findAllOfCurrentUser() {
         User currentUser = userService.getCurrentUser();
         currentUser = userService.findUserByUsername(currentUser.getUsername());
@@ -145,7 +151,7 @@ public class DeckService {
 
     public Deck getById(long id) {
         Optional<Deck> byId = deckRepository.findById(id);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new ResourceNotFoundException();
         }
         return byId.get();

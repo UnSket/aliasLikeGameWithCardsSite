@@ -141,6 +141,7 @@ public class LegendService {
         LegendElement imageElement = new LegendElement();
         imageElement.setCardNumber(cardNumber);
         imageElement.setContent(image.getUrl());
+        imageElement.setImageId(image.getId());
         imageElement.setDeck(image.getDeck());
         imageElement.setPositionX(x+DIAMETER/2);
         imageElement.setPositionY(-y+DIAMETER/2);
@@ -150,6 +151,7 @@ public class LegendService {
         LegendElement textElement = new LegendElement();
         textElement.setCardNumber(cardNumber);
         textElement.setContent(image.getText());
+        textElement.setImageId(image.getId());
         textElement.setPositionX(x+DIAMETER/2);
         textElement.setPositionY((int)(-y+textSize*TEXT_SIZE_FACTOR+OFFSET*0.25f)+DIAMETER/2);
         textElement.setDeck(image.getDeck());

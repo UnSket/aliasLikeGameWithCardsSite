@@ -8,6 +8,7 @@ public class LegendElementDto {
     private int positionX;
     private int positionY;
     private int cardNumber;
+    private Long imageID;
 
     public LegendElementDto() {
     }
@@ -63,5 +64,13 @@ public class LegendElementDto {
     public enum LegendSourceType{
         TEXT,
         IMAGE
+    }
+
+    public Long getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(Long imageID) {
+        this.imageID = imageID;
     }
 }

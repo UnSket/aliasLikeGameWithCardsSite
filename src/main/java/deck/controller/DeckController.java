@@ -2,16 +2,16 @@ package deck.controller;
 
 import deck.crud.DeckService;
 import deck.crud.ImageService;
-import deck.dto.DeckDTO;
-import deck.dto.ImageTextConfigDTO;
-import deck.dto.ImageTextLegendDTO;
-import deck.dto.UpdateCardsDto;
+import deck.dto.*;
 import deck.model.Deck;
 import deck.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @RestController
@@ -26,7 +26,6 @@ public class DeckController {
         this.imageService = imageService;
     }
 
-    // TODO pageable search by name description
     // LEGEND
     @GetMapping("api/decks")
     public Set<Deck> listDecks() {
@@ -64,6 +63,11 @@ public class DeckController {
     public Image submitImageText(@RequestBody ImageTextLegendDTO imagetextLegendDTO) {
         //TODO: validate image correspond to deck
         return imageService.submitImageText(imagetextLegendDTO.getImageId(), imagetextLegendDTO.getText());
+    }
+
+    @PostMapping(value = "/api/decks")
+    public Page<Deck> getDecks(@NotNull final Pageable pageable, @RequestBody DeckFilter filter) {
+        return deckService.find(pageable, filter);
     }
 
 }

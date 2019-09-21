@@ -87,10 +87,19 @@ public class ImageProcessing {
         return result;
     }
 
+    private double calculatePixelWeight(int width, int height, int i, int j){
+        float centX = width/2.0f;
+        float centY = height/2.0f;
+        float diffX = Math.abs(centX-i);
+        float diffY = Math.abs(centY-j);
+        double v = Math.sqrt(diffX*diffX+diffY*diffY);
+        return Math.log10(v)+4;
+    };
+
     public String cleanUpBackGround(File f, String uuid, boolean needBgCleanUp) {
         BufferedImage img;
         BufferedImage result;
-        HashMap<RGBAColor, Long> decompressedRgbaOccurences = new HashMap<>();
+        HashMap<RGBAColor, Double> decompressedRgbaOccurences = new HashMap<>();
 
         try {
             img = ImageIO.read(f);
@@ -102,24 +111,36 @@ public class ImageProcessing {
                 for (int j = 0; j < height; j++) {
                     int rgbaBytes = img.getRGB(i, j);
                     RGBAColor color = new RGBAColor(rgbaBytes);
+                    int modifier = 1;
+                    if(color.getA()>255){
+                        color.setB(255);
+                        color.setR(255);
+                        color.setG(255);
+                        color.setA(255);
+                        modifier = 3;
+                    }
+                    if(color.getB()+color.getR()+color.getG()>700){
+                        modifier = 2;
+                    }
+                    double metrics = calculatePixelWeight(width, height, i, j) * modifier;
                     if (decompressedRgbaOccurences.containsKey(color)) {
                         decompressedRgbaOccurences.put(color,
-                                decompressedRgbaOccurences.get(color) + 1);
+                                decompressedRgbaOccurences.get(color) + metrics);
                     } else {
-                        decompressedRgbaOccurences.put(color, 1L);
+                        decompressedRgbaOccurences.put(color, metrics);
                     }
                 }
             }
 
-            Optional<Map.Entry<RGBAColor, Long>> max =
+            Optional<Map.Entry<RGBAColor, Double>> max =
                     decompressedRgbaOccurences.entrySet()
                             .stream()
-                            .max(Comparator.comparingLong(Map.Entry::getValue));
+                            .max(Comparator.comparingDouble(Map.Entry::getValue));
 
-            if (!max.isPresent()) {
+            if (max.isEmpty()) {
                 return "";
             }
-            Map.Entry<RGBAColor, Long> rgbaColorLongEntry = max.get();
+            Map.Entry<RGBAColor, Double> rgbaColorLongEntry = max.get();
             RGBAColor bgColor = rgbaColorLongEntry.getKey();
 
             for (int i = 0; i < width; i++) {

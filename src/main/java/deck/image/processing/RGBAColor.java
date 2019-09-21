@@ -75,15 +75,14 @@ class RGBAColor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RGBAColor rgbaColor = (RGBAColor) o;
-        return b == rgbaColor.b &&
-                r == rgbaColor.r &&
-                g == rgbaColor.g &&
-                a == rgbaColor.a;
+        return b/30 == rgbaColor.b/30 &&
+                r/30 == rgbaColor.r/30 &&
+                g/30 == rgbaColor.g/30 &&
+                a/30 == rgbaColor.a/30;
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(b, r, g, a);
+        return Objects.hash(b/30, r/30, g/30, a/30);
     }
 }

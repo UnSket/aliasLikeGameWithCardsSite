@@ -52,6 +52,7 @@ public class LegendController {
             dto.setSource(z.getContent());
             dto.setPositionX(z.getPositionX());
             dto.setPositionY(z.getPositionY());
+            dto.setImageID(z.getImageId());
             return dto;
         }).collect(Collectors.toList());
 

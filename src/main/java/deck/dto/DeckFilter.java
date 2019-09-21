@@ -13,6 +13,9 @@ public class DeckFilter {
     @Nullable
     private String search;
 
+    public DeckFilter(@Nullable String search) {
+        this.search = search;
+    }
 
     public DeckFilter() {
     }

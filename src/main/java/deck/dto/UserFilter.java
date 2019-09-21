@@ -23,6 +23,7 @@ public class UserFilter {
         Specification<User> spec = (root, query, cb) -> cb.conjunction();
 
         if (searchString != null) {
+            searchString = "%"+searchString+"%";
             Specification<User> cache = (root, query, cb) -> cb.like(root.get(User_.userName), searchString);
             Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.emailId), searchString);
             spec.and(specFN.or(cache));

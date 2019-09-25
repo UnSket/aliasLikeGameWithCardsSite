@@ -1,5 +1,6 @@
 package deck.controller;
 
+import deck.crud.DeckService;
 import deck.crud.UserService;
 import deck.dto.ActivateUserDTO;
 import deck.dto.CreateUserDTO;
@@ -21,15 +22,19 @@ public class UserController {
 
     private final UserService userService;
 
+    private final DeckService deckService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, DeckService deckService) {
         this.userService = userService;
+        this.deckService = deckService;
     }
 
     @GetMapping(value = "/api/currentUser")
     public ResponseEntity currentUser() {
         try {
             User user = userService.getCurrentUser();
+            user = deckService.enrichUserWithDeckCount(user);
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).build();
@@ -38,17 +43,23 @@ public class UserController {
 
     @PostMapping(value = "/api/activateUser")
     public User createUser(@RequestBody ActivateUserDTO activateUserDTO) {
-        return userService.activateUser(activateUserDTO);
+        User user = userService.activateUser(activateUserDTO);
+        user = deckService.enrichUserWithDeckCount(user);
+        return user;
     }
 
     @PostMapping(value = "/api/createUser")
     public User createUser(@RequestBody CreateUserDTO createUserDTO) {
-        return userService.createUser(createUserDTO);
+        User user = userService.createUser(createUserDTO);
+        user = deckService.enrichUserWithDeckCount(user);
+        return user;
     }
 
     @PostMapping(value = "/api/users")
     public Page<User> getUsers(@NotNull final Pageable pageable, @RequestBody UserFilter filter) {
-        return userService.find(pageable, filter);
+        Page<User> users = userService.find(pageable, filter);
+        deckService.enrichUsersWithDeckCount(users);
+        return users;
     }
 
 }

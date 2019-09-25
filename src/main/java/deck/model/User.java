@@ -22,6 +22,8 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private String password;
 
+	private Integer deckCount;
+
 	@Transient
 	private Collection<GrantedAuthority> authorities;
 
@@ -51,6 +53,7 @@ public class User implements UserDetails {
 		this.emailId = emailId;
 	}
 
+	@JsonIgnore
 	@Override
 	@Transient
 	public Collection<GrantedAuthority> getAuthorities() {
@@ -61,12 +64,18 @@ public class User implements UserDetails {
 		this.authorities = authorities;
 	}
 
-	public GrantedAuthority getAuthority() {
+	public String getAuthority() {
+		return new AuthorityConverter().convertToDatabaseColumn(authority);
+	}
+
+	@JsonIgnore
+	@Transient
+	public GrantedAuthority getAuthorityEntity() {
 		return authority;
 	}
 
-	public void setAuthority(GrantedAuthority authority) {
-		this.authority = authority;
+	public void setAuthority(String authority) {
+		this.authority = new AuthorityConverter().convertToEntityAttribute(authority);
 	}
 
 	public String getPassword() {
@@ -79,18 +88,21 @@ public class User implements UserDetails {
 		return emailId;
 	}
 
+	@JsonIgnore
 	@Transient
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Transient
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Transient
 	@Override
 	public boolean isCredentialsNonExpired() {
@@ -130,6 +142,15 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = { CascadeType.ALL })
 	public Set<Deck> getDecks() {
 		return decks;
+	}
+
+	@Transient
+	public Integer getDeckCount() {
+		return deckCount;
+	}
+
+	public void setDeckCount(Integer deckCount) {
+		this.deckCount = deckCount;
 	}
 
 	public void setDecks(Set<Deck> decks) {

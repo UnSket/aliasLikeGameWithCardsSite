@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userService.findUserByUsername(username);
         if (user != null) {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(user.getAuthority());
+            authorities.add(user.getAuthorityEntity());
             user.setAuthorities(authorities);
             return user;
         }

@@ -95,7 +95,6 @@ public class FileUploadController {
         return ResponseEntity.ok(deck);
     }
 
-    //TODO: check this method;
     @PostMapping("api/files/change")
     public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
                                              @RequestParam("imageId") Long imageId) {

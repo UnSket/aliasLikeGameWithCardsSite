@@ -4,7 +4,7 @@ CREATE TABLE USERS (
   email_id varchar(255),
   password varchar(255),
   active BOOLEAN,
-  authority varchar(255),
+  authority varchar2(255),
   PRIMARY KEY (id)
 );
 

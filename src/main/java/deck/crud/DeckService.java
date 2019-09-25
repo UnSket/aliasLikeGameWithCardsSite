@@ -65,7 +65,7 @@ public class DeckService {
 
     public Deck updateDeckMeta(DeckDTO deckDto) {
         User currentUser = userService.getCurrentUser();
-        if(deckDto.getId() == null){
+        if (deckDto.getId() == null) {
             throw new ResourceNotFoundException();
         }
         Optional<Deck> deckOpt = deckRepository.findById(deckDto.getId());
@@ -159,5 +159,19 @@ public class DeckService {
             throw new ResourceNotFoundException();
         }
         return byId.get();
+    }
+
+    public User enrichUserWithDeckCount(User user) {
+        Integer deckCount = deckRepository.countAllByOwner(user);
+        if(deckCount == null ){
+            deckCount = 0;
+        }
+        user.setDeckCount(deckCount);
+        return user;
+    }
+
+    public Page<User> enrichUsersWithDeckCount(Page<User> users) {
+        users.forEach(this::enrichUserWithDeckCount);
+        return users;
     }
 }

@@ -29,7 +29,6 @@ public class LegendController {
         this.deckService = deckService;
     }
 
-
     @GetMapping(value = "/api/legend/{id}")
     public LegendDTO getLegend(@PathVariable(value = "id") Long id) {
         Deck deck = deckService.getById(id);

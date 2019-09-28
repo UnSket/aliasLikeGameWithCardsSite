@@ -16,11 +16,12 @@ public class User implements UserDetails {
 
 	private long id;
 
-	@JsonIgnore
-	private String emailId;
+	private String email;
 
 	@JsonIgnore
 	private String password;
+
+	private String username;
 
 	private Integer deckCount;
 
@@ -35,7 +36,7 @@ public class User implements UserDetails {
 	private Set<Deck> decks;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public long getId() {
 		return id;
 	}
@@ -45,12 +46,12 @@ public class User implements UserDetails {
 	}
 
 	@Column(name = "email_id", nullable = false)
-	public String getEmailId() {
-		return emailId;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@JsonIgnore
@@ -82,10 +83,14 @@ public class User implements UserDetails {
 		return password;
 	}
 
-	@Transient
 	@Override
+	@Column(name = "user_name", nullable = false)
 	public String getUsername() {
-		return emailId;
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@JsonIgnore
@@ -131,10 +136,13 @@ public class User implements UserDetails {
 	public String toString() {
 		return "User{" +
 				"id=" + id +
-				", emailId='" + emailId + '\'' +
-				", authorities=" + authority +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", username='" + username + '\'' +
+				", deckCount=" + deckCount +
+				", authorities=" + authorities +
+				", authority=" + authority +
 				", active=" + active +
-				", decks=" + decks +
 				'}';
 	}
 

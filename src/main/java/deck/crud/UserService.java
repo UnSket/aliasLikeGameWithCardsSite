@@ -8,9 +8,11 @@ import deck.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -37,11 +40,14 @@ public class UserService {
 
     public User createUser(CreateUserDTO createUserDTO) {
         User user = new User();
-        user.setActive(false);
+        user.setAuthority("ROLE_USER");
+        user.setEmail(createUserDTO.getEmail());
+        user.setUsername(createUserDTO.getUserName());
+        user.setActive(createUserDTO.isActive());
         if (createUserDTO.getPassword() != null) {
-            user.setPassword(createUserDTO.getPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(createUserDTO.getPassword()));
         } else {
-            user.setPassword(user.getEmailId());
+            user.setPassword(bCryptPasswordEncoder.encode(user.getUsername()));
         }
         return userRepository.save(user);
     }
@@ -74,10 +80,11 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     public User findUserByUsername(String username) {
-        List<User> allByEmailId = userRepository.findAllByEmailId(username);
+        List<User> allByEmailId = userRepository.findAllByUsername(username);
         if (allByEmailId.size() != 1) {
             throw new UsernameNotFoundException(username);
         }

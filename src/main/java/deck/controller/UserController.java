@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/api/activateUser")
-    public User createUser(@RequestBody ActivateUserDTO activateUserDTO) {
+    public User activateUser(@RequestBody ActivateUserDTO activateUserDTO) {
         User user = userService.activateUser(activateUserDTO);
         user = deckService.enrichUserWithDeckCount(user);
         return user;

@@ -29,12 +29,6 @@ public class LegendController {
         this.deckService = deckService;
     }
 
-    @PostMapping("api/legend/text/config")
-    public ResponseEntity<LegendDTO> updateDeckTextSize(@RequestBody ImageTextConfigDTO imageTextConfigDTO) {
-        //TODO:refactor to service
-        deckService.updateDeckTextSize(imageTextConfigDTO.getId(), imageTextConfigDTO.getSize());
-        return ResponseEntity.ok(getLegend(imageTextConfigDTO.getId()));
-    }
 
     @GetMapping(value = "/api/legend/{id}")
     public LegendDTO getLegend(@PathVariable(value = "id") Long id) {
@@ -46,7 +40,9 @@ public class LegendController {
     @PostMapping(value = "/api/legend/update")
     public LegendDTO updateLegend(@RequestBody UpdateLegendDto updateLegendDto) {
         List<LegendElement> legendElements = legendService.setLegend(updateLegendDto);
+        deckService.updateDeckTextSize(updateLegendDto.getDeckId(), updateLegendDto.getTextSize());
         Deck deck = deckService.getById(updateLegendDto.getDeckId());
+
         return fromLegend(deck, legendElements);
     }
 

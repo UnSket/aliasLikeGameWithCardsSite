@@ -93,7 +93,7 @@ public class ImageProcessing {
         float diffX = Math.abs(centX-i);
         float diffY = Math.abs(centY-j);
         double v = Math.sqrt(diffX*diffX+diffY*diffY);
-        return Math.log10(v)+4;
+        return Math.log10(v)+10;
     };
 
     public String cleanUpBackGround(File f, String uuid, boolean needBgCleanUp) {
@@ -112,15 +112,12 @@ public class ImageProcessing {
                     int rgbaBytes = img.getRGB(i, j);
                     RGBAColor color = new RGBAColor(rgbaBytes);
                     int modifier = 1;
-                    if(color.getA()>255){
+                    if(color.getB()>245){
                         color.setB(255);
                         color.setR(255);
                         color.setG(255);
                         color.setA(255);
                         modifier = 3;
-                    }
-                    if(color.getB()+color.getR()+color.getG()>700){
-                        modifier = 2;
                     }
                     double metrics = calculatePixelWeight(width, height, i, j) * modifier;
                     if (decompressedRgbaOccurences.containsKey(color)) {

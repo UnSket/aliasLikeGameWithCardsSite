@@ -19,22 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class AuthController {
 
-    private final UserService userService;
-
-    @Autowired
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
-
     @RequestMapping(value = "/api/logout", method = RequestMethod.GET)
-    public String logoutPage(HttpServletRequest request,
+    public ResponseEntity logoutPage(HttpServletRequest request,
                              HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        response.setStatus(200);
-        return "";
+        return ResponseEntity.ok("");
     }
 
 }

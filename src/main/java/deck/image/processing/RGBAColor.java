@@ -5,7 +5,7 @@ import java.util.Objects;
 class RGBAColor {
 
     static final int MAX_RGBA_BYTE = 255;
-    static final long BACKGROUND_RADII = 900;
+    static final long BACKGROUND_RADII = 400;
 
     private int b;
     private int r;
@@ -34,7 +34,7 @@ class RGBAColor {
     public long calculateCartesianDistance(RGBAColor other) {
         return (other.a - this.a) * (other.a - this.a) +
                 (other.b - this.b) * (other.b - this.b) +
-                (other.g - this.g) * (other.g - this.g) +
+                (other.g - this.g) * (other.g - this.g)*10000 +
                 (other.r - this.r) * (other.r - this.r);
     }
 
@@ -75,14 +75,14 @@ class RGBAColor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RGBAColor rgbaColor = (RGBAColor) o;
-        return b/30 == rgbaColor.b/30 &&
-                r/30 == rgbaColor.r/30 &&
-                g/30 == rgbaColor.g/30 &&
-                a/30 == rgbaColor.a/30;
+        return b/3 == rgbaColor.b/3 &&
+                r/3 == rgbaColor.r/3 &&
+                g/3 == rgbaColor.g/3 &&
+                a/3 == rgbaColor.a/3;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(b/30, r/30, g/30, a/30);
+        return Objects.hash(b/3, r/3, g/3, a/3);
     }
 }

@@ -8,7 +8,6 @@ import deck.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,7 +41,7 @@ public class UserService {
         User user = new User();
         user.setAuthority("ROLE_USER");
         user.setEmail(createUserDTO.getEmail());
-        user.setUsername(createUserDTO.getUserName());
+        user.setUsername(createUserDTO.getUsername());
         user.setActive(createUserDTO.isActive());
         if (createUserDTO.getPassword() != null) {
             user.setPassword(bCryptPasswordEncoder.encode(createUserDTO.getPassword()));

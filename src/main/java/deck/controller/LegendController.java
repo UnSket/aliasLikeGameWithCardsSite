@@ -30,20 +30,27 @@ public class LegendController {
     }
 
     @PostMapping("api/legend/text/config")
-    public ResponseEntity<Deck> updateDeckTextSize(@RequestBody ImageTextConfigDTO imageTextConfigDTO) {
+    public ResponseEntity<LegendDTO> updateDeckTextSize(@RequestBody ImageTextConfigDTO imageTextConfigDTO) {
         //TODO:refactor to service
         deckService.updateDeckTextSize(imageTextConfigDTO.getId(), imageTextConfigDTO.getSize());
         return ResponseEntity.ok(getLegend(imageTextConfigDTO.getId()));
     }
 
     @GetMapping(value = "/api/legend/{id}")
-    public Deck getLegend(@PathVariable(value = "id") Long id) {
+    public LegendDTO getLegend(@PathVariable(value = "id") Long id) {
         Deck deck = deckService.getById(id);
         List<LegendElement> legendSource = legendService.getLegend(id);
         return fromLegend(deck, legendSource);
     }
 
-    private Deck fromLegend(Deck deck, List<LegendElement> legendSource){
+    @PostMapping(value = "/api/legend/update")
+    public LegendDTO updateLegend(@RequestBody UpdateLegendDto updateLegendDto) {
+        List<LegendElement> legendElements = legendService.setLegend(updateLegendDto);
+        Deck deck = deckService.getById(updateLegendDto.getDeckId());
+        return fromLegend(deck, legendElements);
+    }
+
+    private LegendDTO fromLegend(Deck deck, List<LegendElement> legendSource){
         List<LegendElementDto> legend = legendSource.stream().map(z-> {
             LegendElementDto dto = new LegendElementDto();
             dto.setCardNumber(z.getCardNumber());
@@ -72,16 +79,8 @@ public class LegendController {
         });
 
         dto.setCards(data);
-        deck.setLegend(dto);
 
-        return deck;
-    }
-
-    @PostMapping(value = "/api/legend/update")
-    public Deck updateLegend(@RequestBody UpdateLegendDto updateLegendDto) {
-        List<LegendElement> legendElements = legendService.setLegend(updateLegendDto);
-        Deck deck = deckService.getById(updateLegendDto.getDeckId());
-        return fromLegend(deck, legendElements);
+        return dto;
     }
 
 }

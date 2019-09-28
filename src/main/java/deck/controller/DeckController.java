@@ -3,6 +3,7 @@ package deck.controller;
 import deck.crud.DeckService;
 import deck.crud.ImageService;
 import deck.dto.*;
+import deck.model.CardImage;
 import deck.model.Deck;
 import deck.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -38,7 +40,7 @@ public class DeckController {
     }
 
     @GetMapping("api/deck/enriched/{id}")
-    public Deck getByIdEnrichedWithCards(@PathVariable(value = "id") Long id) {
+    public List<List<CardImage>> getByIdEnrichedWithCards(@PathVariable(value = "id") Long id) {
         return deckService.getByIdEnrichedWithCards(id);
     }
 
@@ -55,7 +57,7 @@ public class DeckController {
     }
 
     @PostMapping("api/deck/cards")
-    public Deck submitDeckContent(@RequestBody UpdateCardsDto cards) {
+    public List<List<CardImage>>  submitDeckContent(@RequestBody UpdateCardsDto cards) {
         return deckService.submitData(cards);
     }
 

@@ -1,6 +1,5 @@
 package deck.crud;
 
-import com.google.common.collect.Lists;
 import deck.controller.ResourceNotFoundException;
 import deck.dto.DeckDTO;
 import deck.dto.DeckFilter;
@@ -128,18 +127,17 @@ public class DeckService {
         return deckRepository.findAll();
     }
 
-    public Deck getByIdEnrichedWithCards(long id) {
+    public List<List<CardImage>> getByIdEnrichedWithCards(long id) {
         Optional<Deck> byId = deckRepository.findById(id);
         if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
         Deck deck = byId.get();
-        deck.setCards(cardsService.getDeckData(deck));
-        return deck;
+        return cardsService.getDeckData(deck);
     }
 
     @Transactional
-    public Deck submitData(UpdateCardsDto cards) {
+    public List<List<CardImage>> submitData(UpdateCardsDto cards) {
         Optional<Deck> byId = deckRepository.findById(cards.getDeckId());
         Deck deck;
         if (byId.isPresent()) {

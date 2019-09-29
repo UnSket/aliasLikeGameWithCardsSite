@@ -8,7 +8,7 @@ public class LegendElementDto {
     private int positionX;
     private int positionY;
     private int cardNumber;
-    private Long imageID;
+    private Long imageId;
 
     public LegendElementDto() {
     }
@@ -66,11 +66,11 @@ public class LegendElementDto {
         IMAGE
     }
 
-    public Long getImageID() {
-        return imageID;
+    public Long getImageId() {
+        return imageId;
     }
 
-    public void setImageID(Long imageID) {
-        this.imageID = imageID;
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 }

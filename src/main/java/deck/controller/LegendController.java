@@ -2,14 +2,12 @@ package deck.controller;
 
 import deck.crud.DeckService;
 import deck.crud.LegendService;
-import deck.dto.ImageTextConfigDTO;
 import deck.dto.LegendDTO;
 import deck.dto.LegendElementDto;
 import deck.dto.UpdateLegendDto;
 import deck.model.Deck;
 import deck.model.LegendElement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class LegendController {
             dto.setSource(z.getContent());
             dto.setPositionX(z.getPositionX());
             dto.setPositionY(z.getPositionY());
-            dto.setImageID(z.getImageId());
+            dto.setImageId(z.getImageId());
             return dto;
         }).collect(Collectors.toList());
 

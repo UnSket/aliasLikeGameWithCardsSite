@@ -55,7 +55,7 @@ public class FileUploadController {
     @Transactional
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId,
-                                           @RequestParam("bgCleanUpFlags") List<Boolean> needBgCleanUp) {
+                                           @RequestParam(required = false, value = "bgCleanUpFlags") List<Boolean> needBgCleanUp) {
 
         List<String> collect = new ArrayList<>();
         for (int i=0;i<files.size();i++) {
@@ -76,7 +76,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleSingleFileUpload(@RequestParam("files") MultipartFile file,
                                                  @RequestParam("deckId") Long deckId,
-                                                 @RequestParam("bgCleanUpFlag") Boolean needBgCleanUp) {
+                                                 @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         String key = storageService.store(file, needBgCleanUp);
         Image image = imageService.submitNewAndGet(key, deckId);
         return ResponseEntity.ok(image);
@@ -86,7 +86,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity handleBackSideUpload(@RequestParam("files") MultipartFile file,
                                                @RequestParam("deckId") Long deckId,
-                                               @RequestParam("bgCleanUpFlag") Boolean needBgCleanUp) {
+                                               @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         Deck deck = deckService.getById(deckId);
         if (deck == null) {
             throw new ResourceNotFoundException();
@@ -100,7 +100,7 @@ public class FileUploadController {
     @PostMapping("api/files/change")
     public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
                                              @RequestParam("imageId") Long imageId,
-                                             @RequestParam("bgCleanUpFlag") Boolean needBgCleanUp) {
+                                             @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         String newUrl = storageService.store(newImage, needBgCleanUp);
         return ResponseEntity.ok(imageService.updateImageAndGet(imageId, newUrl));
     }
@@ -108,7 +108,7 @@ public class FileUploadController {
     @PostMapping("/api/files/backimage/")
     @ResponseBody
     public Image handleFileUpload(@RequestParam("file") MultipartFile file,
-                                  @RequestParam("bgCleanUpFlag") Boolean needBgCleanUp) {
+                                  @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         String key = storageService.store(file, needBgCleanUp);
         return imageService.submitNewAndGet(key);
     }

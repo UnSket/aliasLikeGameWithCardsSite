@@ -35,7 +35,10 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public String store(MultipartFile file, boolean needBgCleanUp) {
+    public String store(MultipartFile file, Boolean needBgCleanUp) {
+        if(needBgCleanUp == null){
+            needBgCleanUp = true;
+        }
         imageProcessing.validateImage(file);
         UUID uuid = UUID.randomUUID();
 

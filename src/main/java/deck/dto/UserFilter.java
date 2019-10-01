@@ -24,7 +24,7 @@ public class UserFilter {
 
         if (search != null) {
             search = "%"+ search +"%";
-            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.emailId), search);
+            Specification<User> specFN = (root, query, cb) -> cb.like(root.get(User_.email), search);
             spec.and(specFN);
         }
 

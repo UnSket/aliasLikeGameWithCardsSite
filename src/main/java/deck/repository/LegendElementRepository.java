@@ -11,5 +11,7 @@ public interface LegendElementRepository extends JpaRepository<LegendElement, Lo
 
     List<LegendElement> findAllByDeckId(Long deckId);
 
+    List<LegendElement> findAllByImageId(Long imageId);
+
     void deleteAllByDeckId(Long deckId);
 }

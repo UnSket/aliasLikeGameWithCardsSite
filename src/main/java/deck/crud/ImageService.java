@@ -5,8 +5,10 @@ import deck.controller.ImageNotFoundException;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
 import deck.model.Image;
+import deck.model.LegendElement;
 import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
+import deck.repository.LegendElementRepository;
 import deck.storage.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,14 +26,16 @@ public class ImageService {
     private final CardsService cardsService;
     private final DeckRepository deckRepository;
     private final DeckService deckService;
+    private final LegendElementRepository legendElementRepository;
 
     @Autowired
     public ImageService(ImageRepository imageRepository,
                         CardConfigurationProcessor cardConfigurationProcessor,
                         CardsService cardsService,
                         DeckRepository deckRepository,
+                        LegendElementRepository legendElementRepository,
                         DeckService deckService) {
-
+        this.legendElementRepository = legendElementRepository;
         this.imageRepository = imageRepository;
         this.cardConfigurationProcessor = cardConfigurationProcessor;
         this.cardsService = cardsService;
@@ -68,6 +72,7 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
+    @Transactional
     public Image submitImageText(long imageId, String imageText) {
         Optional<Image> byId = imageRepository.findById(imageId);
         if(!byId.isPresent()){
@@ -75,6 +80,11 @@ public class ImageService {
         }
         Image image = byId.get();
         image.setText(imageText);
+        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId);
+        if(affectedLegendElements.size()>0) {
+            affectedLegendElements.forEach(z -> z.setContent(imageText));
+            legendElementRepository.saveAll(affectedLegendElements);
+        }
         return imageRepository.save(image);
     }
 
@@ -90,9 +100,13 @@ public class ImageService {
         return byId.orElseGet(Image::new);
     }
 
+    @Transactional
     public Image updateImageAndGet(Long imageId, String newUrl) {
         Image image = imageRepository.findById(imageId).orElseThrow(() -> new RuntimeException("Image with id " + imageId + " not found"));
+        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId);
         image.setUrl(newUrl);
+        affectedLegendElements.forEach(z -> z.setContent(newUrl));
+        legendElementRepository.saveAll(affectedLegendElements);
         return imageRepository.save(image);
     }
 }

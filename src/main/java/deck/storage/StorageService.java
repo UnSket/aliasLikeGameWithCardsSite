@@ -10,7 +10,7 @@ public interface StorageService {
 
     void init();
 
-    String store(MultipartFile file, boolean needBgCleanUp);
+    String store(MultipartFile file, Boolean needBgCleanUp);
 
     Stream<Path> loadAll();
 

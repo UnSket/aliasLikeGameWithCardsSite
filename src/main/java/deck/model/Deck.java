@@ -15,6 +15,7 @@ public class Deck implements Serializable {
     private String backsideKey;
     private User owner;
     private boolean visibleAsPublic;
+    private boolean isLegendTuned;
 
     private String name;
     private String description;
@@ -136,5 +137,13 @@ public class Deck implements Serializable {
 
     public void setLegend(LegendDTO legend) {
         this.legend = legend;
+    }
+
+    public boolean isLegendTuned() {
+        return isLegendTuned;
+    }
+
+    public void setLegendTuned(boolean legendTuned) {
+        isLegendTuned = legendTuned;
     }
 }

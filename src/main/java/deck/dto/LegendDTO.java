@@ -5,6 +5,7 @@ import java.util.List;
 public class LegendDTO {
     Long deckId;
     int textSize;
+    Boolean isLegendTuned;
     List<List<LegendElementDto>> cards;
 
     public LegendDTO() {
@@ -32,5 +33,13 @@ public class LegendDTO {
 
     public void setCards(List<List<LegendElementDto>> cards) {
         this.cards = cards;
+    }
+
+    public Boolean getLegendTuned() {
+        return isLegendTuned;
+    }
+
+    public void setLegendTuned(Boolean legendTuned) {
+        isLegendTuned = legendTuned;
     }
 }

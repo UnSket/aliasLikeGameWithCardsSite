@@ -49,6 +49,7 @@ public class DeckService {
     public Deck submitNewDeck(DeckDTO deckDto) {
         User currentUser = userService.getCurrentUser();
         Deck deck = new Deck();
+        deck.setLegendTuned(false);
         deck.setName(deckDto.getName());
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());

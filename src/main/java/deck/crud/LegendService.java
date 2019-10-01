@@ -5,6 +5,7 @@ import deck.dto.UpdateLegendDto;
 import deck.model.Deck;
 import deck.model.Image;
 import deck.model.LegendElement;
+import deck.repository.DeckRepository;
 import deck.repository.LegendElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,22 @@ public class LegendService {
     private static final int DIAMETER = 336;
     private static final float TEXT_SIZE_FACTOR = 3f;
     private final DeckService deckService;
+    private final DeckRepository deckRepository;
     private final LegendElementRepository legendElementRepository;
 
     @Autowired
-    public LegendService(DeckService deckService, LegendElementRepository legendElementRepository) {
+    public LegendService(DeckService deckService,
+                         LegendElementRepository legendElementRepository,
+                         DeckRepository deckRepository) {
         this.deckService = deckService;
+        this.deckRepository = deckRepository;
         this.legendElementRepository = legendElementRepository;
     }
 
-    public List<LegendElement> setLegend(UpdateLegendDto legendElementDtos) {
+    public List<LegendElement> setLegend(Deck deck, UpdateLegendDto legendElementDtos) {
         long deckId = legendElementDtos.getDeckId();
+        deck.setLegendTuned(true);
+        deckRepository.save(deck);
         List<LegendElement> allByDeckId = legendElementRepository.findAllByDeckId(deckId);
         List<LegendElement> collect = Stream.of(legendElementDtos.getCards()).map(dto -> {
             LegendElement element = allByDeckId.stream().filter(z -> z.getId() == dto.getId()).findFirst().get();

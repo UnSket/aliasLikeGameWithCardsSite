@@ -36,9 +36,9 @@ public class LegendController {
 
     @PostMapping(value = "/api/legend/update")
     public LegendDTO updateLegend(@RequestBody UpdateLegendDto updateLegendDto) {
-        List<LegendElement> legendElements = legendService.setLegend(updateLegendDto);
-        deckService.updateDeckTextSize(updateLegendDto.getDeckId(), updateLegendDto.getTextSize());
         Deck deck = deckService.getById(updateLegendDto.getDeckId());
+        List<LegendElement> legendElements = legendService.setLegend(deck, updateLegendDto);
+        deckService.updateDeckTextSize(updateLegendDto.getDeckId(), updateLegendDto.getTextSize());
 
         return fromLegend(deck, legendElements);
     }
@@ -59,6 +59,7 @@ public class LegendController {
         LegendDTO dto = new LegendDTO();
         dto.setDeckId(deck.getId());
         dto.setTextSize(deck.getTextSize());
+        dto.setLegendTuned(deck.isLegendTuned());
 
         List<List<LegendElementDto>> data = new ArrayList<>();
         int size = legend.stream().mapToInt(LegendElementDto::getCardNumber).max().getAsInt();

@@ -14,6 +14,7 @@ CREATE TABLE DECK (
     id bigint NOT NULL AUTO_INCREMENT,
     backside_key varchar(255),
     visible_as_public BOOLEAN,
+    is_legend_tuned BOOLEAN,
     name varchar(255),
     description varchar(255),
     images_on_card bigint,

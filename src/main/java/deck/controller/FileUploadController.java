@@ -1,5 +1,6 @@
 package deck.controller;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import deck.crud.DeckService;
 import deck.crud.ImageService;
 import deck.model.Deck;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -17,8 +19,10 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 public class FileUploadController {
@@ -55,8 +59,15 @@ public class FileUploadController {
     @Transactional
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId,
-                                           @RequestParam(required = false, value = "bgCleanUpFlags") List<Boolean> needBgCleanUp) {
+                                           @RequestParam(required = false, value = "bgCleanUpFlags")
+                                                       List<Boolean> needBgCleanUp) {
 
+        if(CollectionUtils.isEmpty(needBgCleanUp) || needBgCleanUp.size()<files.size()){
+            needBgCleanUp = new ArrayList<>();
+            for(int i=0;i<files.size();i++){
+                needBgCleanUp.add(Boolean.TRUE);
+            }
+        }
         List<String> collect = new ArrayList<>();
         for (int i=0;i<files.size();i++) {
             MultipartFile file = files.get(i);

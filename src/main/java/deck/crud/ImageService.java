@@ -2,6 +2,7 @@ package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
 import deck.controller.ImageNotFoundException;
+import deck.dto.LegendElementDto;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
 import deck.model.Image;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageService {
@@ -80,7 +82,10 @@ public class ImageService {
         }
         Image image = byId.get();
         image.setText(imageText);
-        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId);
+        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId)
+                .stream()
+                .filter(z -> z.getLegendSourceType() == LegendElementDto.LegendSourceType.TEXT)
+                .collect(Collectors.toList());
         if(affectedLegendElements.size()>0) {
             affectedLegendElements.forEach(z -> z.setContent(imageText));
             legendElementRepository.saveAll(affectedLegendElements);
@@ -103,7 +108,10 @@ public class ImageService {
     @Transactional
     public Image updateImageAndGet(Long imageId, String newUrl) {
         Image image = imageRepository.findById(imageId).orElseThrow(() -> new RuntimeException("Image with id " + imageId + " not found"));
-        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId);
+        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId)
+                .stream()
+                .filter(z -> z.getLegendSourceType() == LegendElementDto.LegendSourceType.IMAGE)
+                .collect(Collectors.toList());;
         image.setUrl(newUrl);
         affectedLegendElements.forEach(z -> z.setContent(newUrl));
         legendElementRepository.saveAll(affectedLegendElements);

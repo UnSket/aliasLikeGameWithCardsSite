@@ -1,6 +1,6 @@
-186 112 rotate(186deg) 135 https://spotit.000webhostapp.com/projects/fix_templates_6/30.png
-128 12 rotate(8deg) 57 https://spotit.000webhostapp.com/projects/fix_templates_6/7.png
-206 28 rotate(193deg) 57 https://spotit.000webhostapp.com/projects/fix_templates_6/15.png
-45 62 rotate(87deg) 94 https://spotit.000webhostapp.com/projects/fix_templates_6/12.png
-27 168 rotate(292deg) 94 https://spotit.000webhostapp.com/projects/fix_templates_6/16.png
-117 228 rotate(210deg) 94 https://spotit.000webhostapp.com/projects/fix_templates_6/26.png
+186 112 rotate(186deg) 135 http://localhost/spotit/projects/test5/30.png
+128 12 rotate(8deg) 57 http://localhost/spotit/projects/test5/7.png
+206 28 rotate(193deg) 57 http://localhost/spotit/projects/test5/15.png
+45 62 rotate(87deg) 94 http://localhost/spotit/projects/test5/12.png
+27 168 rotate(292deg) 94 http://localhost/spotit/projects/test5/16.png
+117 228 rotate(210deg) 94 http://localhost/spotit/projects/test5/26.png

@@ -59,19 +59,12 @@ public class FileUploadController {
     @Transactional
     public ResponseEntity handleFileUpload(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("deckId") Long deckId,
-                                           @RequestParam(required = false, value = "bgCleanUpFlags")
-                                                       List<Boolean> needBgCleanUp) {
+                                           @RequestParam(required = false, value = "bgCleanUpFlag")
+                                                       Boolean needBgCleanUp) {
 
-        if(CollectionUtils.isEmpty(needBgCleanUp) || needBgCleanUp.size()<files.size()){
-            needBgCleanUp = new ArrayList<>();
-            for(int i=0;i<files.size();i++){
-                needBgCleanUp.add(Boolean.TRUE);
-            }
-        }
         List<String> collect = new ArrayList<>();
-        for (int i=0;i<files.size();i++) {
-            MultipartFile file = files.get(i);
-            String store = storageService.store(file, needBgCleanUp.get(i));
+        for (MultipartFile file : files) {
+            String store = storageService.store(file, needBgCleanUp);
             collect.add(store);
         }
         List<Image> images = new ArrayList<>();
@@ -79,7 +72,6 @@ public class FileUploadController {
             Image image = imageService.submitNewAndGet(z, deckId);
             images.add(image);
         }
-        //imageService.updateDeckRequiredCardsCountData(deckId);
         return ResponseEntity.ok(images);
     }
 

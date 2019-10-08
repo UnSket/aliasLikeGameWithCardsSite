@@ -10,6 +10,7 @@ import deck.model.LegendElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ public class LegendController {
         this.deckService = deckService;
     }
 
+    @Transactional
     @GetMapping(value = "/api/legend/{id}")
     public LegendDTO getLegend(@PathVariable(value = "id") Long id) {
         Deck deck = deckService.getById(id);

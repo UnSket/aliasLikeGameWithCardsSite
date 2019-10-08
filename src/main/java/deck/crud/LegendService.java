@@ -35,6 +35,7 @@ public class LegendService {
         this.legendElementRepository = legendElementRepository;
     }
 
+    @Transactional
     public List<LegendElement> setLegend(Deck deck, UpdateLegendDto legendElementDtos) {
         long deckId = legendElementDtos.getDeckId();
         deck.setLegendTuned(true);
@@ -45,6 +46,7 @@ public class LegendService {
             element.setPositionX(dto.getPositionX());
             element.setPositionY(dto.getPositionY());
             element.setCardNumber(dto.getCardNumber());
+            element.setId(dto.getId());
             return element;
         }).collect(Collectors.toList());
         legendElementRepository.saveAll(collect);

@@ -100,7 +100,7 @@ public class FileUploadController {
         return ResponseEntity.ok(deck);
     }
 
-    @PostMapping("api/files/change")
+    @PostMapping("/api/files/change")
     public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
                                              @RequestParam("imageId") Long imageId,
                                              @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {

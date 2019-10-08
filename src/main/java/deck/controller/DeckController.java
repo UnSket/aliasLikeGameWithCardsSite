@@ -29,39 +29,39 @@ public class DeckController {
     }
 
     // LEGEND
-    @GetMapping("api/decks/my")
+    @GetMapping("/api/decks/my")
     public Set<Deck> listDecks() {
         return deckService.findAllOfCurrentUser();
     }
 
-    @GetMapping("api/deck/{id}")
+    @GetMapping("/api/deck/{id}")
     public Deck getDeck(@PathVariable(value = "id") Long id) {
         return deckService.getById(id);
     }
 
-    @GetMapping("api/deck/enriched/{id}")
+    @GetMapping("/api/deck/enriched/{id}")
     public List<List<CardImage>> getByIdEnrichedWithCards(@PathVariable(value = "id") Long id) {
         return deckService.getByIdEnrichedWithCards(id);
     }
 
-    @PostMapping("api/deck")
+    @PostMapping("/api/deck")
     public ResponseEntity<Deck> submitDeck(@RequestBody DeckDTO deck) {
         Deck deckRes = deckService.submitNewDeck(deck);
         return ResponseEntity.ok(deckRes);
     }
 
-    @PutMapping("api/deck/update")
+    @PutMapping("/api/deck/update")
     public ResponseEntity<Deck> updateDeck(@RequestBody DeckDTO deck) {
         Deck deckRes = deckService.updateDeckMeta(deck);
         return ResponseEntity.ok(deckRes);
     }
 
-    @PostMapping("api/deck/cards")
+    @PostMapping("/api/deck/cards")
     public List<List<CardImage>>  submitDeckContent(@RequestBody UpdateCardsDto cards) {
         return deckService.submitData(cards);
     }
 
-    @PostMapping("api/deck/text/legend")
+    @PostMapping("/api/deck/text/legend")
     public Image submitImageText(@RequestBody ImageTextLegendDTO imagetextLegendDTO) {
         //TODO: validate image correspond to deck
         return imageService.submitImageText(imagetextLegendDTO.getImageId(), imagetextLegendDTO.getText());

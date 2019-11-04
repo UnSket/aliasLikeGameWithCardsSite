@@ -88,7 +88,7 @@ public class DeckService {
         User currentUser = userService.getCurrentUser();
         Optional<Deck> deckOpt = deckRepository.findById(id);
         if (deckOpt.isPresent()) {
-            legendElementRepository.deleteAllByDeckId(id);
+            // legendElementRepository.deleteAllByDeckId(id);
             Deck deck = deckOpt.get();
             if (deck.getOwner().getId() != currentUser.getId()) {
                 throw new ResourceNotFoundException();

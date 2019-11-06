@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import deck.crud.DeckService;
 import deck.crud.ImageService;
 import deck.model.Deck;
-import deck.model.Image;
+import deck.model.ImageElement;
 import deck.storage.ImageStorageFileNotFoundException;
 import deck.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +67,9 @@ public class FileUploadController {
             String store = storageService.store(file, needBgCleanUp);
             collect.add(store);
         }
-        List<Image> images = new ArrayList<>();
+        List<ImageElement> images = new ArrayList<>();
         for (String z : collect) {
-            Image image = imageService.submitNewAndGet(z, deckId);
+            ImageElement image = imageService.submitNewAndGet(z, deckId);
             images.add(image);
         }
         return ResponseEntity.ok(images);
@@ -81,7 +81,7 @@ public class FileUploadController {
                                                  @RequestParam("deckId") Long deckId,
                                                  @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         String key = storageService.store(file, needBgCleanUp);
-        Image image = imageService.submitNewAndGet(key, deckId);
+        ImageElement image = imageService.submitNewAndGet(key, deckId);
         return ResponseEntity.ok(image);
     }
 
@@ -101,7 +101,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/api/files/change")
-    public ResponseEntity<Image> changeImage(@RequestParam("file") MultipartFile newImage,
+    public ResponseEntity<ImageElement> changeImage(@RequestParam("file") MultipartFile newImage,
                                              @RequestParam("imageId") Long imageId,
                                              @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         String newUrl = storageService.store(newImage, needBgCleanUp);
@@ -110,7 +110,7 @@ public class FileUploadController {
 
     @PostMapping("/api/files/backimage/")
     @ResponseBody
-    public Image handleFileUpload(@RequestParam("file") MultipartFile file,
+    public ImageElement handleFileUpload(@RequestParam("file") MultipartFile file,
                                   @RequestParam(required = false, value = "bgCleanUpFlag") Boolean needBgCleanUp) {
         String key = storageService.store(file, needBgCleanUp);
         return imageService.submitNewAndGet(key);

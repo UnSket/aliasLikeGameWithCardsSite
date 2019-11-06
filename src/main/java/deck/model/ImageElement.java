@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Table(name = "IMAGE")
 @Entity
-public class Image implements Serializable {
+public class ImageElement implements Serializable {
 
     private long id;
 
@@ -18,11 +18,11 @@ public class Image implements Serializable {
 
     private Deck deck;
 
-    public Image(){
+    public ImageElement(){
 
     }
 
-    public Image(String url, Deck deck) {
+    public ImageElement(String url, Deck deck) {
         this.url = url;
         this.deck = deck;
     }

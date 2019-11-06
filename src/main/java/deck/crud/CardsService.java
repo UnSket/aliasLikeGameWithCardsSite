@@ -7,7 +7,7 @@ import deck.image.generation.CardPrototype;
 import deck.model.Card;
 import deck.model.CardImage;
 import deck.model.Deck;
-import deck.model.Image;
+import deck.model.ImageElement;
 import deck.repository.CardImageRepository;
 import deck.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class CardsService {
         }
         List<Card> cards = cardRepository.saveAll(persistedCards);
 
-        List<Image> images = deck.getImages();
+        List<ImageElement> images = deck.getImages();
         for (int cardNumber = 0; cardNumber < cards.size(); cardNumber++) {
             Card card = cards.get(cardNumber);
             CardPrototype cardPrototype = prototypes.get(cardNumber);
@@ -89,7 +89,7 @@ public class CardsService {
         List<Card> allByDeckId = cardRepository.findAllByDeckId(id);
         List<Long> ids = allByDeckId.stream().map(Card::getId).collect(Collectors.toList());
         List<CardImage> images = cardImageRepository.findAllByCardIdIn(ids);
-        Map<Long, Image> collect = deck.getImages().stream().collect(Collectors.toMap(z -> z.getId(), Function.identity()));
+        Map<Long, ImageElement> collect = deck.getImages().stream().collect(Collectors.toMap(z -> z.getId(), Function.identity()));
         for (CardImage image : images) {
             image.setImageUrl(collect.get(image.getImageId()).getUrl());
         }

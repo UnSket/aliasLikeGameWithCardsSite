@@ -5,7 +5,7 @@ import deck.crud.ImageService;
 import deck.dto.*;
 import deck.model.CardImage;
 import deck.model.Deck;
-import deck.model.Image;
+import deck.model.ImageElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,7 +62,7 @@ public class DeckController {
     }
 
     @PostMapping("/api/deck/text/legend")
-    public Image submitImageText(@RequestBody ImageTextLegendDTO imagetextLegendDTO) {
+    public ImageElement submitImageText(@RequestBody ImageTextLegendDTO imagetextLegendDTO) {
         //TODO: validate image correspond to deck
         return imageService.submitImageText(imagetextLegendDTO.getImageId(), imagetextLegendDTO.getText());
     }

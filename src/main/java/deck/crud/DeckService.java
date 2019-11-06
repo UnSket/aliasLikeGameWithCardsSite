@@ -53,7 +53,7 @@ public class DeckService {
         deck.setName(deckDto.getName());
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
-        deck.setImages(new ArrayList<deck.model.Image>());
+        deck.setImages(new ArrayList<deck.model.ImageElement>());
         deck.setOwner(currentUser);
         deck.setTextSize(15);
 

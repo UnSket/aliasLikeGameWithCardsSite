@@ -5,7 +5,7 @@ import deck.controller.ImageNotFoundException;
 import deck.dto.LegendElementDto;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
-import deck.model.Image;
+import deck.model.ImageElement;
 import deck.model.LegendElement;
 import deck.repository.DeckRepository;
 import deck.repository.ImageRepository;
@@ -46,12 +46,12 @@ public class ImageService {
     }
 
     @Transactional
-    public Image submitNewAndGet(String imageUrl, Long deckId) {
+    public ImageElement submitNewAndGet(String imageUrl, Long deckId) {
         Deck deck = deckService.getById(deckId);
         if (deck.getImagesRequired() == 0) {
             throw new ImageStorageException("too many cards");
         }
-        Image image = new Image(imageUrl, deck);
+        ImageElement image = new ImageElement(imageUrl, deck);
         deck.getImages().add(image);
         deck.setImagesRequired(deck.getImagesRequired() - 1);
 
@@ -68,19 +68,19 @@ public class ImageService {
         deckRepository.save(deck);
     }
 
-    public Image submitNewAndGet(String imageUrl) {
-        Image image = new Image();
+    public ImageElement submitNewAndGet(String imageUrl) {
+        ImageElement image = new ImageElement();
         image.setUrl(imageUrl);
         return imageRepository.save(image);
     }
 
     @Transactional
-    public Image submitImageText(long imageId, String imageText) {
-        Optional<Image> byId = imageRepository.findById(imageId);
+    public ImageElement submitImageText(long imageId, String imageText) {
+        Optional<ImageElement> byId = imageRepository.findById(imageId);
         if(!byId.isPresent()){
             throw new ImageNotFoundException("image with id = "+imageId+" not found");
         }
-        Image image = byId.get();
+        ImageElement image = byId.get();
         image.setText(imageText);
         List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId)
                 .stream()
@@ -93,21 +93,21 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public List<Image> findAll() {
+    public List<ImageElement> findAll() {
         return imageRepository.findAll();
     }
 
-    public Image getById(long id) {
-        Optional<Image> byId = imageRepository.findById(id);
+    public ImageElement getById(long id) {
+        Optional<ImageElement> byId = imageRepository.findById(id);
         if (!byId.isPresent()) {
             throw new ResourceNotFoundException();
         }
-        return byId.orElseGet(Image::new);
+        return byId.orElseGet(ImageElement::new);
     }
 
     @Transactional
-    public Image updateImageAndGet(Long imageId, String newUrl) {
-        Image image = imageRepository.findById(imageId).orElseThrow(() -> new RuntimeException("Image with id " + imageId + " not found"));
+    public ImageElement updateImageAndGet(Long imageId, String newUrl) {
+        ImageElement image = imageRepository.findById(imageId).orElseThrow(() -> new RuntimeException("Image with id " + imageId + " not found"));
         List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId)
                 .stream()
                 .filter(z -> z.getLegendSourceType() == LegendElementDto.LegendSourceType.IMAGE)

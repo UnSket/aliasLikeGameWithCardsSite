@@ -22,7 +22,7 @@ public class Deck implements Serializable {
     private int imagesOnCard;
     private int textSize = 25;
 
-    private List<Image> images;
+    private List<ImageElement> images;
 
     private int imagesRequired;
 
@@ -86,11 +86,11 @@ public class Deck implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "deck", cascade = {CascadeType.ALL})
-    public List<Image> getImages() {
+    public List<ImageElement> getImages() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImages(List<ImageElement> images) {
         this.images = images;
     }
 

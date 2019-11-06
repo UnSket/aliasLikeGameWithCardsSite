@@ -3,7 +3,7 @@ package deck.crud;
 import deck.dto.LegendElementDto;
 import deck.dto.UpdateLegendDto;
 import deck.model.Deck;
-import deck.model.Image;
+import deck.model.ImageElement;
 import deck.model.LegendElement;
 import deck.repository.DeckRepository;
 import deck.repository.LegendElementRepository;
@@ -77,7 +77,7 @@ public class LegendService {
     @Transactional
     protected void generateLegend(long deckId) {
         Deck byId = deckService.getById(deckId);
-        List<Image> images = byId.getImages();
+        List<ImageElement> images = byId.getImages();
         List<LegendElement> allByDeckId = new ArrayList<>();
         int imagesNumber = byId.getImages().size();
         int textSize = byId.getTextSize();
@@ -144,7 +144,7 @@ public class LegendService {
 
         legendElementRepository.saveAll(allByDeckId);
     }
-    private void allocateElement(Image image, List<LegendElement> allByDeckId,
+    private void allocateElement(ImageElement image, List<LegendElement> allByDeckId,
                                  int cardNumber, int x, int y, int textSize){
 
         LegendElement imageElement = new LegendElement();

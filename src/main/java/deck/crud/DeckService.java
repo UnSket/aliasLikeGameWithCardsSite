@@ -49,13 +49,12 @@ public class DeckService {
     public Deck submitNewDeck(DeckDTO deckDto) {
         User currentUser = userService.getCurrentUser();
         Deck deck = new Deck();
-        deck.setLegendTuned(false);
+        //deck.setLegendTuned(false);
         deck.setName(deckDto.getName());
         deck.setDescription(deckDto.getDescription());
         deck.setImagesOnCard(deckDto.getImagesOnCard());
         deck.setImages(new ArrayList<deck.model.ImageElement>());
         deck.setOwner(currentUser);
-        deck.setTextSize(15);
 
         int expectedCardCount = cardConfigurationProcessor.getExpectedImagesCountByImagesOnCard(deck.getImagesOnCard());
         deck.setImagesRequired(expectedCardCount);
@@ -93,7 +92,7 @@ public class DeckService {
             if (deck.getOwner().getId() != currentUser.getId()) {
                 throw new ResourceNotFoundException();
             }
-            deck.setTextSize(size);
+            //deck.setTextSize(size);
             return deckRepository.save(deck);
         }
 

@@ -61,12 +61,6 @@ public class DeckController {
         return deckService.submitData(cards);
     }
 
-    @PostMapping("/api/deck/text/legend")
-    public ImageElement submitImageText(@RequestBody ImageTextLegendDTO imagetextLegendDTO) {
-        //TODO: validate image correspond to deck
-        return imageService.submitImageText(imagetextLegendDTO.getImageId(), imagetextLegendDTO.getText());
-    }
-
     @PostMapping(value = "/api/decks")
     public Page<Deck> getDecks(@NotNull final Pageable pageable, @RequestBody DeckFilter filter) {
         return deckService.find(pageable, filter);

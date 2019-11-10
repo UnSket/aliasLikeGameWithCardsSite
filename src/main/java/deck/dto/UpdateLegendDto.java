@@ -2,7 +2,7 @@ package deck.dto;
 
 public class UpdateLegendDto {
     private LegendElementDto[] cards;
-    private long deckId;
+    private long legendId;
     private int textSize;
 
     public LegendElementDto[] getCards() {
@@ -13,12 +13,12 @@ public class UpdateLegendDto {
         this.cards = cards;
     }
 
-    public long getDeckId() {
-        return deckId;
+    public void setLegendId(long legendId) {
+        this.legendId = legendId;
     }
 
-    public void setDeckId(long deckId) {
-        this.deckId = deckId;
+    public long getLegendId() {
+        return legendId;
     }
 
     public int getTextSize() {

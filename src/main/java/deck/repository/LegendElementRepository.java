@@ -9,9 +9,9 @@ import java.util.*;
 @Repository
 public interface LegendElementRepository extends JpaRepository<LegendElement, Long> {
 
-    List<LegendElement> findAllByDeckId(Long deckId);
+    List<LegendElement> findAllByLegendId(Long legendId);
 
     List<LegendElement> findAllByImageId(Long imageId);
 
-    void deleteAllByDeckId(Long deckId);
+    void deleteAllByLegendId(Long legendId);
 }

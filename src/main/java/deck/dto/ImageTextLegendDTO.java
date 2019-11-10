@@ -2,7 +2,7 @@ package deck.dto;
 
 public class ImageTextLegendDTO {
 
-    long deckId;
+    long legendId;
     long imageId;
     String text;
 
@@ -10,12 +10,12 @@ public class ImageTextLegendDTO {
 
     }
 
-    public long getDeckId() {
-        return deckId;
+    public long getLegendId() {
+        return legendId;
     }
 
-    public void setDeckId(long deckId) {
-        this.deckId = deckId;
+    public void setLegendId(long legendId) {
+        this.legendId = legendId;
     }
 
     public long getImageId() {

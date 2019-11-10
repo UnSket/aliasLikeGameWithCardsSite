@@ -11,11 +11,7 @@ import java.io.Serializable;
 public class ImageElement implements Serializable {
 
     private long id;
-
-    private String text;
-
     private String url;
-
     private Deck deck;
 
     public ImageElement(){
@@ -54,13 +50,5 @@ public class ImageElement implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

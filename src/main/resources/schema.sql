@@ -14,13 +14,11 @@ CREATE TABLE DECK (
     id bigint NOT NULL AUTO_INCREMENT,
     backside_key varchar(255),
     visible_as_public BOOLEAN,
-    legend_tuned BOOLEAN,
     name varchar(255),
     description varchar(255),
     images_on_card bigint,
     owner bigint,
     images_required bigint,
-    text_size bigint,
   PRIMARY KEY (id),
   FOREIGN KEY (owner) REFERENCES USERS(id)
 );
@@ -28,7 +26,6 @@ CREATE TABLE DECK (
 CREATE TABLE IMAGE (
     id bigint NOT NULL AUTO_INCREMENT,
     url varchar(255) UNIQUE NOT NULL,
-    text varchar(255),
     deck_id bigint,
     FOREIGN KEY (deck_id) REFERENCES DECK(id)
 );
@@ -57,16 +54,25 @@ CREATE TABLE CARD_IMAGE (
 
 );
 
+CREATE TABLE LEGEND (
+    id bigint NOT NULL AUTO_INCREMENT,
+    name varchar(255),
+    deck_id bigint NOT NULL,
+    is_tuned BOOLEAN,
+    text_size bigint,
+    PRIMARY KEY (id),
+    FOREIGN KEY (deck_id) REFERENCES DECK(id)
+);
+
 CREATE TABLE LEGEND_ELEMENT (
     id bigint NOT NULL AUTO_INCREMENT,
-    deck_id bigint NOT NULL,
+    legend_id bigint NOT NULL,
     image_id bigint NOT NULL,
-    content varchar(255),
+    source varchar(255),
     legend_source_type varchar(255),
     positionx bigint,
     positiony bigint,
     card_number bigint,
   PRIMARY KEY (id),
-  FOREIGN KEY (deck_id) REFERENCES DECK(id)
-
+  FOREIGN KEY (legend_id) REFERENCES LEGEND(id)
 );

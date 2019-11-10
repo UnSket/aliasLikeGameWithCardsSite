@@ -12,9 +12,9 @@ public class LegendElement implements Serializable {
 
     private long id;
 
-    private Deck deck;
+    private Legend legend;
 
-    private String content;
+    private String source;
 
     private Long imageId;
 
@@ -38,22 +38,22 @@ public class LegendElement implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "DECK_ID")
+    @JoinColumn(name = "LEGEND_ID")
     @JsonIgnore
-    public Deck getDeck() {
-        return deck;
+    public Legend getLegend() {
+        return legend;
     }
 
-    public void setDeck(Deck deck) {
-        this.deck = deck;
+    public void setLegend(Legend legend) {
+        this.legend = legend;
     }
 
-    public String getContent() {
-        return content;
+    public String getSource() {
+        return source;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setSource(String content) {
+        this.source = content;
     }
 
     public LegendElementDto.LegendSourceType getLegendSourceType() {

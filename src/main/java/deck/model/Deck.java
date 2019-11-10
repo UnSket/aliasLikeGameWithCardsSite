@@ -15,12 +15,10 @@ public class Deck implements Serializable {
     private String backsideKey;
     private User owner;
     private boolean visibleAsPublic;
-    private boolean isLegendTuned;
 
     private String name;
     private String description;
     private int imagesOnCard;
-    private int textSize = 25;
 
     private List<ImageElement> images;
 
@@ -122,14 +120,6 @@ public class Deck implements Serializable {
         this.imagesRequired = imagesRequired;
     }
 
-    public int getTextSize() {
-        return textSize;
-    }
-
-    public void setTextSize(int textSize) {
-        this.textSize = textSize;
-    }
-
     @Transient
     public LegendDTO getLegend() {
         return legend;
@@ -137,13 +127,5 @@ public class Deck implements Serializable {
 
     public void setLegend(LegendDTO legend) {
         this.legend = legend;
-    }
-
-    public boolean isLegendTuned() {
-        return isLegendTuned;
-    }
-
-    public void setLegendTuned(boolean legendTuned) {
-        isLegendTuned = legendTuned;
     }
 }

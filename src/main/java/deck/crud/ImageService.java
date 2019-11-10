@@ -74,25 +74,6 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    @Transactional
-    public ImageElement submitImageText(long imageId, String imageText) {
-        Optional<ImageElement> byId = imageRepository.findById(imageId);
-        if(!byId.isPresent()){
-            throw new ImageNotFoundException("image with id = "+imageId+" not found");
-        }
-        ImageElement image = byId.get();
-        image.setText(imageText);
-        List<LegendElement> affectedLegendElements = legendElementRepository.findAllByImageId(imageId)
-                .stream()
-                .filter(z -> z.getLegendSourceType() == LegendElementDto.LegendSourceType.TEXT)
-                .collect(Collectors.toList());
-        if(affectedLegendElements.size()>0) {
-            affectedLegendElements.forEach(z -> z.setContent(imageText));
-            legendElementRepository.saveAll(affectedLegendElements);
-        }
-        return imageRepository.save(image);
-    }
-
     public List<ImageElement> findAll() {
         return imageRepository.findAll();
     }
@@ -113,7 +94,7 @@ public class ImageService {
                 .filter(z -> z.getLegendSourceType() == LegendElementDto.LegendSourceType.IMAGE)
                 .collect(Collectors.toList());;
         image.setUrl(newUrl);
-        affectedLegendElements.forEach(z -> z.setContent(newUrl));
+        affectedLegendElements.forEach(z -> z.setSource(newUrl));
         legendElementRepository.saveAll(affectedLegendElements);
         return imageRepository.save(image);
     }

@@ -14,6 +14,7 @@ public class DeckDTO {
     private Integer imagesOnCard;
     @Nullable
     private Integer textSize;
+    private Boolean isNumerated;
 
     public DeckDTO() {
     }
@@ -62,5 +63,13 @@ public class DeckDTO {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
+    }
+
+    public Boolean getIsNumerated() {
+        return isNumerated;
+    }
+
+    public void setIsNumerated(Boolean numerated) {
+        isNumerated = numerated;
     }
 }

@@ -76,6 +76,7 @@ public class DeckService {
             deck.setName(deckDto.getName());
             deck.setDescription(deckDto.getDescription());
             deck.setOwner(currentUser);
+            deck.setIsNumerated(deckDto.getIsNumerated());
             return deckRepository.save(deck);
         }
 

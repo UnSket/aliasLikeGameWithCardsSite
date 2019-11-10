@@ -23,6 +23,7 @@ public class Deck implements Serializable {
     private List<ImageElement> images;
 
     private int imagesRequired;
+    private boolean isNumerated;
 
     @Transient
     private LegendDTO legend;
@@ -127,5 +128,13 @@ public class Deck implements Serializable {
 
     public void setLegend(LegendDTO legend) {
         this.legend = legend;
+    }
+
+    public boolean getIsNumerated() {
+        return isNumerated;
+    }
+
+    public void setIsNumerated(boolean numerated) {
+        isNumerated = numerated;
     }
 }

@@ -1,9 +1,6 @@
 package deck.crud;
 
-import deck.image.generation.CardConfigurationProcessor;
-import deck.image.generation.CardGenerationUnavailable;
-import deck.image.generation.CardImagePrototype;
-import deck.image.generation.CardPrototype;
+import deck.image.generation.*;
 import deck.model.Card;
 import deck.model.CardImage;
 import deck.model.Deck;
@@ -11,6 +8,7 @@ import deck.model.ImageElement;
 import deck.repository.CardImageRepository;
 import deck.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

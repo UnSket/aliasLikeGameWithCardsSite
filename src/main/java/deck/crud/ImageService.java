@@ -1,7 +1,6 @@
 package deck.crud;
 
 import deck.controller.ResourceNotFoundException;
-import deck.controller.ImageNotFoundException;
 import deck.dto.LegendElementDto;
 import deck.image.generation.CardConfigurationProcessor;
 import deck.model.Deck;
